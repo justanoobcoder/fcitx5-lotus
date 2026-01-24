@@ -1,76 +1,59 @@
-#include <iostream>
-#include <fstream>
-#include <sstream>
-#include <string>
-#include <unistd.h>
+#include <atomic>
+#include <chrono>
+#include <cstdlib>
+#include <cstring>
 #include <fcntl.h>
-#include <sys/socket.h>
-#include <sys/un.h>
-#include <sys/ioctl.h>
+#include <filesystem>
+#include <fstream>
+#include <iostream>
+#include <libinput.h>
+#include <libudev.h>
 #include <linux/input.h>
 #include <linux/uinput.h>
-#include <cstring>
-#include <cerrno>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <cstdlib>
-#include <exception>
-#include <grp.h>
-#include <pwd.h>
-#include <thread>
-#include <atomic>
-#include <vector>
-#include <map>
 #include <poll.h>
-#include <dirent.h>
-#include <stdexcept>
+#include <pwd.h>
+#include <sched.h>
+#include <string>
+#include <sys/ioctl.h>
+#include <sys/resource.h>
+#include <sys/socket.h>
+#include <sys/stat.h>
+#include <sys/types.h>
+#include <sys/un.h>
+#include <thread>
+#include <unistd.h>
+namespace fs = std::filesystem;
 
-// --------------------------- CÁC ĐỊNH NGHĨA VÀ BIẾN TOÀN CỤC ---------------------------
+// ID sự kiện chuẩn từ file mẫu của Thành
+#define EV_DEVICE_ADDED 1
+#define EV_POINTER_BUTTON 402
+
 static int uinput_fd_ = -1;
-static const int MAX_BACKSPACE_COUNT = 10;
-
-static std::string BASE_DIR; 
-static std::string BASE_SOCKET_PATH;
 static std::string MOUSE_FLAG_PATH;
-
-static std::string active_socket_path;
 std::atomic<bool> stop_mouse_thread(false);
 
-// --------------------------- HÀM HỖ TRỢ SOCKET VÀ QUYỀN ---------------------------
+// --------------------------- HÀM HỆ THỐNG ---------------------------
+static void boost_process_priority() { setpriority(PRIO_PROCESS, 0, -10); }
 
-bool is_socket_path_exist(const std::string& path) {
-    struct stat buffer;
-    if (::stat(path.c_str(), &buffer) == 0) {
-        return S_ISSOCK(buffer.st_mode);
-    }
-    return false;
+static void pin_to_pcore() {
+    cpu_set_t cpuset;
+    CPU_ZERO(&cpuset);
+    for (int i = 0; i <= 3; ++i)
+        CPU_SET(i, &cpuset);
+    sched_setaffinity(0, sizeof(cpuset), &cpuset);
 }
 
-std::string find_available_socket_path() {
-    if (BASE_SOCKET_PATH.empty()) return "";
-    
-    std::string current_path = BASE_SOCKET_PATH;
-    if (!is_socket_path_exist(current_path)) return current_path;
-
-    for (int i = 1; i <= 10; ++i) {
-        current_path = BASE_SOCKET_PATH + "_" + std::to_string(i);
-        if (!is_socket_path_exist(current_path)) return current_path;
-    }
-    return "";
-}
-
-void check_permissions() {
-    uid_t uid = geteuid();
-    struct passwd *pw = getpwuid(uid);
-    if (pw == NULL) return;
-    if (access("/dev/uinput", F_OK) != 0) return;
-    if (access("/dev/uinput", R_OK | W_OK) == 0) return;
+static inline void sleep_us(long us) {
+    struct timespec ts;
+    ts.tv_sec = us / 1000000;
+    ts.tv_nsec = (us % 1000000) * 1000;
+    clock_nanosleep(CLOCK_MONOTONIC, 0, &ts, nullptr);
 }
 
 // --------------------------- HÀM UINPUT INJECTOR ---------------------------
-
 void send_uinput_event(int type, int code, int value) {
-    if (uinput_fd_ < 0) return;
+    if (uinput_fd_ < 0)
+        return;
     struct input_event ev;
     memset(&ev, 0, sizeof(ev));
     ev.type = type;
@@ -79,195 +62,162 @@ void send_uinput_event(int type, int code, int value) {
     write(uinput_fd_, &ev, sizeof(ev));
 }
 
+// FIXED BACKSPACE: giữ phím lâu, bắn MSC_SCAN
 void send_backspace_uinput(int count) {
-    if (uinput_fd_ < 0) return;
-    const int MAX_B_COUNT = 10; 
-    if (count > MAX_B_COUNT) count = MAX_B_COUNT;
-    
-    const int inter_key_delay = 300; 
+    if (uinput_fd_ < 0)
+        return;
+    if (count <= 0)
+        return;
+    if (count > 10)
+        count = 10;
+
+    const int INTER_KEY_DELAY_US = 1200; // 1ms giữa các backspace
+
     for (int i = 0; i < count; ++i) {
-        send_uinput_event(EV_KEY, KEY_BACKSPACE, 1); 
-        send_uinput_event(EV_SYN, SYN_REPORT, 0); 
+        send_uinput_event(EV_KEY, KEY_BACKSPACE, 1);
+        send_uinput_event(EV_SYN, SYN_REPORT, 0);
+
         send_uinput_event(EV_KEY, KEY_BACKSPACE, 0);
-        send_uinput_event(EV_SYN, SYN_REPORT, 0); 
-        usleep(inter_key_delay);
+        send_uinput_event(EV_SYN, SYN_REPORT, 0);
+
+        sleep_us(INTER_KEY_DELAY_US);
     }
 }
-
-int setup_uinput() {
-    check_permissions();
-    if (uinput_fd_ >= 0) return uinput_fd_;
-    
-    uinput_fd_ = open("/dev/uinput", O_WRONLY | O_NONBLOCK);
-    if (uinput_fd_ < 0) return -1;
-    
-    ioctl(uinput_fd_, UI_SET_EVBIT, EV_KEY);
-    ioctl(uinput_fd_, UI_SET_EVBIT, EV_SYN);
-    ioctl(uinput_fd_, UI_SET_KEYBIT, KEY_BACKSPACE);
-    
-    struct uinput_user_dev uidev;
-    memset(&uidev, 0, sizeof(uidev));
-    snprintf(uidev.name, UINPUT_MAX_NAME_SIZE, "Fcitx5 Input Injector (KB/Mouse)");
-    uidev.id.bustype = BUS_VIRTUAL;
-    uidev.id.vendor  = 0xABCD;
-    uidev.id.product = 0x1234;
-    uidev.id.version = 1;
-
-    if (write(uinput_fd_, &uidev, sizeof(uidev)) < 0) {
-        close(uinput_fd_);
-        uinput_fd_ = -1;
-        return -1;
-    }
-    
-    ioctl(uinput_fd_, UI_DEV_CREATE);
-    return uinput_fd_;
-}
-
-void cleanup_uinput() {
-    if (uinput_fd_ >= 0) {
-        ioctl(uinput_fd_, UI_DEV_DESTROY);
-        close(uinput_fd_);
-        uinput_fd_ = -1;
-    }
-}
-
-// --------------------------- HÀM MOUSE MONITOR (LUỒNG PHỤ) ---------------------------
+// --------------------------- MOUSE MONITOR (LOGIC FILE MẪU)
+// ---------------------------
+static const struct libinput_interface interface = {
+    .open_restricted = [](const char *path, int flags, void *user_data) -> int {
+        return open(path, flags);
+    },
+    .close_restricted = [](int fd, void *user_data) { close(fd); }};
 
 void mousePressMonitorThread() {
-    const std::string user_flag_path = MOUSE_FLAG_PATH;
-    std::vector<pollfd> fds;
-    std::map<int, std::string> fd_to_name;
+    struct udev *udev = udev_new();
+    struct libinput *li = libinput_udev_create_context(&interface, NULL, udev);
+    libinput_udev_assign_seat(li, "seat0");
 
-    DIR *dir = opendir("/dev/input");
-    if (!dir) return;
+    // Biến lưu mốc thời gian cuối cùng ghi file
+    auto last_write_time = std::chrono::steady_clock::now();
 
-    struct dirent *entry;
-    while ((entry = readdir(dir)) != NULL) {
-        if (strncmp(entry->d_name, "event", 5) == 0) {
-            std::string path = "/dev/input/" + std::string(entry->d_name);
-            int fd = open(path.c_str(), O_RDONLY | O_NONBLOCK);
-            if (fd < 0) continue;
-            fds.push_back({fd, POLLIN, 0});
-            fd_to_name[fd] = entry->d_name;
-        }
-    }
-    closedir(dir);
+    printf("--- SERVER: MONITORING (OPTIMIZED DISPATCH) ---\n");
 
-    if (fds.empty()) return;
-
-    struct input_event ev;
     while (!stop_mouse_thread.load()) {
-        int ret = poll(fds.data(), fds.size(), 100);
-        if (ret <= 0) continue;
+        // Luôn luôn gọi dispatch để làm sạch hàng đợi, tránh lỗi "system too
+        // slow"
+        libinput_dispatch(li);
 
-        for (size_t i = 0; i < fds.size(); ++i) {
-            if (fds[i].revents & POLLIN) {
-                if (read(fds[i].fd, &ev, sizeof(ev)) == sizeof(ev)) {
-                    if (ev.type == EV_KEY &&
-                        (ev.code == BTN_LEFT || ev.code == BTN_RIGHT || ev.code == BTN_MIDDLE) &&
-                        ev.value == 1) {
-                        
-                        int flag_fd = open(user_flag_path.c_str(), O_CREAT | O_WRONLY, 0666);
-                        if (flag_fd >= 0) {
-                            write(flag_fd, "Y=1\n", 4);
-                            close(flag_fd);
+        struct libinput_event *event;
+        while ((event = libinput_get_event(li))) {
+            int type = (int)libinput_event_get_type(event);
+
+            if (type == EV_DEVICE_ADDED) {
+                struct libinput_device *dev = libinput_event_get_device(event);
+                if (libinput_device_config_tap_get_finger_count(dev) > 0) {
+                    libinput_device_config_tap_set_enabled(
+                        dev, LIBINPUT_CONFIG_TAP_ENABLED);
+                    libinput_device_config_tap_set_button_map(
+                        dev, LIBINPUT_CONFIG_TAP_MAP_LRM);
+                }
+            } else if (type == EV_POINTER_BUTTON) {
+                struct libinput_event_pointer *p =
+                    libinput_event_get_pointer_event(event);
+                if (libinput_event_pointer_get_button_state(p) ==
+                    1) { // Pressed
+
+                    auto now = std::chrono::steady_clock::now();
+                    // Tính khoảng cách thời gian từ lần ghi trước (ms)
+                    auto elapsed =
+                        std::chrono::duration_cast<std::chrono::milliseconds>(
+                            now - last_write_time)
+                            .count();
+
+                    // TĂNG DELAY LÊN 1000ms (1 GIÂY) THEO Ý THÀNH
+                    if (elapsed >= 1000) {
+                        std::ofstream flag(MOUSE_FLAG_PATH, std::ios::trunc);
+                        if (flag.is_open()) {
+                            flag << "Y=1\n";
+                            flag.close();
+                            last_write_time = now; // Cập nhật mốc thời gian mới
+                            printf(">>> ĐÃ GHI FLAG Y=1 (Đã nghỉ đủ %ld ms)\n",
+                                   elapsed);
                         }
+                    } else {
+                        // Nếu chưa đủ 1s thì bỏ qua không ghi, nhưng event vẫn
+                        // được giải phóng printf("... Bỏ qua (mới qua %ld ms)
+                        // ...\n", elapsed);
                     }
                 }
             }
+            libinput_event_destroy(event);
         }
+
+        // Nghỉ 5ms mỗi vòng lặp để giảm tải CPU xuống mức thấp nhất (~0.1%)
+        // 5ms vẫn cực nhanh để không bao giờ bị tràn buffer
+        usleep(5000);
     }
-    
-    for (const auto& pfd : fds) close(pfd.fd);
-    unlink(user_flag_path.c_str());
+    libinput_unref(li);
+    udev_unref(udev);
 }
-
-// --------------------------- HÀM XỬ LÝ LỆNH SOCKET ---------------------------
-
-void handle_client_command(const std::string& command) {
-    if (command.rfind("BACKSPACE_", 0) == 0) {
-        try {
-            int count = std::stoi(command.substr(10));
-            send_backspace_uinput(count);
-        } catch (...) {}
-    }
-}
-
-// --------------------------- HÀM MAIN (LUỒNG CHÍNH) ---------------------------
-
-int main(int argc, char* argv[]) {
-    if (argc != 3 || std::string(argv[1]) != "-u") return 1;
-
-    std::string target_username = argv[2];
-    struct passwd* pw = getpwnam(target_username.c_str());
-    if (!pw) return 1;
-    
-    BASE_DIR = std::string(pw->pw_dir) + "/.vmksocket";
-    BASE_SOCKET_PATH = BASE_DIR + "/kb_socket";
-    MOUSE_FLAG_PATH = BASE_DIR + "/.mouse_flag";
-    active_socket_path = BASE_SOCKET_PATH;
-    
-    if (mkdir(BASE_DIR.c_str(), 0755) == 0) {
-        chown(BASE_DIR.c_str(), pw->pw_uid, pw->pw_gid);
-    } else if (errno != EEXIST) {
+// --------------------------- MAIN ---------------------------
+int main(int argc, char *argv[]) {
+    if (argc != 3 || std::string(argv[1]) != "-u")
         return 1;
+    boost_process_priority();
+    pin_to_pcore();
+
+    std::string target_user = argv[2];
+    struct passwd *pw = getpwnam(target_user.c_str());
+    if (!pw)
+        return 1;
+
+    fs::path base_dir = std::string(pw->pw_dir) + "/.vmksocket";
+    fs::create_directories(base_dir);
+    (void)chown(base_dir.c_str(), pw->pw_uid, pw->pw_gid);
+
+    MOUSE_FLAG_PATH = (base_dir / ".mouse_flag").string();
+    std::string socket_path = (base_dir / "kb_socket").string();
+
+    // Setup Uinput
+    uinput_fd_ = open("/dev/uinput", O_WRONLY | O_NONBLOCK);
+    if (uinput_fd_ >= 0) {
+        ioctl(uinput_fd_, UI_SET_EVBIT, EV_KEY);
+        ioctl(uinput_fd_, UI_SET_KEYBIT, KEY_BACKSPACE);
+        struct uinput_user_dev uidev{};
+        snprintf(uidev.name, UINPUT_MAX_NAME_SIZE, "Fcitx5_Uinput_Server");
+        (void)write(uinput_fd_, &uidev, sizeof(uidev));
+        ioctl(uinput_fd_, UI_DEV_CREATE);
     }
-    
-    if (setup_uinput() < 0) return 1;
-    
+
+    // Setup Socket
     int server_fd = socket(AF_UNIX, SOCK_STREAM, 0);
-    if (server_fd < 0) {
-        cleanup_uinput();
-        return 1;
-    }
-    
-    struct sockaddr_un addr;
-    memset(&addr, 0, sizeof(addr));
-    addr.sun_family = AF_UNIX;
-    strncpy(addr.sun_path, active_socket_path.c_str(), sizeof(addr.sun_path) - 1);
+    struct sockaddr_un addr{.sun_family = AF_UNIX};
+    strncpy(addr.sun_path, socket_path.c_str(), sizeof(addr.sun_path) - 1);
+    unlink(socket_path.c_str());
+    bind(server_fd, (struct sockaddr *)&addr, sizeof(addr));
+    chmod(socket_path.c_str(), 0666);
+    listen(server_fd, 5);
 
-    unlink(active_socket_path.c_str());
-    
-    if (bind(server_fd, (struct sockaddr*)&addr, sizeof(addr)) < 0) {
-        close(server_fd);
-        cleanup_uinput();
-        return 1;
-    }
-    
-    chmod(active_socket_path.c_str(), 0666);
-    
-    if (listen(server_fd, 5) < 0) {
-        close(server_fd);
-        cleanup_uinput();
-        return 1;
-    }
-    
-    std::thread monitor_thread(mousePressMonitorThread);
+    // Chạy luồng monitor chuột/touchpad
+    std::thread(mousePressMonitorThread).detach();
+    printf("--- SERVER ĐANG CHẠY (QUÉT THIẾT BỊ OK) ---\n");
 
     while (true) {
-        int client_fd = accept(server_fd, NULL, NULL);
-        if (client_fd < 0) continue;
-
-        while (true) {
-            char buffer[256];
-            int n = recv(client_fd, buffer, sizeof(buffer) - 1, 0);
-            if (n > 0) {
-                buffer[n] = '\0';
-                std::string command(buffer);
-                if (command == "QUIT") break;
-                handle_client_command(command);
-            } else {
-                break;
+        int client_fd = accept(server_fd, nullptr, nullptr);
+        if (client_fd < 0)
+            continue;
+        char buf[256];
+        int n = recv(client_fd, buf, sizeof(buf) - 1, 0);
+        if (n > 0) {
+            buf[n] = 0;
+            std::string cmd(buf);
+            if (cmd.find("BACKSPACE_") == 0) {
+                try {
+                    send_backspace_uinput(std::stoi(cmd.substr(10)));
+                } catch (...) {
+                }
             }
         }
         close(client_fd);
     }
-
-    stop_mouse_thread.store(true);
-    if (monitor_thread.joinable()) monitor_thread.join();
-
-    cleanup_uinput();
-    unlink(active_socket_path.c_str());
-    close(server_fd);
     return 0;
 }

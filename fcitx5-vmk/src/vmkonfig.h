@@ -40,7 +40,7 @@ protected:
 
 struct InputMethodAnnotation : public StringListAnnotation {};
 struct ModeListAnnotation : public StringListAnnotation {
-    ModeListAnnotation() { list_ = {"vmk1", "vmk2", "vmkpre"}; }};
+    ModeListAnnotation() { list_ = {"vmk1","vmk2","vmk1hc","vmkpre"}; }};
 
 struct InputMethodConstrain {
     using Type = std::string;
@@ -140,7 +140,10 @@ OptionWithAnnotation<std::string, StringListAnnotation> outputCharset{
    // SubConfigOption custumKeymap{this, "CustomKeymap", _("Custom Keymap"),
                                  // ĐỔI TÊN PATH
                                //  "fcitx://config/addon/vmk/custom_keymap"};
-                               );
+    
+Option<bool> gemini{this, "Gemini", _("Gemini-fix"), false};
+Option<bool> chromex11{this, "ChromeX11", _("Chrome X11 Fix"), false};
+                           );
 } // namespace fcitx
 
 #endif

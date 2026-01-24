@@ -135,7 +135,8 @@ public:
     void updateMacroAction(InputContext *ic);
     void updateInputMethodAction(InputContext *ic);
     void updateCharsetAction(InputContext *ic);
-
+void updateGeminiAction(InputContext *ic); // <--- THÊM DÒNG NÀY VÀO DÒNG 138
+void updateChromeX11Action(InputContext *ic); // <--- THÊM DÒNG NÀY
     void populateConfig();
 
 private:
@@ -160,12 +161,12 @@ std::unique_ptr<fcitx::SimpleAction> modeAction_;
     std::unique_ptr<SimpleAction> charsetAction_;
     std::vector<std::unique_ptr<SimpleAction>> charsetSubAction_;
     std::unique_ptr<Menu> charsetMenu_;
-
+    
     std::unique_ptr<SimpleAction> spellCheckAction_;
     std::unique_ptr<SimpleAction> macroAction_;
-
+    std::unique_ptr<SimpleAction> geminiAction_;
     std::vector<ScopedConnection> connections_;
-
+std::unique_ptr<SimpleAction> chromeX11Action_; 
     CGoObject dictionary_;
 };
 
