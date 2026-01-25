@@ -15,7 +15,7 @@ BUILD_DIR = fcitx5-vmk/build
 SERVER_BINARY = fcitx5-vmk-server
 
 CXXFLAGS = -O3 -Wall -Wextra -std=c++17
-LDFLAGS = -linput -ludev
+LDFLAGS += -linput -ludev -Wl,-z,relro -Wl,-z,now
 
 BLUE = \033[0;34m
 GREEN = \033[0;32m
@@ -49,6 +49,7 @@ build:
 	@mkdir -p $(BUILD_DIR)
 	@cd $(BUILD_DIR) && cmake -DCMAKE_INSTALL_PREFIX=$(PREFIX) \
 		-DCMAKE_BUILD_TYPE=Release \
+		-DCMAKE_SHARED_LINKER_FLAGS="-Wl,-z,relro -Wl,-z,now" \
 		-DFCITX_INSTALL_PKGDATADIR=$(FCITX5_DATADIR) \
 		..
 	@$(MAKE) -C $(BUILD_DIR)
