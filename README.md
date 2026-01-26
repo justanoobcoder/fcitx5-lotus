@@ -42,7 +42,7 @@ Cải thiện trải nghiệm người dùng để tiện lợi hơn khi làm vi
 
 ## 📦 Cài đặt
 
-### Arch Linux / Manjaro / EndeavourOS (AUR)
+### Arch Linux / Arch-based distro (systemd) (AUR)
 
 Hiện tại AUR đã có đầy đủ 3 gói cài đặt:
 
@@ -64,7 +64,7 @@ paru -S fcitx5-vmk-bin
 paru -S fcitx5-vmk-git
 ```
 
-### Các Distro khác (Ubuntu/Fedora/Debian/openSUSE)
+### Các Distro khác (Ubuntu/Fedora/Debian/openSUSE) và Arch Linux/Arch-based distro (systemd)
 
 Bạn có thể cài đặt fcitx5-vmk thông qua Open Build Service (OBS), nơi cung cấp các package đã được biên dịch sẵn cho nhiều distro khác nhau.
 
@@ -74,6 +74,8 @@ Truy cập trang [Open Build Service](https://software.opensuse.org//download.ht
 
 [![build result](https://build.opensuse.org/projects/home:iamnanoka/packages/fcitx5-vmk/badge.svg?type=percent)](https://build.opensuse.org/package/show/home:iamnanoka/fcitx5-vmk)
 [![build result](https://build.opensuse.org/projects/home:iamnanoka/packages/fcitx5-vmk/badge.svg?type=default)](https://build.opensuse.org/package/show/home:iamnanoka/fcitx5-vmk)
+
+> Lưu ý: Arch và Arch-based distro có thể sử dụng cả 2 cách cài này.
 
 #### Cách 2: Biên dịch từ mã nguồn (Build from source)
 
