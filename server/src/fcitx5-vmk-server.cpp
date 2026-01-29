@@ -177,14 +177,33 @@ int main(int argc, char *argv[]) {
         if (fds[0].revents & POLLIN) {
             int client_fd = accept(server_fd, nullptr, nullptr);
             if (client_fd >= 0) {
-                char buf[64];
+                char buf[64] = {0};
                 int n = recv(client_fd, buf, sizeof(buf) - 1, 0);
-                if (n > 0) {
-                    buf[n] = 0;
+
+                struct ucred cred;
+                socklen_t len = sizeof(struct ucred);
+                char comm[64] = {0};
+
+                if (getsockopt(client_fd, SOL_SOCKET, SO_PEERCRED, &cred,
+                               &len) == 0) {
+                    char path[64];
+                    snprintf(path, sizeof(path), "/proc/%d/comm", cred.pid);
+                    FILE *fp = fopen(path, "r");
+                    if (fp) {
+                        if (fgets(comm, sizeof(comm), fp)) {
+                            comm[strcspn(comm, "\n")] = 0;
+                        }
+                        fclose(fp);
+                    }
+                }
+
+                if (n > 0 && std::string(comm) == "fcitx5") {
                     std::string cmd(buf);
-                    if (cmd.find("BACKSPACE_") == 0) {
+                    if (cmd.find("BACKSPACE_") != std::string::npos) {
                         try {
-                            send_backspace_uinput(std::stoi(cmd.substr(10)));
+                            int count = std::stoi(
+                                cmd.substr(cmd.find("BACKSPACE_") + 10));
+                            send_backspace_uinput(count);
                         } catch (...) {
                         }
                     }

@@ -8,6 +8,8 @@ Group=input
 
 CapabilityBoundingSet=CAP_SYS_NICE CAP_DAC_OVERRIDE
 AmbientCapabilities=CAP_SYS_NICE CAP_DAC_OVERRIDE
+ProtectProc=default
+ProcSubset=all
 
 RuntimeDirectory=vmksocket-%i
 RuntimeDirectoryMode=0777
