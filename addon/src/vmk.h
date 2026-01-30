@@ -138,9 +138,6 @@ class vmkEngine final : public InputMethodEngine {
     void updateFreeMarkingAction(InputContext *ic);
     void updateInputMethodAction(InputContext *ic);
     void updateCharsetAction(InputContext *ic);
-    void
-    updateGeminiAction(InputContext *ic); // <--- THÊM DÒNG NÀY VÀO DÒNG 138
-    void updateChromeX11Action(InputContext *ic); // <--- THÊM DÒNG NÀY
     void populateConfig();
     // ibus-bamboo mode save/load
     void loadAppRules();
@@ -177,9 +174,7 @@ class vmkEngine final : public InputMethodEngine {
     std::unique_ptr<SimpleAction> autoNonVnRestoreAction_;
     std::unique_ptr<SimpleAction> modernStyleAction_;
     std::unique_ptr<SimpleAction> freeMarkingAction_;
-    std::unique_ptr<SimpleAction> geminiAction_;
     std::vector<ScopedConnection> connections_;
-    std::unique_ptr<SimpleAction> chromeX11Action_;
     CGoObject dictionary_;
     // ibus-bamboo mode save/load
     std::unordered_map<std::string, std::string> appRules_;

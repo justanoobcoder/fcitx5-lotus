@@ -78,6 +78,9 @@ std::string BASE_SOCKET_PATH_TEST;
 static const int MAX_SOCKET_ATTEMPTS = 10;
 // Global flag to signal mouse click for closing app mode menu
 static std::atomic<bool> g_mouse_clicked{false};
+// Global flags for Chrome and Gemini detection
+static bool isChrome = false;
+static bool isGemini = false;
 
 std::atomic<int> is_deleting_{0};
 static std::string getLastUtf8Char(const std::string &str);
@@ -363,30 +366,6 @@ class VMKState final : public InputContextProperty {
         return false;
     }
 
-    void deleteBufferFile() { std::remove("/tmp/vmk_buffer"); }
-
-    void writeBufferToFile(const std::string &buffer) {
-        std::string cleanBuffer = sanitizeHistory(buffer);
-
-        std::ofstream out("/tmp/vmk_buffer", std::ios::out | std::ios::trunc);
-        if (out.is_open()) {
-            out << cleanBuffer;
-            out.flush();
-            out.close();
-        }
-    }
-
-    std::string readBufferFromFile() {
-        std::ifstream in("/tmp/vmk_buffer", std::ios::in);
-        if (!in.is_open())
-            return "";
-
-        std::string content((std::istreambuf_iterator<char>(in)),
-                            std::istreambuf_iterator<char>());
-
-        return sanitizeHistory(content);
-    }
-
     std::string sanitizeHistory(const std::string &raw) {
         std::string clean = "";
         for (size_t i = 0; i < raw.length();) {
@@ -534,7 +513,7 @@ class VMKState final : public InputContextProperty {
         }
         if (Y.load() == 1 && (E == 1 || E == 2 || E == 4)) {
             oldPreBuffer_.clear();
-            deleteBufferFile();
+            history_.clear();
             ResetEngine(vmkEngine_.handle());
             is_deleting_.store(0);
             current_backspace_count_ = -1;
@@ -544,9 +523,7 @@ class VMKState final : public InputContextProperty {
             keyEvent.rawKey().check(FcitxKey_Shift_R))
             return;
         const fcitx::KeySym currentSym = keyEvent.rawKey().sym();
-        // if (engine_->config().chromex11.value()&&
-        if (engine_->config().chromex11.value() &&
-            isChromiumX11(ic_, engine_->instance())) {
+        if (isChrome) {
             if (EngineProcessKeyEvent(vmkEngine_.handle(),
                                       keyEvent.rawKey().sym(),
                                       keyEvent.rawKey().states()))
@@ -580,17 +557,15 @@ class VMKState final : public InputContextProperty {
                 if (isBackspace(currentSym) || currentSym == FcitxKey_space ||
                     currentSym == FcitxKey_Return) {
                     if (isBackspace(currentSym)) {
-                        std::string history = readBufferFromFile();
-                        history += "\\b\\";
-                        writeBufferToFile(history);
-                        replayBufferToEngine(history);
+                        history_ += "\\b\\";
+                        replayBufferToEngine(history_);
                         UniqueCPtr<char> preeditC(
                             EnginePullPreedit(vmkEngine_.handle()));
                         oldPreBuffer_ = (preeditC && preeditC.get()[0])
                                             ? preeditC.get()
                                             : "";
                     } else {
-                        deleteBufferFile();
+                        history_.clear();
                         ResetEngine(vmkEngine_.handle());
                         oldPreBuffer_.clear();
                     }
@@ -616,25 +591,23 @@ class VMKState final : public InputContextProperty {
                     std::string preeditStr =
                         (preeditC && preeditC.get()[0]) ? preeditC.get() : "";
                     if (preeditStr.empty()) {
-                        deleteBufferFile();
+                        history_.clear();
                         oldPreBuffer_.clear();
                         keyEvent.forward();
                     }
                     return;
                 }
-                std::string history = readBufferFromFile();
                 if (currentSym >= 32 && currentSym <= 126) {
-                    history += static_cast<char>(currentSym);
-                    writeBufferToFile(history);
+                    history_ += static_cast<char>(currentSym);
                 } else {
                     keyEvent.forward();
                     return;
                 }
-                replayBufferToEngine(history);
+                replayBufferToEngine(history_);
                 if (auto commitF =
                         UniqueCPtr<char>(EnginePullCommit(vmkEngine_.handle()));
                     commitF && commitF.get()[0]) {
-                    deleteBufferFile();
+                    history_.clear();
                     ResetEngine(vmkEngine_.handle());
                     oldPreBuffer_.clear();
                     return;
@@ -666,8 +639,7 @@ class VMKState final : public InputContextProperty {
                         if (isAutofillCertain(ic_->surroundingText()))
                             them = 1;
 
-                        if (engine_->config().gemini.value() &&
-                            isChromeRichText(ic_) && same == "" &&
+                        if (isGemini && same == "" &&
                             isOnlySingleWordBeforeCursor(ic_) &&
                             !isAutofillCertain(ic_->surroundingText())) {
                             ic_->deleteSurroundingText(
@@ -729,17 +701,15 @@ class VMKState final : public InputContextProperty {
                 if (isBackspace(currentSym) || currentSym == FcitxKey_space ||
                     currentSym == FcitxKey_Return) {
                     if (isBackspace(currentSym)) {
-                        std::string history = readBufferFromFile();
-                        history += "\\b\\";
-                        writeBufferToFile(history);
-                        replayBufferToEngine(history);
+                        history_ += "\\b\\";
+                        replayBufferToEngine(history_);
                         UniqueCPtr<char> preeditC(
                             EnginePullPreedit(vmkEngine_.handle()));
                         oldPreBuffer_ = (preeditC && preeditC.get()[0])
                                             ? preeditC.get()
                                             : "";
                     } else {
-                        deleteBufferFile();
+                        history_.clear();
                         ResetEngine(vmkEngine_.handle());
                         oldPreBuffer_.clear();
                     }
@@ -762,19 +732,17 @@ class VMKState final : public InputContextProperty {
                                            keyEvent.rawKey().states())) {
                     return;
                 }
-                std::string history = readBufferFromFile();
                 if (currentSym >= 32 && currentSym <= 126) {
-                    history += static_cast<char>(currentSym);
-                    writeBufferToFile(history);
+                    history_ += static_cast<char>(currentSym);
                 } else {
                     keyEvent.forward();
                     return;
                 }
-                replayBufferToEngine(history);
+                replayBufferToEngine(history_);
                 if (auto commitF =
                         UniqueCPtr<char>(EnginePullCommit(vmkEngine_.handle()));
                     commitF && commitF.get()[0]) {
-                    deleteBufferFile();
+                    history_.clear();
                     ResetEngine(vmkEngine_.handle());
                     oldPreBuffer_.clear();
                     return;
@@ -806,8 +774,7 @@ class VMKState final : public InputContextProperty {
                         if (isAutofillCertain(ic_->surroundingText()))
                             them = 1;
 
-                        if (engine_->config().gemini.value() &&
-                            isChromeRichText(ic_) && same == "" &&
+                        if (isGemini && same == "" &&
                             isOnlySingleWordBeforeCursor(ic_) &&
                             !isAutofillCertain(ic_->surroundingText())) {
                             ic_->deleteSurroundingText(
@@ -931,7 +898,7 @@ class VMKState final : public InputContextProperty {
         current_backspace_count_ = 0;
         pending_commit_string_.clear();
         current_thread_id_.store(0);
-        deleteBufferFile();
+        history_.clear();
 
         if (E == 3) {
             ic_->inputPanel().reset();
@@ -971,7 +938,7 @@ class VMKState final : public InputContextProperty {
         current_backspace_count_ = 0;
         pending_commit_string_.clear();
         current_thread_id_.store(0);
-        deleteBufferFile();
+        history_.clear();
         if (vmkEngine_)
             ResetEngine(vmkEngine_.handle());
     }
@@ -981,6 +948,7 @@ class VMKState final : public InputContextProperty {
     InputContext *ic_;
     CGoObject vmkEngine_;
     std::string oldPreBuffer_;
+    std::string history_;
     size_t expected_backspaces_ = 0;
     size_t current_backspace_count_ = 0;
     std::string pending_commit_string_;
@@ -1269,36 +1237,6 @@ vmkEngine::vmkEngine(Instance *instance)
             }));
     uiManager.registerAction("vmk-freemarking", freeMarkingAction_.get());
 
-    geminiAction_ = std::make_unique<SimpleAction>();
-    geminiAction_->setLongText(_("Sửa lỗi gõ trên Chrome RichText"));
-    geminiAction_->setIcon("tools-wizard");
-    geminiAction_->setCheckable(true);
-
-    connections_.emplace_back(geminiAction_->connect<SimpleAction::Activated>(
-        [this](InputContext *ic) {
-            config_.gemini.setValue(!*config_.gemini);
-            saveConfig();
-            refreshOption();
-            updateGeminiAction(ic);
-        }));
-    uiManager.registerAction("vmk-gemini", geminiAction_.get());
-    chromeX11Action_ = std::make_unique<SimpleAction>();
-    chromeX11Action_->setLongText(_("Sửa lỗi gõ trên Chrome (X11 Mode)"));
-    chromeX11Action_->setIcon("applications-internet"); // Icon trình duyệt
-    chromeX11Action_->setCheckable(true);
-
-    connections_.emplace_back(
-        chromeX11Action_->connect<SimpleAction::Activated>(
-            [this](InputContext *ic) {
-                // Đảo giá trị trong config (Bạn cần thêm key 'chromeX11' vào
-                // vmk.conf/config struct)
-                config_.chromex11.setValue(!*config_.chromex11);
-                saveConfig();
-
-                refreshOption();
-                updateChromeX11Action(ic);
-            }));
-    uiManager.registerAction("vmk-chromex11", chromeX11Action_.get());
     reloadConfig();
     instance_->inputContextManager().registerProperty("VMKState", &factory_);
 
@@ -1352,8 +1290,6 @@ void vmkEngine::populateConfig() {
     updateAutoNonVnRestoreAction(nullptr);
     updateModernStyleAction(nullptr);
     updateFreeMarkingAction(nullptr);
-    updateGeminiAction(nullptr);
-    updateChromeX11Action(nullptr);
 }
 
 void vmkEngine::setSubConfig(const std::string &path, const RawConfig &config) {
@@ -1383,7 +1319,12 @@ void vmkEngine::activate(const InputMethodEntry &entry,
     static std::atomic<bool> mouseThreadStarted{false};
     if (!mouseThreadStarted.exchange(true))
         startMouseReset();
-    updateGeminiAction(event.inputContext());
+
+    // Detect Chrome and Gemini
+    auto state = ic->propertyFor(&factory_);
+    isChrome = state->isChromiumX11(ic, instance_);
+    isGemini = state->isChromeRichText(ic);
+
     auto &statusArea = event.inputContext()->statusArea();
     if (ic->capabilityFlags().test(fcitx::CapabilityFlag::Preedit))
         instance_->inputContextManager().setPreeditEnabledByDefault(true);
@@ -1418,8 +1359,6 @@ void vmkEngine::activate(const InputMethodEntry &entry,
     E = newE;
     modeAction_->setShortText(targetMode);
 
-    auto state = ic->propertyFor(&factory_);
-
     state->clearAllBuffers();
     is_deleting_.store(0);
     Y.store(0);
@@ -1438,8 +1377,6 @@ void vmkEngine::activate(const InputMethodEntry &entry,
                          autoNonVnRestoreAction_.get());
     statusArea.addAction(StatusGroup::InputMethod, modernStyleAction_.get());
     statusArea.addAction(StatusGroup::InputMethod, freeMarkingAction_.get());
-    statusArea.addAction(StatusGroup::InputMethod, geminiAction_.get());
-    statusArea.addAction(StatusGroup::InputMethod, chromeX11Action_.get());
 }
 
 void vmkEngine::keyEvent(const InputMethodEntry &entry, KeyEvent &keyEvent) {
@@ -1634,15 +1571,6 @@ void vmkEngine::updateCharsetAction(InputContext *ic) {
     }
 }
 
-void vmkEngine::updateGeminiAction(InputContext *ic) {
-    geminiAction_->setChecked(*config_.gemini);
-    geminiAction_->setShortText(*config_.gemini ? _("Gemini Fix: Bật")
-                                                : _("Gemini Fix: Tắt"));
-    if (ic) {
-        geminiAction_->update(ic);
-    }
-}
-
 void vmkEngine::updateSpellAction(InputContext *ic) {
     spellCheckAction_->setChecked(*config_.spellCheck);
     spellCheckAction_->setShortText(
@@ -1698,16 +1626,6 @@ void vmkEngine::updateFreeMarkingAction(InputContext *ic) {
         freeMarkingAction_->update(ic);
     }
 }
-void vmkEngine::updateChromeX11Action(InputContext *ic) {
-    // Khớp dấu tích với giá trị trong config
-    chromeX11Action_->setChecked(*config_.chromex11);
-    chromeX11Action_->setShortText(*config_.chromex11 ? _("ChromeX11: Bật")
-                                                      : _("ChromeX11: Tắt"));
-    if (ic) {
-        chromeX11Action_->update(ic);
-    }
-}
-
 void vmkEngine::loadAppRules() {
     appRules_.clear();
     std::ifstream file(appRulesPath_);
@@ -1769,6 +1687,8 @@ void vmkEngine::showAppModeMenu(InputContext *ic) {
         }
     };
 
+    candidateList->append(std::make_unique<DisplayOnlyCandidateWord>(
+        Text("Tên app nhận diện được bởi fcitx5: " + currentConfigureApp_)));
     candidateList->append(std::make_unique<DisplayOnlyCandidateWord>(
         getLabel("vmk1", "1. Fake backspace by Uinput")));
     candidateList->append(std::make_unique<DisplayOnlyCandidateWord>(
