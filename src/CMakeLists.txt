@@ -2,7 +2,8 @@ set(fcitx_vmk_sources
   vmk.cpp
 )
 
-add_fcitx5_addon(vmk ${fcitx_vmk_sources})
+add_library(vmk MODULE ${fcitx_vmk_sources})
+set_target_properties(vmk PROPERTIES OUTPUT_NAME "vmk")
 target_link_libraries(vmk
 	Fcitx5::Core
 	Fcitx5::Config
