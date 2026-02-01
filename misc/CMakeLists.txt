@@ -5,7 +5,9 @@ install(FILES 99-vmk.rules
     DESTINATION ${CMAKE_INSTALL_PREFIX}/lib/udev/rules.d)
 
 install(FILES module-fcitx5-vmk.conf
-    DESTINATION ${CMAKE_INSTALL_PREFIX}/lib/modules-load.d)
+    DESTINATION ${CMAKE_INSTALL_PREFIX}/lib/modules-load.d
+    RENAME fcitx5-vmk.conf)
 
 install(FILES user-vmk.conf
-    DESTINATION ${CMAKE_INSTALL_PREFIX}/lib/sysusers.d)
+    DESTINATION ${CMAKE_INSTALL_PREFIX}/lib/sysusers.d
+    RENANE vmk.conf)
