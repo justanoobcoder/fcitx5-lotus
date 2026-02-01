@@ -149,10 +149,13 @@ namespace fcitx {
         void updateCharsetAction(InputContext* ic);
         void populateConfig();
         // ibus-bamboo mode save/load
-        void loadAppRules();
-        void saveAppRules();
-        void showAppModeMenu(InputContext* ic);
-        void closeAppModeMenu();
+        void         loadAppRules();
+        void         saveAppRules();
+        void         showAppModeMenu(InputContext* ic);
+        void         closeAppModeMenu();
+        EmojiLoader& emojiLoader() {
+            return emojiLoader_;
+        }
 
       private:
         bool                                              freeMarkingValue_ = true;
