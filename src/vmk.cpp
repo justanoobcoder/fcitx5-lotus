@@ -286,29 +286,6 @@ namespace fcitx {
             send_command_to_server(count);
         }
 
-        bool handleUInputKeyPress(KeyEvent& event, KeySym currentSym) {
-            if (!is_deleting_.load())
-                return false;
-            if (isBackspace(currentSym)) {
-                current_backspace_count_ += 1;
-                if (current_backspace_count_ < expected_backspaces_) {
-                    return false;
-                } else {
-                    is_deleting_.store(false);
-                    current_thread_id_.fetch_add(1);
-                    std::this_thread::sleep_for(std::chrono::milliseconds(20));
-                    ic_->commitString(pending_commit_string_);
-                    expected_backspaces_     = 0;
-                    current_backspace_count_ = -1;
-                    pending_commit_string_   = "";
-
-                    event.filterAndAccept();
-                    return true;
-                }
-            }
-            return false;
-        }
-
         void replayBufferToEngine(const std::string& buffer) {
             if (!vmkEngine_.handle())
                 return;
@@ -571,7 +548,31 @@ namespace fcitx {
             ic_->updateUserInterface(UserInterfaceComponent::InputPanel);
         }
 
+        bool handleUInputKeyPress(KeyEvent& event, KeySym currentSym) {
+            if (!is_deleting_.load()) {
+                return false;
+            }
+            if (isBackspace(currentSym)) {
+                current_backspace_count_ += 1;
+                if (current_backspace_count_ < expected_backspaces_) {
+                    return false;
+                } else {
+                    is_deleting_.store(false);
+                    std::this_thread::sleep_for(std::chrono::milliseconds(5));
+                    ic_->commitString(pending_commit_string_);
+                    expected_backspaces_     = 0;
+                    current_backspace_count_ = -1;
+                    pending_commit_string_   = "";
+
+                    event.filterAndAccept();
+                    return true;
+                }
+            }
+            return false;
+        }
+
         void performReplacement(const std::string& deletedPart, const std::string& addedPart) {
+            int my_id                = ++current_thread_id_;
             current_backspace_count_ = 0;
             pending_commit_string_   = addedPart;
 
@@ -588,7 +589,6 @@ namespace fcitx {
                 is_deleting_.store(true, std::memory_order_release);
                 send_backspace_uinput(expected_backspaces_);
 
-                int my_id = ++current_thread_id_;
                 std::thread([this, my_id]() {
                     auto start = std::chrono::steady_clock::now();
 
@@ -825,6 +825,9 @@ namespace fcitx {
         }
 
         void reset() {
+            if (is_deleting_.load(std::memory_order_acquire)) {
+                return;
+            }
             is_deleting_.store(false);
             clearAllBuffers();
 
@@ -882,11 +885,12 @@ namespace fcitx {
 
         void clearAllBuffers() {
             oldPreBuffer_.clear();
-            expected_backspaces_     = 0;
-            current_backspace_count_ = 0;
-            pending_commit_string_.clear();
-            current_thread_id_.store(0);
             history_.clear();
+            if (!is_deleting_.load(std::memory_order_acquire)) {
+                expected_backspaces_     = 0;
+                current_backspace_count_ = 0;
+                pending_commit_string_.clear();
+            }
             emojiBuffer_.clear();
             emojiCandidates_.clear();
             if (vmkEngine_)
