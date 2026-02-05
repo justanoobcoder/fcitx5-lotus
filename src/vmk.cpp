@@ -1113,7 +1113,7 @@ namespace fcitx {
             imNames_ = std::move(imNames);
         }
         config_.inputMethod.annotation().setList(imNames_);
-        auto fd = StandardPath::global().open(StandardPath::Type::PkgData, "vmk/vietnamese.cm.dict", O_RDONLY);
+        auto fd = StandardPaths::global().open(StandardPathsType::PkgData, "vmk/vietnamese.cm.dict");
         if (!fd.isValid())
             throw std::runtime_error("Failed to load dictionary");
         dictionary_.reset(NewDictionary(fd.release()));
@@ -1282,7 +1282,7 @@ namespace fcitx {
         updateModeAction(nullptr);
         instance_->inputContextManager().registerProperty("VMKState", &factory_);
 
-        std::string configDir = StandardPath::global().userDirectory(StandardPath::Type::Config) + "/fcitx5/conf";
+        std::string configDir = (StandardPaths::global().userDirectory(StandardPathsType::Config) / "fcitx5" / "conf").string();
         if (!std::filesystem::exists(configDir)) {
             std::filesystem::create_directories(configDir);
         }
