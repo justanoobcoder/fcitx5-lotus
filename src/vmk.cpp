@@ -55,6 +55,7 @@
 #include <X11/Xlib.h>
 #include <X11/Xutil.h>
 #include <X11/keysym.h>
+#include <condition_variable>
 #include <cstddef>
 #include <fstream>
 #include <limits.h>
@@ -77,6 +78,13 @@ std::atomic<bool>        monitor_running{false};
 int                      uinput_fd_        = -1;
 int                      uinput_client_fd_ = -1;
 
+std::atomic<int64_t>     replacement_start_ms_{0};
+std::atomic<int>         replacement_thread_id_{0};
+std::atomic<bool>        needFallbackCommit{false};
+
+std::mutex               monitor_mutex;
+std::condition_variable  monitor_cv;
+
 std::string              buildSocketPath(const char* base_path_suffix) {
     const char* username_c = std::getenv("USER");
     std::string path;
@@ -88,29 +96,48 @@ std::string              buildSocketPath(const char* base_path_suffix) {
     return path;
 }
 
+static inline int64_t now_ms() {
+    return std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now().time_since_epoch()).count();
+}
+
 void deletingTimeMonitor() {
-    auto t_start  = std::chrono::high_resolution_clock::now();
-    bool last_val = 0;
-
     while (!stop_flag_monitor.load()) {
-        bool current_val = is_deleting_.load();
-
-        if (!last_val && current_val) {
-            t_start = std::chrono::high_resolution_clock::now();
+        {
+            std::unique_lock<std::mutex> lock(monitor_mutex);
+            monitor_cv.wait(lock, [] { return is_deleting_.load(std::memory_order_acquire) || stop_flag_monitor.load(std::memory_order_acquire); });
         }
 
-        if (current_val) {
-            auto t_now    = std::chrono::high_resolution_clock::now();
-            auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(t_now - t_start).count();
+        if (stop_flag_monitor.load())
+            break;
 
-            if (duration >= 1500) {
-                is_deleting_.store(false);
-                needEngineReset.store(true);
-                current_val = false;
+        while (is_deleting_.load(std::memory_order_acquire) && !stop_flag_monitor.load()) {
+            int64_t rep_start = replacement_start_ms_.load(std::memory_order_acquire);
+            if (rep_start > 0) {
+                int64_t elapsed = now_ms() - rep_start;
+
+                if (elapsed > 200) {
+                    int expected_id = replacement_thread_id_.load(std::memory_order_acquire);
+                    if (expected_id > 0) {
+                        is_deleting_.store(false, std::memory_order_release);
+                        needFallbackCommit.store(true, std::memory_order_release);
+                        replacement_start_ms_.store(0, std::memory_order_release);
+                        break;
+                    }
+                }
+
+                if (elapsed >= 1500) {
+                    is_deleting_.store(false);
+                    needEngineReset.store(true);
+                    replacement_start_ms_.store(0, std::memory_order_release);
+                    break;
+                }
+            }
+
+            {
+                std::unique_lock<std::mutex> lock(monitor_mutex);
+                monitor_cv.wait_for(lock, std::chrono::milliseconds(2));
             }
         }
-        last_val = current_val;
-        std::this_thread::sleep_for(std::chrono::milliseconds(2));
     }
 }
 
@@ -557,6 +584,8 @@ namespace fcitx {
                     return false;
                 } else {
                     is_deleting_.store(false);
+                    replacement_start_ms_.store(0, std::memory_order_release);
+                    replacement_thread_id_.store(0, std::memory_order_release);
                     std::this_thread::sleep_for(std::chrono::milliseconds(sleepTime));
                     ic_->commitString(pending_commit_string_);
                     expected_backspaces_     = 0;
@@ -586,35 +615,11 @@ namespace fcitx {
 
             if (expected_backspaces_ > 0) {
                 is_deleting_.store(true, std::memory_order_release);
+                monitor_cv.notify_one();
                 send_backspace_uinput(expected_backspaces_);
 
-                std::thread([this, my_id]() {
-                    auto start = std::chrono::steady_clock::now();
-
-                    while (true) {
-                        if (current_thread_id_.load(std::memory_order_acquire) != my_id) {
-                            return;
-                        }
-
-                        if (!is_deleting_.load(std::memory_order_acquire)) {
-                            return;
-                        }
-
-                        auto now = std::chrono::steady_clock::now();
-                        if (std::chrono::duration_cast<std::chrono::milliseconds>(now - start).count() > 200) {
-                            break;
-                        }
-
-                        std::this_thread::sleep_for(std::chrono::milliseconds(5));
-                    }
-                    if (current_thread_id_.load(std::memory_order_acquire) == my_id) {
-                        is_deleting_.store(false, std::memory_order_release);
-                        if (!pending_commit_string_.empty()) {
-                            ic_->commitString(pending_commit_string_);
-                            pending_commit_string_ = "";
-                        }
-                    }
-                }).detach();
+                replacement_thread_id_.store(my_id, std::memory_order_release);
+                replacement_start_ms_.store(now_ms(), std::memory_order_release);
             } else {
                 if (!addedPart.empty()) {
                     ic_->commitString(addedPart);
@@ -944,6 +949,18 @@ namespace fcitx {
                 is_deleting_.store(false);
                 current_backspace_count_ = -1;
                 needEngineReset.store(false);
+            }
+
+            if (needFallbackCommit.load(std::memory_order_acquire)) {
+                needFallbackCommit.store(false, std::memory_order_release);
+                if (current_thread_id_.load(std::memory_order_acquire) == replacement_thread_id_.load(std::memory_order_acquire)) {
+                    if (!pending_commit_string_.empty()) {
+                        ic_->commitString(pending_commit_string_);
+                        pending_commit_string_.clear();
+                    }
+                }
+                replacement_thread_id_.store(0, std::memory_order_release);
+                replacement_start_ms_.store(0, std::memory_order_release);
             }
             if (keyEvent.rawKey().check(FcitxKey_Shift_L) || keyEvent.rawKey().check(FcitxKey_Shift_R))
                 return;
