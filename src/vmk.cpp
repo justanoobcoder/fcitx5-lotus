@@ -102,6 +102,8 @@ static inline int64_t now_ms() {
 
 void deletingTimeMonitor() {
     while (!stop_flag_monitor.load()) {
+        int64_t deleting_since = 0;
+
         {
             std::unique_lock<std::mutex> lock(monitor_mutex);
             monitor_cv.wait(lock, [] { return is_deleting_.load(std::memory_order_acquire) || stop_flag_monitor.load(std::memory_order_acquire); });
@@ -110,27 +112,27 @@ void deletingTimeMonitor() {
         if (stop_flag_monitor.load())
             break;
 
+        deleting_since = now_ms();
+
         while (is_deleting_.load(std::memory_order_acquire) && !stop_flag_monitor.load()) {
+            int64_t current_time = now_ms();
+
             int64_t rep_start = replacement_start_ms_.load(std::memory_order_acquire);
-            if (rep_start > 0) {
-                int64_t elapsed = now_ms() - rep_start;
-
-                if (elapsed > 200) {
-                    int expected_id = replacement_thread_id_.load(std::memory_order_acquire);
-                    if (expected_id > 0) {
-                        is_deleting_.store(false, std::memory_order_release);
-                        needFallbackCommit.store(true, std::memory_order_release);
-                        replacement_start_ms_.store(0, std::memory_order_release);
-                        break;
-                    }
-                }
-
-                if (elapsed >= 1500) {
-                    is_deleting_.store(false);
-                    needEngineReset.store(true);
+            if (rep_start > 0 && (current_time - rep_start) > 200) {
+                int expected_id = replacement_thread_id_.load(std::memory_order_acquire);
+                if (expected_id > 0) {
+                    is_deleting_.store(false, std::memory_order_release);
+                    needFallbackCommit.store(true, std::memory_order_release);
                     replacement_start_ms_.store(0, std::memory_order_release);
                     break;
                 }
+            }
+
+            if ((current_time - deleting_since) >= 1500) {
+                is_deleting_.store(false);
+                needEngineReset.store(true);
+                replacement_start_ms_.store(0, std::memory_order_release);
+                break;
             }
 
             {
@@ -614,12 +616,11 @@ namespace fcitx {
             expected_backspaces_ = utf8::length(deletedPart) + 1 + extraBackspace;
 
             if (expected_backspaces_ > 0) {
+                replacement_thread_id_.store(my_id, std::memory_order_release);
+                replacement_start_ms_.store(now_ms(), std::memory_order_release);
                 is_deleting_.store(true, std::memory_order_release);
                 monitor_cv.notify_one();
                 send_backspace_uinput(expected_backspaces_);
-
-                replacement_thread_id_.store(my_id, std::memory_order_release);
-                replacement_start_ms_.store(now_ms(), std::memory_order_release);
             } else {
                 if (!addedPart.empty()) {
                     ic_->commitString(addedPart);
