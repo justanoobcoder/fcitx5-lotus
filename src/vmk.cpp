@@ -75,7 +75,6 @@ int                      compareAndSplitStrings(const std::string& A, const std:
 std::once_flag           monitor_init_flag;
 std::atomic<bool>        stop_flag_monitor{false};
 std::atomic<bool>        monitor_running{false};
-int                      uinput_fd_        = -1;
 int                      uinput_client_fd_ = -1;
 
 std::atomic<int64_t>     replacement_start_ms_{0};
@@ -271,47 +270,37 @@ namespace fcitx {
 
             if (connect(current_fd, (struct sockaddr*)&addr, len) == 0) {
                 uinput_client_fd_ = current_fd;
-                uinput_fd_        = current_fd;
                 return true;
             }
             close(current_fd);
             uinput_client_fd_ = -1;
-            uinput_fd_        = -1;
             return false;
         }
 
-        bool send_command_to_server(int count) {
-            if (uinput_client_fd_ < 0) {
-                if (!connect_uinput_server())
-                    return false;
-            }
-
-            if (send(uinput_client_fd_, &count, sizeof(count), 0) < 0) {
-                close(uinput_client_fd_);
-                if (!connect_uinput_server())
-                    return false;
-                send(uinput_client_fd_, &count, sizeof(count), 0);
-            }
-
-            char ack;
-            recv(uinput_client_fd_, &ack, 1, 0);
-
-            close(uinput_client_fd_);
-            uinput_client_fd_ = -1;
-            uinput_fd_        = -1;
-            return true;
-        }
-
         int setup_uinput() {
-            return connect_uinput_server() ? uinput_fd_ : -1;
+            return connect_uinput_server() ? uinput_client_fd_ : -1;
         }
 
         void send_backspace_uinput(int count) {
-            if (uinput_fd_ < 0 && !connect_uinput_server())
+            if (uinput_client_fd_ < 0 && !connect_uinput_server())
                 return;
             if (count > MAX_BACKSPACE_COUNT)
                 count = MAX_BACKSPACE_COUNT;
-            send_command_to_server(count);
+
+            if (uinput_client_fd_ < 0) {
+                if (!connect_uinput_server())
+                    return;
+            }
+
+            ssize_t n = send(uinput_client_fd_, &count, sizeof(count), MSG_NOSIGNAL);
+
+            if (n < 0) {
+                close(uinput_client_fd_);
+                uinput_client_fd_ = -1;
+                if (connect_uinput_server()) {
+                    send(uinput_client_fd_, &count, sizeof(count), MSG_NOSIGNAL);
+                }
+            }
         }
 
         void replayBufferToEngine(const std::string& buffer) {
@@ -698,7 +687,7 @@ namespace fcitx {
                 return;
             }
 
-            if (uinput_fd_ < 0) {
+            if (uinput_client_fd_ < 0) {
                 setup_uinput();
             }
 
