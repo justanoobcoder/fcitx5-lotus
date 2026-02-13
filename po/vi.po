@@ -140,15 +140,15 @@ msgstr "Tên ứng dụng nhận dạng bởi fcitx5: "
 
 #: src/vmk.cpp:1793
 msgid "1. Fake backspace by Uinput (smooth)"
-msgstr "1. Phím xóa giả bởi Uinput (mượt)"
+msgstr "1. Phím xóa giả bởi uinput (mượt)"
 
 #: src/vmk.cpp:1794
 msgid "2. Fake backspace by Uinput"
-msgstr "2. Phím xóa giả bởi Uinput"
+msgstr "2. Phím xóa giả bởi uinput"
 
 #: src/vmk.cpp:1795
 msgid "3. Fake backspace by Uinput for wine apps"
-msgstr "3. Phím xóa giả bởi Uinput cho các ứng dụng wine"
+msgstr "3. Phím xóa giả bởi uinput cho các ứng dụng wine"
 
 #: src/vmk.cpp:1796
 msgid "4. Surrounding Text"
