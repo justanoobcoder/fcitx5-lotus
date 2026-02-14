@@ -76,6 +76,7 @@ std::once_flag           monitor_init_flag;
 std::atomic<bool>        stop_flag_monitor{false};
 std::atomic<bool>        monitor_running{false};
 int                      uinput_client_fd_ = -1;
+std::atomic<int>         mouse_socket_fd{-1};
 
 std::atomic<int64_t>     replacement_start_ms_{0};
 std::atomic<int>         replacement_thread_id_{0};
@@ -1115,6 +1116,7 @@ namespace fcitx {
                 sleep(1); // Wait for socket to be ready
                 continue;
             }
+            mouse_socket_fd.store(sock, std::memory_order_release);
 
             struct pollfd pfd;
             pfd.fd     = sock;
@@ -1154,6 +1156,7 @@ namespace fcitx {
                 }
             }
             close(sock);
+            mouse_socket_fd.store(-1, std::memory_order_release);
         }
     }
 
@@ -1354,6 +1357,15 @@ namespace fcitx {
         }
         appRulesPath_ = configDir + "/vmk-app-rules.conf";
         loadAppRules();
+    }
+
+    vmkEngine::~vmkEngine() {
+        stop_flag_monitor.store(true, std::memory_order_release);
+        monitor_cv.notify_all();
+        int fd = mouse_socket_fd.load(std::memory_order_acquire);
+        if (fd >= 0) {
+            close(fd);
+        }
     }
 
     void vmkEngine::reloadConfig() {
