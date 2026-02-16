@@ -111,6 +111,8 @@ namespace fcitx {
 
         std::string          subMode(const fcitx::InputMethodEntry& entry, fcitx::InputContext& inputContext) override;
 
+        std::string          overrideIcon(const fcitx::InputMethodEntry& entry) override;
+
         const auto&          config() const {
             return config_;
         }
@@ -157,6 +159,7 @@ namespace fcitx {
         EmojiLoader& emojiLoader() {
             return emojiLoader_;
         }
+        void setMode(VMKMode mode, InputContext* ic);
 
       private:
         Instance*                                         instance_;

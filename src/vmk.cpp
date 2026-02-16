@@ -1327,13 +1327,10 @@ namespace fcitx {
 
                 config_.mode.setValue(modeEnumToString(mode));
                 saveConfig();
-                realMode    = mode;
+                setMode(mode, ic);
                 globalMode_ = mode;
                 reloadConfig();
                 updateModeAction(ic);
-                if (ic) {
-                    ic->updateUserInterface(UserInterfaceComponent::StatusArea);
-                }
             }));
             modeMenu_->addAction(action.get());
             modeSubAction_.push_back(std::move(action));
@@ -1579,7 +1576,7 @@ namespace fcitx {
         updateInputMethodAction(event.inputContext());
         updateCharsetAction(event.inputContext());
 
-        realMode = targetMode;
+        setMode(targetMode, event.inputContext());
 
         auto state = ic->propertyFor(&factory_);
 
@@ -1746,7 +1743,7 @@ namespace fcitx {
                     saveAppRules();
                 }
 
-                realMode      = selectedMode;
+                setMode(selectedMode, ic);
                 selectionMade = true;
             }
 
@@ -1835,8 +1832,9 @@ namespace fcitx {
 
     void vmkEngine::updateModeAction(InputContext* ic) {
         std::string currentModeStr = config_.mode.value();
-        realMode                   = modeStringToEnum(currentModeStr);
-        globalMode_                = realMode;
+        VMKMode     newMode        = modeStringToEnum(currentModeStr);
+        globalMode_                = newMode;
+        setMode(newMode, ic);
 
         for (const auto& action : modeSubAction_) {
             action->setChecked(action->name() == "vmk-mode-" + currentModeStr);
@@ -2012,7 +2010,7 @@ namespace fcitx {
                     saveAppRules();
                 }
 
-                realMode = mode;
+                setMode(mode, ic);
                 cleanup(ic);
             };
         };
@@ -2059,6 +2057,20 @@ namespace fcitx {
         ic->inputPanel().reset();
         ic->inputPanel().setCandidateList(std::move(candidateList));
         ic->updateUserInterface(UserInterfaceComponent::InputPanel);
+    }
+
+    void vmkEngine::setMode(VMKMode mode, InputContext* ic) {
+        realMode = mode;
+        if (ic) {
+            ic->updateUserInterface(UserInterfaceComponent::StatusArea);
+        }
+    }
+
+    std::string vmkEngine::overrideIcon(const fcitx::InputMethodEntry& /*entry*/) {
+        if (realMode == VMKMode::Off) {
+            return "fcitx-vmk-off";
+        }
+        return {};
     }
 } // namespace fcitx
 
