@@ -2,5 +2,5 @@
 Name=Lotus
 Icon=fcitx-lotus
 LangCode=vi
-Addon=Lotus
+Addon=lotus
 Configurable=True
