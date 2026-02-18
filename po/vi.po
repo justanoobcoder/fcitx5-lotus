@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: fcitx5-lotus\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-17 22:17+0700\n"
+"POT-Creation-Date: 2026-02-18 07:42+0700\n"
 "PO-Revision-Date: 2026-02-17 22:54+0700\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -18,170 +18,170 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Poedit 3.8\n"
 
-#: src/lotus-config.h:131
+#: src/lotus-config.h:118
 msgid "Key"
 msgstr "Phím"
 
-#: src/lotus-config.h:132
+#: src/lotus-config.h:118
 msgid "Value"
 msgstr "Giá trị"
 
-#: src/lotus-config.h:139
+#: src/lotus-config.h:122
 msgid "Macro"
 msgstr "Phím tắt"
 
-#: src/lotus-config.h:150 src/lotus-config.h:191
+#: src/lotus-config.h:126 src/lotus-config.h:141
 msgid "Custom Keymap"
 msgstr "Keymap tuỳ chỉnh"
 
-#: src/lotus-config.h:160
+#: src/lotus-config.h:131
 msgid "Mode"
 msgstr "Chế độ"
 
-#: src/lotus-config.h:165
+#: src/lotus-config.h:133
 msgid "Input Method"
 msgstr "Kiểu gõ"
 
-#: src/lotus-config.h:173
+#: src/lotus-config.h:134
 msgid "Output Charset"
 msgstr "Bảng mã"
 
-#: src/lotus-config.h:178 src/lotus.cpp:1485
+#: src/lotus-config.h:135 src/lotus.cpp:1397
 msgid "Enable spell check"
 msgstr "Bật kiểm tra chính tả"
 
-#: src/lotus-config.h:179 src/lotus.cpp:1499
+#: src/lotus-config.h:135 src/lotus.cpp:1409
 msgid "Enable Macro"
 msgstr "Bật gõ tắt"
 
-#: src/lotus-config.h:180 src/lotus.cpp:1512
+#: src/lotus-config.h:136 src/lotus.cpp:1421
 msgid "Capitalize Macro"
 msgstr "Gõ tắt chữ hoa"
 
-#: src/lotus-config.h:183 src/lotus.cpp:1528
+#: src/lotus-config.h:137 src/lotus.cpp:1433
 msgid "Auto restore keys with invalid words"
 msgstr "Tự động khôi phục phím với từ sai"
 
-#: src/lotus-config.h:186 src/lotus.cpp:1543
+#: src/lotus-config.h:138 src/lotus.cpp:1445
 msgid "Use oà, _uý (instead of òa, úy)"
 msgstr "Sử dụng oà, uý (thay vì òa, úy)"
 
-#: src/lotus-config.h:188 src/lotus.cpp:1557
+#: src/lotus-config.h:139 src/lotus.cpp:1457
 msgid "Allow type with more freedom"
 msgstr "Cho phép gõ dấu tự do"
 
-#: src/lotus-config.h:190 src/lotus.cpp:1571
+#: src/lotus-config.h:140 src/lotus.cpp:1469
 msgid "Fix uinput mode with ack"
 msgstr "Sửa lỗi chế độ uinput với ack"
 
-#: src/lotus.cpp:442
+#: src/lotus.cpp:420
 msgid "Page "
 msgstr "Trang "
 
-#: src/lotus.cpp:1395
+#: src/lotus.cpp:1315
 msgid "Typing Mode"
 msgstr "Chế Độ Gõ"
 
-#: src/lotus.cpp:1455
+#: src/lotus.cpp:1369
 msgid "Charset"
 msgstr "Bảng mã"
 
-#: src/lotus.cpp:2004
+#: src/lotus.cpp:1880
 msgid "Typing Mode: "
 msgstr "Chế Độ Gõ: "
 
-#: src/lotus.cpp:2039
+#: src/lotus.cpp:1911
 msgid "Spell Check: On"
 msgstr "Kiểm tra chính tả: Bật"
 
-#: src/lotus.cpp:2039
+#: src/lotus.cpp:1911
 msgid "Spell Check: Off"
 msgstr "Kiểm tra chính tả: Tắt"
 
-#: src/lotus.cpp:2047
+#: src/lotus.cpp:1919
 msgid "Macro: On"
 msgstr "Gõ tắt: Bật"
 
-#: src/lotus.cpp:2048
+#: src/lotus.cpp:1919
 msgid "Macro: Off"
 msgstr "Gõ tắt: Tắt"
 
-#: src/lotus.cpp:2057
+#: src/lotus.cpp:1927
 msgid "Capitalize Macro: On"
 msgstr "Gõ tắt chữ hoa: Bật"
 
-#: src/lotus.cpp:2058
+#: src/lotus.cpp:1927
 msgid "Capitalize Macro: Off"
 msgstr "Gõ tắt chữ hoa: Tắt"
 
-#: src/lotus.cpp:2067
+#: src/lotus.cpp:1935
 msgid "Auto Non-VN Restore: On"
 msgstr "Tự động khôi phục với từ không phải tiếng Việt: Bật"
 
-#: src/lotus.cpp:2068
+#: src/lotus.cpp:1935
 msgid "Auto Non-VN Restore: Off"
 msgstr "Tự động khôi phục với từ không phải tiếng Việt: Tắt"
 
-#: src/lotus.cpp:2077
+#: src/lotus.cpp:1943
 msgid "Modern Style: On"
 msgstr "Dấu chuẩn: Bật"
 
-#: src/lotus.cpp:2077
+#: src/lotus.cpp:1943
 msgid "Modern Style: Off"
 msgstr "Dấu chuẩn: Tắt"
 
-#: src/lotus.cpp:2086
+#: src/lotus.cpp:1951
 msgid "Free Marking: On"
 msgstr "Bỏ dấu tự do: Bật"
 
-#: src/lotus.cpp:2086
+#: src/lotus.cpp:1951
 msgid "Free Marking: Off"
 msgstr "Bỏ dấu tự do: Tắt"
 
-#: src/lotus.cpp:2095
+#: src/lotus.cpp:1959
 msgid "Fix Uinput With Ack: On"
 msgstr "Sửa lỗi chế độ uinput với ack: Bật"
 
-#: src/lotus.cpp:2096
+#: src/lotus.cpp:1959
 msgid "Fix Uinput With Ack: Off"
 msgstr "Sửa lỗi chế độ uinput với ack: Tắt"
 
-#: src/lotus.cpp:2208
+#: src/lotus.cpp:2067
 msgid "App: "
 msgstr "Ứng dụng: "
 
-#: src/lotus.cpp:2210
-msgid "[1] Uinput (smooth)"
-msgstr "[1] Uinput (mượt)"
+#: src/lotus.cpp:2068
+msgid "[1] Uinput (Smooth)"
+msgstr "[1] Uinput (Mượt)"
 
-#: src/lotus.cpp:2213
+#: src/lotus.cpp:2069
 msgid "[2] Uinput (Slow)"
 msgstr "[2] Uinput (chậm)"
 
-#: src/lotus.cpp:2216
+#: src/lotus.cpp:2070
 msgid "[3] Uinput (Hardcore)"
 msgstr "[3] Uinput (Hardcore)"
 
-#: src/lotus.cpp:2219
+#: src/lotus.cpp:2071
 msgid "[4] Surrounding Text"
 msgstr "[4] Văn bản xung quanh"
 
-#: src/lotus.cpp:2222
-msgid "[q] Preedit"
-msgstr "[q] Gạch chân"
+#: src/lotus.cpp:2072
+msgid "[Q] Preedit"
+msgstr "[Q] Gạch chân"
 
-#: src/lotus.cpp:2225
-msgid "[w] Emoji Picker"
-msgstr "[w] Chọn Emoji"
+#: src/lotus.cpp:2073
+msgid "[W] Emoji Picker"
+msgstr "[W] Chọn Emoji"
 
-#: src/lotus.cpp:2228
-msgid "[e] OFF"
+#: src/lotus.cpp:2074
+msgid "[E] OFF"
 msgstr "[e] Tắt"
 
-#: src/lotus.cpp:2231
-msgid "[r] Remove App Settings"
-msgstr "[r] Xóa cài đặt ứng dụng"
+#: src/lotus.cpp:2076
+msgid "[R] Default Typing"
+msgstr "[R] Chế độ mặc định"
 
-#: src/lotus.cpp:2240
+#: src/lotus.cpp:2085
 msgid "[`] Type `"
 msgstr "[`] Gõ `"

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-17 22:17+0700\n"
+"POT-Creation-Date: 2026-02-18 07:42+0700\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,170 +17,170 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/lotus-config.h:131
+#: src/lotus-config.h:118
 msgid "Key"
 msgstr ""
 
-#: src/lotus-config.h:132
+#: src/lotus-config.h:118
 msgid "Value"
 msgstr ""
 
-#: src/lotus-config.h:139
+#: src/lotus-config.h:122
 msgid "Macro"
 msgstr ""
 
-#: src/lotus-config.h:150 src/lotus-config.h:191
+#: src/lotus-config.h:126 src/lotus-config.h:141
 msgid "Custom Keymap"
 msgstr ""
 
-#: src/lotus-config.h:160
+#: src/lotus-config.h:131
 msgid "Mode"
 msgstr ""
 
-#: src/lotus-config.h:165
+#: src/lotus-config.h:133
 msgid "Input Method"
 msgstr ""
 
-#: src/lotus-config.h:173
+#: src/lotus-config.h:134
 msgid "Output Charset"
 msgstr ""
 
-#: src/lotus-config.h:178 src/lotus.cpp:1485
+#: src/lotus-config.h:135 src/lotus.cpp:1397
 msgid "Enable spell check"
 msgstr ""
 
-#: src/lotus-config.h:179 src/lotus.cpp:1499
+#: src/lotus-config.h:135 src/lotus.cpp:1409
 msgid "Enable Macro"
 msgstr ""
 
-#: src/lotus-config.h:180 src/lotus.cpp:1512
+#: src/lotus-config.h:136 src/lotus.cpp:1421
 msgid "Capitalize Macro"
 msgstr ""
 
-#: src/lotus-config.h:183 src/lotus.cpp:1528
+#: src/lotus-config.h:137 src/lotus.cpp:1433
 msgid "Auto restore keys with invalid words"
 msgstr ""
 
-#: src/lotus-config.h:186 src/lotus.cpp:1543
+#: src/lotus-config.h:138 src/lotus.cpp:1445
 msgid "Use oà, _uý (instead of òa, úy)"
 msgstr ""
 
-#: src/lotus-config.h:188 src/lotus.cpp:1557
+#: src/lotus-config.h:139 src/lotus.cpp:1457
 msgid "Allow type with more freedom"
 msgstr ""
 
-#: src/lotus-config.h:190 src/lotus.cpp:1571
+#: src/lotus-config.h:140 src/lotus.cpp:1469
 msgid "Fix uinput mode with ack"
 msgstr ""
 
-#: src/lotus.cpp:442
+#: src/lotus.cpp:420
 msgid "Page "
 msgstr ""
 
-#: src/lotus.cpp:1395
+#: src/lotus.cpp:1315
 msgid "Typing Mode"
 msgstr ""
 
-#: src/lotus.cpp:1455
+#: src/lotus.cpp:1369
 msgid "Charset"
 msgstr ""
 
-#: src/lotus.cpp:2004
+#: src/lotus.cpp:1880
 msgid "Typing Mode: "
 msgstr ""
 
-#: src/lotus.cpp:2039
+#: src/lotus.cpp:1911
 msgid "Spell Check: On"
 msgstr ""
 
-#: src/lotus.cpp:2039
+#: src/lotus.cpp:1911
 msgid "Spell Check: Off"
 msgstr ""
 
-#: src/lotus.cpp:2047
+#: src/lotus.cpp:1919
 msgid "Macro: On"
 msgstr ""
 
-#: src/lotus.cpp:2048
+#: src/lotus.cpp:1919
 msgid "Macro: Off"
 msgstr ""
 
-#: src/lotus.cpp:2057
+#: src/lotus.cpp:1927
 msgid "Capitalize Macro: On"
 msgstr ""
 
-#: src/lotus.cpp:2058
+#: src/lotus.cpp:1927
 msgid "Capitalize Macro: Off"
 msgstr ""
 
-#: src/lotus.cpp:2067
+#: src/lotus.cpp:1935
 msgid "Auto Non-VN Restore: On"
 msgstr ""
 
-#: src/lotus.cpp:2068
+#: src/lotus.cpp:1935
 msgid "Auto Non-VN Restore: Off"
 msgstr ""
 
-#: src/lotus.cpp:2077
+#: src/lotus.cpp:1943
 msgid "Modern Style: On"
 msgstr ""
 
-#: src/lotus.cpp:2077
+#: src/lotus.cpp:1943
 msgid "Modern Style: Off"
 msgstr ""
 
-#: src/lotus.cpp:2086
+#: src/lotus.cpp:1951
 msgid "Free Marking: On"
 msgstr ""
 
-#: src/lotus.cpp:2086
+#: src/lotus.cpp:1951
 msgid "Free Marking: Off"
 msgstr ""
 
-#: src/lotus.cpp:2095
+#: src/lotus.cpp:1959
 msgid "Fix Uinput With Ack: On"
 msgstr ""
 
-#: src/lotus.cpp:2096
+#: src/lotus.cpp:1959
 msgid "Fix Uinput With Ack: Off"
 msgstr ""
 
-#: src/lotus.cpp:2208
+#: src/lotus.cpp:2067
 msgid "App: "
 msgstr ""
 
-#: src/lotus.cpp:2210
-msgid "[1] Uinput (smooth)"
+#: src/lotus.cpp:2068
+msgid "[1] Uinput (Smooth)"
 msgstr ""
 
-#: src/lotus.cpp:2213
+#: src/lotus.cpp:2069
 msgid "[2] Uinput (Slow)"
 msgstr ""
 
-#: src/lotus.cpp:2216
+#: src/lotus.cpp:2070
 msgid "[3] Uinput (Hardcore)"
 msgstr ""
 
-#: src/lotus.cpp:2219
+#: src/lotus.cpp:2071
 msgid "[4] Surrounding Text"
 msgstr ""
 
-#: src/lotus.cpp:2222
-msgid "[q] Preedit"
+#: src/lotus.cpp:2072
+msgid "[Q] Preedit"
 msgstr ""
 
-#: src/lotus.cpp:2225
-msgid "[w] Emoji Picker"
+#: src/lotus.cpp:2073
+msgid "[W] Emoji Picker"
 msgstr ""
 
-#: src/lotus.cpp:2228
-msgid "[e] OFF"
+#: src/lotus.cpp:2074
+msgid "[E] OFF"
 msgstr ""
 
-#: src/lotus.cpp:2231
-msgid "[r] Remove App Settings"
+#: src/lotus.cpp:2076
+msgid "[R] Default Typing"
 msgstr ""
 
-#: src/lotus.cpp:2240
+#: src/lotus.cpp:2085
 msgid "[`] Type `"
 msgstr ""
