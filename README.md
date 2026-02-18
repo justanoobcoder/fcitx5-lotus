@@ -68,11 +68,11 @@ Dự án này là bản fork được tối ưu hóa từ [bộ gõ VMK](https:/
 
 Hiện tại AUR có 3 gói cài đặt để bạn lựa chọn:
 
-| Gói                | Mô tả                                          |
-| ------------------ | ---------------------------------------------- |
-| `fcitx5-lotus`     | Build từ mã nguồn release ổn định              |
-| `fcitx5-lotus-bin` | Dùng binary đã build sẵn |
-| `fcitx5-lotus-git` | Build từ danh sách commit mới nhất             |
+| Gói                | Mô tả                              |
+| ------------------ | ---------------------------------- |
+| `fcitx5-lotus`     | Build từ mã nguồn release ổn định  |
+| `fcitx5-lotus-bin` | Dùng binary đã build sẵn           |
+| `fcitx5-lotus-git` | Build từ danh sách commit mới nhất |
 
 Cài đặt bằng `yay`:
 
@@ -272,19 +272,19 @@ killall ibus-daemon || ibus exit
 <details>
 <summary><b>Thêm Fcitx5 vào Autostart cho từng DE / WM (GNOME, Hyprland ...)</b></summary>
 
-| DE / WM        | Hướng dẫn chi tiết                                                                                                             |
-| :------------- | :----------------------------------------------------------------------------------------------------------------------------- |
-| **GNOME**      | *GNOME Tweaks* → _Startup Applications_ → Add → `Fcitx 5`                                                                    |
-| **KDE Plasma** | *System Settings* → _Autostart_ → Add... → Add Application... → `Fcitx 5`                                                    |
-| **Xfce**       | *Settings* → _Session and Startup_ → _Application Autostart_ → Add → `Fcitx 5`                                               |
-| **Cinnamon**   | *System Settings* → _Startup Applications_ → `+` → Choose application → `Fcitx 5`                                            |
-| **MATE**       | *Control Center* → _Startup Applications_ → Add (Name: `Fcitx 5`, Command: `fcitx5`)                                         |
-| **Pantheon**   | *System Settings* → _Applications_ → _Startup_ → _Add Startup App..._ → `Fcitx 5`                                            |
-| **Budgie**     | *Budgie Desktop Settings* → _Autostart_ → `+` → Add application → `Fcitx 5`                                                  |
-| **LXQt**       | *LXQt Configuration Center* → _Session Settings_ → _Autostart_ → _LXQt Autostart_ → Add (Name: `Fcitx 5`, Command: `fcitx5`) |
-| **COSMIC**     | *COSMIC Settings* → _Applications_ → _Startup Applications_ → Add app → `Fcitx 5`                                            |
-| **i3 / Sway**  | Thêm `exec --no-startup-id fcitx5 -d` vào file config (`~/.config/i3/config` hoặc `~/.config/sway/config`)                     |
-| **Hyprland**   | Thêm `exec-once = fcitx5 -d` vào `~/.config/hypr/hyprland.conf`                                                                |
+| DE / WM        | Hướng dẫn chi tiết                                                                                                           |
+| :------------- | :--------------------------------------------------------------------------------------------------------------------------- |
+| **GNOME**      | _GNOME Tweaks_ → _Startup Applications_ → Add → `Fcitx 5`                                                                    |
+| **KDE Plasma** | _System Settings_ → _Autostart_ → Add... → Add Application... → `Fcitx 5`                                                    |
+| **Xfce**       | _Settings_ → _Session and Startup_ → _Application Autostart_ → Add → `Fcitx 5`                                               |
+| **Cinnamon**   | _System Settings_ → _Startup Applications_ → `+` → Choose application → `Fcitx 5`                                            |
+| **MATE**       | _Control Center_ → _Startup Applications_ → Add (Name: `Fcitx 5`, Command: `fcitx5`)                                         |
+| **Pantheon**   | _System Settings_ → _Applications_ → _Startup_ → _Add Startup App..._ → `Fcitx 5`                                            |
+| **Budgie**     | _Budgie Desktop Settings_ → _Autostart_ → `+` → Add application → `Fcitx 5`                                                  |
+| **LXQt**       | _LXQt Configuration Center_ → _Session Settings_ → _Autostart_ → _LXQt Autostart_ → Add (Name: `Fcitx 5`, Command: `fcitx5`) |
+| **COSMIC**     | _COSMIC Settings_ → _Applications_ → _Startup Applications_ → Add app → `Fcitx 5`                                            |
+| **i3 / Sway**  | Thêm `exec --no-startup-id fcitx5 -d` vào file config (`~/.config/i3/config` hoặc `~/.config/sway/config`)                   |
+| **Hyprland**   | Thêm `exec-once = fcitx5 -d` vào `~/.config/hypr/hyprland.conf`                                                              |
 
 > **Lưu ý:** Hãy tắt autostart của IBus (thường là `ibus-daemon` hoặc `ibus`) để tránh xung đột. Tốt nhất là gỡ cài đặt IBus nếu không sử dụng.
 
@@ -301,7 +301,7 @@ Sau khi đã log out và log in lại:
 <details>
 <summary><b>Cấu hình thêm cho Wayland (KDE, Hyprland)</b></summary>
 
-- **KDE Plasma:** *System Settings* → _Keyboard_ → _Virtual Keyboard_ → Chọn **Fcitx 5**.
+- **KDE Plasma:** _System Settings_ → _Keyboard_ → _Virtual Keyboard_ → Chọn **Fcitx 5**.
 - **Hyprland:** Thêm dòng sau vào `~/.config/hypr/hyprland.conf`:
   ```ini
   permission = fcitx5-lotus-server, keyboard, allow
@@ -316,23 +316,24 @@ Sau khi đã log out và log in lại:
 
 ### 1. Tùy chỉnh bộ gõ
 
-* **Truy cập:** Nhấp chuột phải vào biểu tượng Lotus trên system tray để mở tuỳ chỉnh.
-* **Các lựa chọn để tuỳ chỉnh:** *Typing Mode*, *Input Method*, *Charset*, *Spell Check*, *Macro*, *Capitalize Macro*, *Auto non-VN restore*, *Modern Style*, *Free Marking*, *Fix Vmk1 with arc*.
+- **Truy cập:** Nhấp chuột phải vào biểu tượng Lotus trên system tray để mở tuỳ chỉnh.
+- **Các lựa chọn để tuỳ chỉnh:** _Typing Mode_, _Input Method_, _Charset_, _Spell Check_, _Macro_, _Capitalize Macro_, _Auto non-VN restore_, _Modern Style_, _Free Marking_, _Fix Uinput with ack_.
+
 ### 2. Menu chuyển chế độ gõ
 
 Khi đang ở trong bất kỳ ứng dụng nào, nhấn phím **`** để mở menu chọn chế độ gõ, có thể dùng chuột hoặc phím tắt để chọn.
 
-| Chế độ                            | Phím tắt | Mô tả                                                                                                                                                                                                  |
-| --------------------------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| **Uinput (Smooth)**   | **1** | Chế độ mặc định, phản hồi nhanh.<br>**Tối ưu:** ứng dụng có tốc độ xử lý input cao.                                                |
-| **Uinput (Slow)**     | **2** | Tương tự Uinput (Smooth) nhưng tốc độ gửi phím chậm hơn.<br>**Tối ưu:** ứng dụng có tốc độ xử lý input thấp *(ví dụ: Libre Office)*.                                                                                             |
-| **Uinput (Hardcore)** | **3** | Biến thể của Uinput (Smooth).<br>**Tối ưu:** ứng dụng Windows qua Wine.                                                                                                                             |
-| **Surrounding Text**  | **4** | Cho phép sửa dấu trên văn bản đã gõ, hoạt động mượt. <br> **Tối ưu:** ứng dụng Qt/GTK. |
-| **Preedit**           | **Q** | Hiển thị gạch chân khi gõ. <br> **Tối ưu:**  hầu hết ứng dụng.                                                                                |
-| **Emoji Picker**      | **W** | Tìm kiếm và nhập Emoji (nguồn EmojiOne, hỗ trợ fuzzy search). Xem danh sách [tại đây](__data/emoji/EMOJI_____GUIDE.md__).                                                                            |
-| **OFF**               | **E** | Tắt bộ gõ.                                                                                                                                                                                             |
-| **Default Typing**    | **R** | Chuyển về chế độ gõ mặc định được cấu hình tại tuỳ chọn *Typing mode* ở bước 1.                                                                                                                               |
-| **Type `**            | **`** | Nhập ký tự **`**.                                                                                                                                                                                      ||
+| Chế độ                | Phím tắt | Mô tả                                                                                                                                |
+| :-------------------- | :------: | :----------------------------------------------------------------------------------------------------------------------------------- |
+| **Uinput (Smooth)**   |  **1**   | Chế độ mặc định, phản hồi nhanh.<br>**Tối ưu:** ứng dụng có tốc độ xử lý input cao.                                                  |
+| **Uinput (Slow)**     |  **2**   | Tương tự Uinput (Smooth) nhưng tốc độ gửi phím chậm hơn.<br>**Tối ưu:** ứng dụng có tốc độ xử lý input thấp _(ví dụ: Libre Office)_. |
+| **Uinput (Hardcore)** |  **3**   | Biến thể của Uinput (Smooth).<br>**Tối ưu:** ứng dụng Windows qua Wine.                                                              |
+| **Surrounding Text**  |  **4**   | Cho phép sửa dấu trên văn bản đã gõ, hoạt động mượt. <br> **Tối ưu:** ứng dụng Qt/GTK.                                               |
+| **Preedit**           |  **Q**   | Hiển thị gạch chân khi gõ. <br> **Tối ưu:** hầu hết ứng dụng.                                                                        |
+| **Emoji Picker**      |  **W**   | Tìm kiếm và nhập Emoji (nguồn EmojiOne, hỗ trợ fuzzy search).                                                                        |
+| **OFF**               |  **E**   | Tắt bộ gõ.                                                                                                                           |
+| **Default Typing**    |  **R**   | Chuyển về chế độ gõ mặc định được cấu hình tại tuỳ chọn _Typing mode_.                                                               |
+| **Type `**            |  **`**   | Nhập ký tự **`**.                                                                                                                    |
 
 Bộ gõ sẽ tự động lưu chế độ gõ đã dùng gần nhất cho từng ứng dụng và khôi phục cấu hình đó khi bạn mở lại chúng.
 
