@@ -96,7 +96,7 @@ namespace fcitx {
         void         showAppModeMenu(InputContext* ic);
         void         closeAppModeMenu();
         EmojiLoader& emojiLoader() {
-            return *emojiLoader_;
+            return emojiLoader_;
         }
         void setMode(LotusMode mode, InputContext* ic);
 
@@ -136,7 +136,7 @@ namespace fcitx {
         bool                                              isSelectingAppMode_ = false;
         std::string                                       currentConfigureApp_;
         LotusMode                                         globalMode_;
-        EmojiLoader*                                      emojiLoader_;
+        EmojiLoader                                       emojiLoader_;
     };
 
     class LotusFactory : public AddonFactory {
