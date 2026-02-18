@@ -14,12 +14,18 @@
 #include "lotus-config.h"
 #include <fcitx-config/iniparser.h>
 #include <fcitx-utils/i18n.h>
+#include <fcitx-utils/key.h>
 #include <fcitx/action.h>
 #include <fcitx/addonfactory.h>
 #include <fcitx/addonmanager.h>
+#include <fcitx/candidatelist.h>
+#include <fcitx/inputcontext.h>
 #include <fcitx/inputcontextproperty.h>
 #include <fcitx/inputmethodengine.h>
 #include <fcitx/instance.h>
+#include <atomic>
+#include <cstdint>
+#include <functional>
 #include <memory>
 #include <optional>
 #include <string>
@@ -28,9 +34,11 @@
 
 namespace fcitx {
 
+    class LotusEngine;
+
     /**
- * @brief RAII wrapper for CGo handle (uintptr_t).
- */
+     * @brief RAII wrapper for CGo handle (uintptr_t).
+     */
     class CGoObject {
       public:
         CGoObject(std::optional<uintptr_t> handle = std::nullopt) : handle_(handle) {}
@@ -80,7 +88,86 @@ namespace fcitx {
         std::optional<uintptr_t> handle_;
     };
 
-    class LotusState;
+    /**
+     * @brief Candidate word class for emoji selection.
+     */
+    class EmojiCandidateWord : public CandidateWord {
+      public:
+        EmojiCandidateWord(Text text, class LotusState* state, const std::string& emojiOutput);
+        void select(InputContext* inputContext) const override;
+
+      private:
+        class LotusState* state_;
+        std::string       emojiOutput_;
+    };
+
+    /**
+     * @brief State class for Lotus input method per input context.
+     */
+    class LotusState final : public InputContextProperty {
+      public:
+        LotusState(LotusEngine* engine, InputContext* ic);
+        ~LotusState();
+
+        void setEngine();
+        void setOption();
+
+        bool connect_uinput_server();
+        int  setup_uinput();
+        void send_backspace_uinput(int count);
+
+        void replayBufferToEngine(const std::string& buffer);
+        bool isAutofillCertain(const SurroundingText& s);
+
+        void handlePreeditMode(KeyEvent& keyEvent);
+        void updateEmojiPageStatus(CommonCandidateList* commonList);
+        void handleEmojiMode(KeyEvent& keyEvent);
+        void selectEmojiCandidate(int index);
+        void updateEmojiPreedit();
+
+        bool handleUInputKeyPress(KeyEvent& event, KeySym currentSym, int sleepTime);
+        void performReplacement(const std::string& deletedPart, const std::string& addedPart);
+        void checkForwardSpecialKey(KeyEvent& keyEvent, KeySym& currentSym);
+        void handleUinputMode(KeyEvent& keyEvent, KeySym currentSym, bool checkEmptyPreedit, int sleepTime);
+        void handleSurroundingText(KeyEvent& keyEvent, KeySym currentSym);
+
+        void keyEvent(KeyEvent& keyEvent);
+        void reset();
+        void commitBuffer();
+        void clearAllBuffers();
+        bool isEmptyHistory();
+
+        // Allow EmojiCandidateWord to access private members
+        friend class EmojiCandidateWord;
+        friend class LotusEngine;
+
+      private:
+        LotusEngine*     engine_;
+        InputContext*    ic_;
+        CGoObject        lotusEngine_;
+        std::string      oldPreBuffer_;
+        std::string      history_;
+        size_t           expected_backspaces_     = 0;
+        size_t           current_backspace_count_ = 0;
+        std::string      pending_commit_string_;
+        std::atomic<int> current_thread_id_{0};
+        // Emoji mode variables
+        std::string             emojiBuffer_;
+        std::vector<EmojiEntry> emojiCandidates_;
+        bool                    waitAck_ = false;
+    };
+
+    /**
+     * @brief Custom candidate word class for app mode selection menu.
+     */
+    class AppModeCandidateWord : public CandidateWord {
+      public:
+        AppModeCandidateWord(Text text, std::function<void(InputContext*)> callback);
+        void select(InputContext* ic) const override;
+
+      private:
+        std::function<void(InputContext*)> callback_;
+    };
 
     class LotusEngine final : public InputMethodEngine {
       public:

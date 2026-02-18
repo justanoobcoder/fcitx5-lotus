@@ -35,13 +35,13 @@ namespace fcitx {
     // Convert mode enum to string for UI display
     inline std::string modeEnumToString(LotusMode mode) {
         switch (mode) {
-            case LotusMode::Off: return "Off";
-            case LotusMode::Uinput: return "uinput";
-            case LotusMode::SurroundingText: return "surrounding";
-            case LotusMode::Preedit: return "preedit";
-            case LotusMode::UinputHC: return "uinputhc";
-            case LotusMode::Emoji: return "emoji";
-            case LotusMode::Smooth: return "smooth";
+            case LotusMode::Off: return "OFF";
+            case LotusMode::Uinput: return "Uinput (Slow)";
+            case LotusMode::SurroundingText: return "Surrounding Text";
+            case LotusMode::Preedit: return "Preedit";
+            case LotusMode::UinputHC: return "Uinput (Hardcore)";
+            case LotusMode::Emoji: return "Emoji Picker";
+            case LotusMode::Smooth: return "Uinput (Smooth)";
             default: return "";
         }
     }
@@ -49,10 +49,13 @@ namespace fcitx {
     // Convert mode string to enum
     inline LotusMode modeStringToEnum(const std::string& mode) {
         static const std::unordered_map<std::string_view, LotusMode> modeMap = {
-            {"uinput", LotusMode::Uinput},   {"surrounding", LotusMode::SurroundingText},
-            {"preedit", LotusMode::Preedit}, {"uinputhc", LotusMode::UinputHC},
-            {"Off", LotusMode::Off},         {"emoji", LotusMode::Emoji},
-            {"smooth", LotusMode::Smooth},
+            {"OFF", LotusMode::Off},
+            {"Uinput (Slow)", LotusMode::Uinput},
+            {"Surrounding Text", LotusMode::SurroundingText},
+            {"Preedit", LotusMode::Preedit},
+            {"Uinput (Hardcore)", LotusMode::UinputHC},
+            {"Emoji Picker", LotusMode::Emoji},
+            {"Uinput (Smooth)", LotusMode::Smooth},
         };
         auto it = modeMap.find(mode);
         return it != modeMap.end() ? it->second : LotusMode::NoMode;
@@ -92,7 +95,7 @@ namespace fcitx {
     };
     struct ModeListAnnotation : public StringListAnnotation {
         ModeListAnnotation() {
-            list_ = {"smooth", "uinput", "surrounding", "preedit", "uinputhc"};
+            list_ = {"Uinput (Smooth)", "Uinput (Slow)", "Surrounding Text", "Preedit", "Uinput (Hardcore)", "OFF"};
         }
     };
 
@@ -128,7 +131,7 @@ namespace fcitx {
     FCITX_CONFIGURATION(
         lotusConfig,
 
-        OptionWithAnnotation<std::string, ModeListAnnotation>                                            mode{this, "Mode", _("Mode"), "smooth", {}, {}, ModeListAnnotation()};
+        OptionWithAnnotation<std::string, ModeListAnnotation> mode{this, "Mode", _("Mode"), "Uinput (Smooth)", {}, {}, ModeListAnnotation()};
         Option<std::string, InputMethodConstrain, DefaultMarshaller<std::string>, InputMethodAnnotation> inputMethod{
             this, "InputMethod", _("Input Method"), "Telex", InputMethodConstrain(&inputMethod), {}, InputMethodAnnotation()};
         OptionWithAnnotation<std::string, StringListAnnotation> outputCharset{this, "OutputCharset", _("Output Charset"), "Unicode", {}, {}, StringListAnnotation()};
