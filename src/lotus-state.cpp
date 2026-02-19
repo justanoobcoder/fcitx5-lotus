@@ -185,10 +185,10 @@ namespace fcitx {
     void LotusState::handlePreeditMode(KeyEvent& keyEvent) {
         if (EngineProcessKeyEvent(lotusEngine_.handle(), keyEvent.rawKey().sym(), keyEvent.rawKey().states()))
             keyEvent.filterAndAccept();
-        if (char* commit = EnginePullCommit(lotusEngine_.handle())) {
-            if (commit[0])
-                ic_->commitString(commit);
-            free(commit);
+        if (auto commit = UniqueCPtr<char>(EnginePullCommit(lotusEngine_.handle()))) {
+            if (commit && commit.get()[0]) {
+                ic_->commitString(commit.get());
+            }
         }
         ic_->inputPanel().reset();
         UniqueCPtr<char> preedit(EnginePullPreedit(lotusEngine_.handle()));
