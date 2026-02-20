@@ -322,15 +322,15 @@ namespace fcitx {
         std::unique_ptr<SimpleAction>                    freeMarkingAction_;
         std::unique_ptr<SimpleAction>                    fixUinputWithAckAction_;
         /* toggle for the backtick-triggered mode menu */
-        std::unique_ptr<SimpleAction>                    backtickMenuAction_;
-        std::vector<ScopedConnection>                    connections_;
-        CGoObject                                        dictionary_;
-        std::unordered_map<std::string, LotusMode>       appRules_;
-        std::string                                      appRulesPath_;
-        bool                                             isSelectingAppMode_ = false;
-        std::string                                      currentConfigureApp_;
-        LotusMode                                        globalMode_;
-        EmojiLoader                                      emojiLoader_;
+        std::unique_ptr<SimpleAction>              backtickMenuAction_;
+        std::vector<ScopedConnection>              connections_;
+        CGoObject                                  dictionary_;
+        std::unordered_map<std::string, LotusMode> appRules_;
+        std::string                                appRulesPath_;
+        bool                                       isSelectingAppMode_ = false;
+        std::string                                currentConfigureApp_;
+        LotusMode                                  globalMode_;
+        EmojiLoader                                emojiLoader_;
     };
 
     /**
