@@ -294,6 +294,7 @@ After installation, you need to follow these steps to enable the fcitx5-lotus in
 The server helps the input method interact better with the system (especially sending backspace and fixing errors).
 
 - **Bash / Zsh:**
+
 ```bash
 # Enable and start the service (automatically fixes missing systemd user errors if any)
 sudo systemctl enable --now fcitx5-lotus-server@$(whoami).service || \
@@ -301,13 +302,13 @@ sudo systemctl enable --now fcitx5-lotus-server@$(whoami).service || \
 ```
 
 - **Fish shell:**
+
 ```fish
 # Enable and start the service (automatically fixes missing systemd user errors if any)
 sudo systemctl enable --now fcitx5-lotus-server@(whoami).service; or begin
     sudo systemd-sysusers; and sudo systemctl enable --now fcitx5-lotus-server@(whoami).service
 end
 ```
-
 
 ```bash
 # Check status (if you see green active (running), it's OK)
@@ -319,6 +320,7 @@ systemctl status fcitx5-lotus-server@$(whoami).service
 The input method will not work without these variables.
 
 - **Bash / Zsh:**
+
 ```bash
 # This command will add the configuration to ~/.bash_profile, do the same for .zprofile
 cat <<EOF >> ~/.bash_profile
@@ -331,6 +333,7 @@ EOF
 ```
 
 - **Fish shell:**
+
 ```fish
 # Add configuration to ~/.config/fish/config.fish
 cat >> ~/.config/fish/config.fish <<'EOF'
@@ -343,7 +346,6 @@ set -gx SDL_IM_MODULE fcitx
 set -gx GLFW_IM_MODULE ibus
 EOF
 ```
-
 
 Log out and log in to apply changes.
 
@@ -551,7 +553,11 @@ The project is distributed under the GNU General Public License v3. See [`LICENS
 ## ✨ Star History
 
 <a href="https://star-history.com/#LotusInputMethod/fcitx5-lotus&Date">
- <img src="https://api.star-history.com/svg?repos=LotusInputMethod/fcitx5-lotus&type=Date" alt="Star History Chart">
+ <picture>
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=LotusInputMethod/fcitx5-lotus&type=date&theme=dark&legend=top-left" />
+   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=LotusInputMethod/fcitx5-lotus&type=date&legend=top-left" />
+   <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=LotusInputMethod/fcitx5-lotus&type=date&legend=top-left" />
+ </picture>
 </a>
 
 ---
