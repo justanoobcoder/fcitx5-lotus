@@ -17,20 +17,28 @@ jobs:
         include:
           - distro: debian:12
             codename: bookworm
+            parallel: 2
           - distro: debian:13
             codename: trixie
+            parallel: 4
           - distro: debian:testing
             codename: testing
+            parallel: 4
           - distro: debian:unstable
             codename: sid
+            parallel: 4
           - distro: ubuntu:22.04
             codename: jammy
+            parallel: 1
           - distro: ubuntu:24.04
             codename: noble
+            parallel: 2
           - distro: ubuntu:25.04
             codename: plucky
+            parallel: 4
           - distro: ubuntu:25.10
             codename: questing
+            parallel: 4
 
     runs-on: ubuntu-latest
 
@@ -45,7 +53,7 @@ jobs:
       - name: Build DEB
         uses: jtdor/build-deb-action@v1
         env:
-          DEB_BUILD_OPTIONS: parallel=2
+          DEB_BUILD_OPTIONS: parallel=${{ matrix.parallel }}
         with:
           docker-image: ${{ matrix.distro }}
           buildpackage-opts: --build=binary --no-sign
