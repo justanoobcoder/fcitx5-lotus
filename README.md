@@ -296,7 +296,8 @@ Sau khi cài đặt xong, bạn cần thực hiện các bước sau để bật
 
 Server giúp bộ gõ tương tác với hệ thống tốt hơn (đặc biệt là gửi phím xóa và sửa lỗi).
 
-- **Bash / Zsh:**
+<details open>
+<summary><b>Bash / Zsh</b></summary>
 
 ```bash
 # Bật và khởi động service (tự động fix lỗi thiếu user systemd nếu có)
@@ -304,7 +305,10 @@ sudo systemctl enable --now fcitx5-lotus-server@$(whoami).service || \
 (sudo systemd-sysusers && sudo systemctl enable --now fcitx5-lotus-server@$(whoami).service)
 ```
 
-- **Fish shell:**
+</details>
+
+<details open>
+<summary><b>Fish shell</b></summary>
 
 ```fish
 # Bật và khởi động service (tự động fix lỗi thiếu user systemd nếu có)
@@ -312,6 +316,8 @@ sudo systemctl enable --now fcitx5-lotus-server@(whoami).service; or begin
     sudo systemd-sysusers; and sudo systemctl enable --now fcitx5-lotus-server@(whoami).service
 end
 ```
+
+</details>
 
 ```bash
 # Kiểm tra status (nếu thấy active (running) màu xanh là OK)
@@ -322,10 +328,11 @@ systemctl status fcitx5-lotus-server@$(whoami).service
 
 Bộ gõ sẽ không hoạt động nếu thiếu các biến này.
 
-- **Bash / Zsh:**
+<details open>
+<summary><b>Bash</b></summary>
 
 ```bash
-# Thêm cấu hình vào ~/.bash_profile (với .zprofile làm tương tự)
+# Thêm cấu hình vào ~/.bash_profile
 cat <<EOF >> ~/.bash_profile
 export GTK_IM_MODULE=fcitx
 export QT_IM_MODULE=fcitx
@@ -335,7 +342,25 @@ export GLFW_IM_MODULE=ibus
 EOF
 ```
 
-- **Fish shell:**
+</details>
+
+<details open>
+<summary><b>Zsh</b></summary>
+
+```bash
+# Thêm cấu hình vào ~/.zprofile
+cat <<EOF >> ~/.zprofile
+export GTK_IM_MODULE=fcitx
+export QT_IM_MODULE=fcitx
+export XMODIFIERS=@im=fcitx
+export SDL_IM_MODULE=fcitx
+export GLFW_IM_MODULE=ibus
+EOF
+```
+
+</details>
+<details open>
+<summary><b>Fish shell</b></summary>
 
 ```fish
 # Thêm cấu hình vào ~/.config/fish/config.fish
@@ -349,6 +374,8 @@ set -gx SDL_IM_MODULE fcitx
 set -gx GLFW_IM_MODULE ibus
 EOF
 ```
+
+</details>
 
 Log out và log in để áp dụng thay đổi.
 
@@ -417,10 +444,10 @@ Sau khi đã log out và log in lại:
 - **KDE Plasma:** _System Settings_ → _Keyboard_ → _Virtual Keyboard_ → Chọn **Fcitx 5**.
 - **Hyprland:** Thêm dòng sau vào `~/.config/hypr/hyprland.conf`:
 
-  ```ini
-  permission = fcitx5-lotus-server, keyboard, allow
-  ```
-  
+```ini
+permission = fcitx5-lotus-server, keyboard, allow
+```
+
 </details>
 
 ---
@@ -445,11 +472,12 @@ Sau khi đã log out và log in lại:
 | **Modern Style**        | Bật/tắt kiểu đặt dấu thanh hiện đại _(ví dụ: oà, *uý thay vì òa, *úy)_.                                          | Bật             |
 | **Free Marking**        | Bật/tắt bỏ dấu tự do.                                                                                            | Bật             |
 | **Fix Uinput with ack** | Bật/tắt sửa lỗi chế độ Uinput với ack.<br/>Nên bật khi sử dụng các ứng dụng Chromium (Chrome, Brave, Edge, ...). | Tắt             |
-| **Mode Menu**           | Bật/tắt mở menu chuyển chế độ gõ bằng phím **`** (tắt để nhập biểu tượng trực tiếp).                             | Bật             |
+| **Lotus Icons**         | Bật/tắt sử dụng icon Lotus thay vì icon mặc định V E.                                                            | Tắt             |
+| **Typing Mode Menu**    | Bật/tắt mở menu chuyển chế độ gõ bằng phím **`** (tắt để nhập ký tự trực tiếp).                                  | Bật             |
 
 ### 2. Menu chuyển chế độ gõ
 
-Khi con trỏ đang ở trong ô nhập liệu (có thể gõ văn bản), nhấn phím **`** để mở menu chọn chế độ gõ; bạn có thể dùng chuột hoặc phím tắt để chọn.
+Khi con trỏ đang ở trong ô nhập liệu (có thể gõ văn bản), nhấn phím **`** để mở menu chọn chế độ gõ; bạn có thể dùng chuột hoặc phím tắt để chọn chế độ mong muốn.
 
 | Chế độ                | Phím tắt | Mô tả                                                                                                                                |
 | :-------------------- | :------: | :----------------------------------------------------------------------------------------------------------------------------------- |
@@ -566,7 +594,7 @@ Cảm ơn những con người tuyệt vời ([chú thích emoji](https://allcon
   <tbody>
     <tr>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/nhktmdzhg"><img src="https://avatars.githubusercontent.com/u/57983253?v=4?s=100" width="100px;" alt="Nguyen Hoang Ky"/><br /><sub><b>Nguyen Hoang Ky</b></sub></a><br /><a href="#blog-nhktmdzhg" title="Blogposts">📝</a> <a href="https://github.com/LotusInputMethod/fcitx5-lotus/commits?author=nhktmdzhg" title="Code">💻</a> <a href="https://github.com/LotusInputMethod/fcitx5-lotus/commits?author=nhktmdzhg" title="Documentation">📖</a> <a href="#projectManagement-nhktmdzhg" title="Project Management">📆</a> <a href="https://github.com/LotusInputMethod/fcitx5-lotus/pulls?q=is%3Apr+reviewed-by%3Anhktmdzhg" title="Reviewed Pull Requests">👀</a></td>
-      <td align="center" valign="top" width="14.28%"><a href="https://github.com/hthienloc"><img src="https://avatars.githubusercontent.com/u/148019203?v=4?s=100" width="100px;" alt="Loc Huynh"/><br /><sub><b>Loc Huynh</b></sub></a><br /><a href="https://github.com/LotusInputMethod/fcitx5-lotus/issues?q=author%3Ahthienloc" title="Bug reports">🐛</a> <a href="https://github.com/LotusInputMethod/fcitx5-lotus/commits?author=hthienloc" title="Documentation">📖</a> <a href="#design-hthienloc" title="Design">🎨</a> <a href="#translation-hthienloc" title="Translation">🌍</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/hthienloc"><img src="https://avatars.githubusercontent.com/u/148019203?v=4?s=100" width="100px;" alt="Huỳnh Thiện Lộc"/><br /><sub><b>Huỳnh Thiện Lộc</b></sub></a><br /><a href="https://github.com/LotusInputMethod/fcitx5-lotus/issues?q=author%3Ahthienloc" title="Bug reports">🐛</a> <a href="https://github.com/LotusInputMethod/fcitx5-lotus/commits?author=hthienloc" title="Documentation">📖</a> <a href="#design-hthienloc" title="Design">🎨</a> <a href="#translation-hthienloc" title="Translation">🌍</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/justanoobcoder"><img src="https://avatars.githubusercontent.com/u/57614330?v=4?s=100" width="100px;" alt="Nguyễn Hồng Hiệp"/><br /><sub><b>Nguyễn Hồng Hiệp</b></sub></a><br /><a href="https://github.com/LotusInputMethod/fcitx5-lotus/commits?author=justanoobcoder" title="Documentation">📖</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/Miho1254"><img src="https://avatars.githubusercontent.com/u/83270073?v=4?s=100" width="100px;" alt="Đặng Quang Hiển"/><br /><sub><b>Đặng Quang Hiển</b></sub></a><br /><a href="https://github.com/LotusInputMethod/fcitx5-lotus/commits?author=Miho1254" title="Documentation">📖</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/Zebra2711"><img src="https://avatars.githubusercontent.com/u/89755535?v=4?s=100" width="100px;" alt="Zebra2711"/><br /><sub><b>Zebra2711</b></sub></a><br /><a href="https://github.com/LotusInputMethod/fcitx5-lotus/issues?q=author%3AZebra2711" title="Bug reports">🐛</a> <a href="https://github.com/LotusInputMethod/fcitx5-lotus/commits?author=Zebra2711" title="Code">💻</a></td>

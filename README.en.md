@@ -322,10 +322,11 @@ systemctl status fcitx5-lotus-server@$(whoami).service
 
 The input method will not work without these variables.
 
-- **Bash / Zsh:**
+<details open>
+<summary><b>Bash</b></summary>
 
 ```bash
-# This command will add the configuration to ~/.bash_profile, do the same for .zprofile
+# Add the configuration to ~/.bash_profile
 cat <<EOF >> ~/.bash_profile
 export GTK_IM_MODULE=fcitx
 export QT_IM_MODULE=fcitx
@@ -335,7 +336,26 @@ export GLFW_IM_MODULE=ibus
 EOF
 ```
 
-- **Fish shell:**
+</details>
+
+<details open>
+<summary><b>Zsh</b></summary>
+
+```bash
+# Add the configuration to ~/.zprofile
+cat <<EOF >> ~/.zprofile
+export GTK_IM_MODULE=fcitx
+export QT_IM_MODULE=fcitx
+export XMODIFIERS=@im=fcitx
+export SDL_IM_MODULE=fcitx
+export GLFW_IM_MODULE=ibus
+EOF
+```
+
+</details>
+
+<details>
+<summary><b>Fish shell</b></summary>
 
 ```fish
 # Add configuration to ~/.config/fish/config.fish
@@ -349,6 +369,8 @@ set -gx SDL_IM_MODULE fcitx
 set -gx GLFW_IM_MODULE ibus
 EOF
 ```
+
+</details>
 
 Log out and log in to apply changes.
 
@@ -410,15 +432,15 @@ After logging out and logging in again:
 2. Find **Lotus** in the right column.
 3. Click the **<** arrow to add it to the left column.
 4. Apply.
-<details>
-<summary><b>Additional configuration for Wayland (KDE, Hyprland)</b></summary>
+ <details>
+ <summary><b>Additional configuration for Wayland (KDE, Hyprland)</b></summary>
 
 - **KDE Plasma:** _System Settings_ → _Keyboard_ → _Virtual Keyboard_ → Select **Fcitx 5**.
 - **Hyprland:** Add the following line to `~/.config/hypr/hyprland.conf`:
-  ```ini
-  permission = fcitx5-lotus-server, keyboard, allow
-  ```
-  </details>
+    ```ini
+    permission = fcitx5-lotus-server, keyboard, allow
+    ```
+        </details>
 
 ---
 
@@ -429,7 +451,7 @@ After logging out and logging in again:
 ### 1. Customize input method
 
 - **Access:** Right-click the Lotus icon on the system tray to open customization.
-- **Customization options:** _Typing Mode_, _Input Method_, _Charset_, _Spell Check_, _Macro_, _Capitalize Macro_, _Auto non-VN restore_, _Modern Style_, _Free Marking_, _Fix Uinput with ack_, _Mode menu_.
+- **Customization options:** _Typing Mode_, _Input Method_, _Charset_, _Spell Check_, _Macro_, _Capitalize Macro_, _Auto non-VN restore_, _Modern Style_, _Free Marking_, _Fix Uinput with ack_, _Lotus status icons_, _Mode menu_.
 
 ### 2. Typing mode menu
 
