@@ -75,7 +75,7 @@ Dự án này là bản fork được tối ưu hóa từ [bộ gõ VMK](https:/
 > </details>
 >
 > <details>
-> <summary><b>Debian / Ubuntu / Fedora / openSUSE - Open Build Service</b></summary>
+> <summary><b>Debian / Ubuntu / Fedora / openSUSE</b></summary>
 > <br>
 >
 > - <b>Debian/Ubuntu</b>
@@ -175,17 +175,10 @@ paru -S fcitx5-lotus
 </details>
 
 <details>
-<summary><b>Debian / Ubuntu / Fedora / openSUSE - Open Build Service</b></summary>
+<summary><b>Debian / Ubuntu / Fedora / openSUSE</b></summary>
 <br>
 
-Truy cập trang [Open Build Service](https://software.opensuse.org//download.html?project=home%3Aiamnanoka&package=fcitx5-lotus) để xem hướng dẫn cài đặt chi tiết cho distro của bạn.
-
-[![build result](https://build.opensuse.org/projects/home:iamnanoka/packages/fcitx5-lotus/badge.svg?type=percent)](https://build.opensuse.org/package/show/home:iamnanoka/fcitx5-lotus)
-[![build result](https://build.opensuse.org/projects/home:iamnanoka/packages/fcitx5-lotus/badge.svg?type=default)](https://build.opensuse.org/package/show/home:iamnanoka/fcitx5-lotus)
-
-Hoặc có thể xem cách cài của từng distro [tại đây](INSTALL.md).
-
-> **Lưu ý:** Arch và Arch-based distro cũng có thể dùng cách cài này.
+Bạn có thể xem cách cài của từng distro [tại đây](INSTALL.md).
 
 </details>
 
@@ -240,9 +233,9 @@ Rebuild lại system để cài đặt.
 
 > **KHUYẾN CÁO QUAN TRỌNG:**
 >
-> Vui lòng **KHÔNG** sử dụng cách này nếu distro của bạn đã được hỗ trợ thông qua **Open Build Service**.
+> Vui lòng **KHÔNG** sử dụng cách này nếu distro của bạn đã được hỗ trợ thông qua **Cloudflare Pages**.
 >
-> Việc biên dịch thủ công đòi hỏi bạn phải hiểu rõ về cấu trúc thư mục của hệ thống. Nếu bạn gặp lỗi "Not Available" hoặc thiếu thư viện khi cài theo cách này trên các distro phổ biến (Ubuntu/Fedora...), hãy quay lại dùng Open Build Service để đảm bảo tính ổn định và tự động cập nhật.
+> Việc biên dịch thủ công đòi hỏi bạn phải hiểu rõ về cấu trúc thư mục của hệ thống. Nếu bạn gặp lỗi "Not Available" hoặc thiếu thư viện khi cài theo cách này trên các distro phổ biến (Ubuntu/Fedora...), hãy quay lại dùng Cloudflare Pages để đảm bảo tính ổn định và tự động cập nhật.
 
 ##### Yêu cầu hệ thống
 
@@ -542,7 +535,7 @@ paru -Rns fcitx5-lotus
 </details>
 
 <details>
-<summary><b>Debian / Ubuntu / Fedora / openSUSE - Open Build Service</b></summary>
+<summary><b>Debian / Ubuntu / Fedora / openSUSE</b></summary>
 <br>
 
 - **Debian/Ubuntu**

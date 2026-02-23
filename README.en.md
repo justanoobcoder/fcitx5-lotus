@@ -75,7 +75,7 @@ This project is an optimized fork of [VMK input method](https://github.com/thanh
 > </details>
 >
 > <details>
-> <summary><b>Debian / Ubuntu / Fedora / openSUSE - Open Build Service</b></summary>
+> <summary><b>Debian / Ubuntu / Fedora / openSUSE</b></summary>
 > <br>
 >
 > - <b>Debian/Ubuntu</b>
@@ -175,17 +175,10 @@ paru -S fcitx5-lotus
 </details>
 
 <details>
-<summary><b>Debian / Ubuntu / Fedora / openSUSE - Open Build Service</b></summary>
+<summary><b>Debian / Ubuntu / Fedora / openSUSE</b></summary>
 <br>
 
-Visit the [Open Build Service](https://software.opensuse.org//download.html?project=home%3Aiamnanoka&package=fcitx5-lotus) page for detailed installation instructions for your distro.
-
-[![build result](https://build.opensuse.org/projects/home:iamnanoka/packages/fcitx5-lotus/badge.svg?type=percent)](https://build.opensuse.org/package/show/home:iamnanoka/fcitx5-lotus)
-[![build result](https://build.opensuse.org/projects/home:iamnanoka/packages/fcitx5-lotus/badge.svg?type=default)](https://build.opensuse.org/package/show/home:iamnanoka/fcitx5-lotus)
-
-Or you can see the installation method for each distro [here](INSTALL.md).
-
-> **Note:** Arch and Arch-based distros can also use this installation method.
+You can see the installation method for each distro [here](INSTALL.md).
 
 </details>
 
@@ -240,9 +233,9 @@ Rebuild the system to install.
 
 > **IMPORTANT RECOMMENDATION:**
 >
-> Please **DO NOT** use this method if your distro is already supported via **Open Build Service**.
+> Please **DO NOT** use this method if your distro is already supported via **Cloudflare Pages**.
 >
-> Manual compilation requires a good understanding of the system directory structure. If you encounter "Not Available" errors or missing libraries when installing this way on popular distros (Ubuntu/Fedora...), please return to using Open Build Service for stability and automatic updates.
+> Manual compilation requires a good understanding of the system directory structure. If you encounter "Not Available" errors or missing libraries when installing this way on popular distros (Ubuntu/Fedora...), please return to using Cloudflare Pages for stability and automatic updates.
 
 ##### System Requirements
 
@@ -520,7 +513,7 @@ paru -Rns fcitx5-lotus
 </details>
 
 <details>
-<summary><b>Debian / Ubuntu / Fedora / openSUSE - Open Build Service</b></summary>
+<summary><b>Debian / Ubuntu / Fedora / openSUSE</b></summary>
 <br>
 
 - **Debian/Ubuntu**
