@@ -26,3 +26,4 @@ Makefile
 .vscode/
 compile_commands.json
 !.all-contributorsrc
+refresh-contributor
