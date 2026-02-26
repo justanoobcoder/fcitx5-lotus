@@ -190,12 +190,15 @@ jobs:
               make pkgconf zstd
 
             cd /work
+            export LDFLAGS="-Wl,-z,relro,-z,now"
+            export CGO_LDFLAGS="-Wl,-z,relro,-z,now"
             cmake \
               -DCMAKE_INSTALL_PREFIX=/usr \
               -DCMAKE_INSTALL_LIBDIR=/usr/lib \
               -DCMAKE_BUILD_TYPE=Release \
-              -DCMAKE_EXE_LINKER_FLAGS="-Wl,-z,relro,-z,now" \
-              -DCMAKE_SHARED_LINKER_FLAGS="-Wl,-z,relro,-z,now" \
+              -DCMAKE_EXE_LINKER_FLAGS="$LDFLAGS" \
+              -DCMAKE_SHARED_LINKER_FLAGS="$LDFLAGS" \
+              -DCMAKE_MODULE_LINKER_FLAGS="$LDFLAGS" \
               -B build .
             cmake --build build
             DESTDIR=/work/arch-dist cmake --install build
