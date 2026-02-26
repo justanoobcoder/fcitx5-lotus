@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-26 11:57+0700\n"
+"POT-Creation-Date: 2026-02-26 19:14+0700\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,44 +17,76 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
+#: src/lotus-config.h:185 keymap-editor/editor.cpp:59
+msgid "Key"
+msgstr ""
+
+#: src/lotus-config.h:185
+msgid "Value"
+msgstr ""
+
+#: src/lotus-config.h:189
+msgid "Macro"
+msgstr ""
+
+#: src/lotus-config.h:193 src/lotus-config.h:213 src/lotus-config.h:215
+msgid "Custom Keymap"
+msgstr ""
+
+#: src/lotus-config.h:201
+msgid "Mode"
+msgstr ""
+
+#: src/lotus-config.h:203
+msgid "Input Method"
+msgstr ""
+
+#: src/lotus-config.h:204
+msgid "Output Charset"
+msgstr ""
+
+#: src/lotus-config.h:205 src/lotus-engine.cpp:182
+msgid "Enable spell check"
+msgstr ""
+
+#: src/lotus-config.h:205 src/lotus-engine.cpp:194
+msgid "Enable Macro"
+msgstr ""
+
+#: src/lotus-config.h:206 src/lotus-engine.cpp:206
+msgid "Capitalize Macro"
+msgstr ""
+
+#: src/lotus-config.h:207 src/lotus-engine.cpp:218
+msgid "Auto restore keys with invalid words"
+msgstr ""
+
+#: src/lotus-config.h:208 src/lotus-engine.cpp:230
+msgid "Use oà, _uý (instead of òa, úy)"
+msgstr ""
+
+#: src/lotus-config.h:209 src/lotus-engine.cpp:242
+msgid "Allow type with more freedom"
+msgstr ""
+
+#: src/lotus-config.h:210 src/lotus-engine.cpp:254
+msgid "Fix uinput mode with ack"
+msgstr ""
+
+#: src/lotus-config.h:211 src/lotus-engine.cpp:266
+msgid "Use Lotus status icons"
+msgstr ""
+
+#: src/lotus-config.h:218
+msgid "Mode menu hotkey"
+msgstr ""
+
 #: src/lotus-engine.cpp:100
 msgid "Typing Mode"
 msgstr ""
 
 #: src/lotus-engine.cpp:154
 msgid "Charset"
-msgstr ""
-
-#: src/lotus-engine.cpp:182 src/lotus-config.h:205
-msgid "Enable spell check"
-msgstr ""
-
-#: src/lotus-engine.cpp:194 src/lotus-config.h:205
-msgid "Enable Macro"
-msgstr ""
-
-#: src/lotus-engine.cpp:206 src/lotus-config.h:206
-msgid "Capitalize Macro"
-msgstr ""
-
-#: src/lotus-engine.cpp:218 src/lotus-config.h:207
-msgid "Auto restore keys with invalid words"
-msgstr ""
-
-#: src/lotus-engine.cpp:230 src/lotus-config.h:208
-msgid "Use oà, _uý (instead of òa, úy)"
-msgstr ""
-
-#: src/lotus-engine.cpp:242 src/lotus-config.h:209
-msgid "Allow type with more freedom"
-msgstr ""
-
-#: src/lotus-engine.cpp:254 src/lotus-config.h:210
-msgid "Fix uinput mode with ack"
-msgstr ""
-
-#: src/lotus-engine.cpp:266 src/lotus-config.h:211
-msgid "Use Lotus status icons"
 msgstr ""
 
 #: src/lotus-engine.cpp:667
@@ -165,38 +197,6 @@ msgstr ""
 msgid "Page "
 msgstr ""
 
-#: src/lotus-config.h:185 keymap-editor/editor.cpp:59
-msgid "Key"
-msgstr ""
-
-#: src/lotus-config.h:185
-msgid "Value"
-msgstr ""
-
-#: src/lotus-config.h:189
-msgid "Macro"
-msgstr ""
-
-#: src/lotus-config.h:193 src/lotus-config.h:213 src/lotus-config.h:215
-msgid "Custom Keymap"
-msgstr ""
-
-#: src/lotus-config.h:201
-msgid "Mode"
-msgstr ""
-
-#: src/lotus-config.h:203
-msgid "Input Method"
-msgstr ""
-
-#: src/lotus-config.h:204
-msgid "Output Charset"
-msgstr ""
-
-#: src/lotus-config.h:218
-msgid "Mode menu hotkey"
-msgstr ""
-
 #: keymap-editor/editor.cpp:28
 msgid "Import from existing keymap"
 msgstr ""
@@ -217,24 +217,24 @@ msgstr ""
 msgid "Action"
 msgstr ""
 
-#: keymap-editor/editor.cpp:64
+#: keymap-editor/editor.cpp:66
 msgid "Remove selection entry"
 msgstr ""
 
-#: keymap-editor/editor.cpp:75
+#: keymap-editor/editor.cpp:76
 msgid "Lotus Custom Keymap"
 msgstr ""
 
-#: keymap-editor/editor.cpp:119
+#: keymap-editor/editor.cpp:128
 msgid "Confirm"
 msgstr ""
 
-#: keymap-editor/editor.cpp:119
+#: keymap-editor/editor.cpp:128
 msgid ""
 "This operation will delete all existing keys on the current keymap and "
 "replace them with the input method "
 msgstr ""
 
-#: keymap-editor/editor.cpp:119
+#: keymap-editor/editor.cpp:128
 msgid ". Are you sure?"
 msgstr ""

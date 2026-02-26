@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: fcitx5-lotus\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-26 11:57+0700\n"
+"POT-Creation-Date: 2026-02-26 19:14+0700\n"
 "PO-Revision-Date: 2026-02-26 11:56+0700\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -18,6 +18,70 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Poedit 3.8\n"
 
+#: src/lotus-config.h:185 keymap-editor/editor.cpp:59
+msgid "Key"
+msgstr "Phím"
+
+#: src/lotus-config.h:185
+msgid "Value"
+msgstr "Giá trị"
+
+#: src/lotus-config.h:189
+msgid "Macro"
+msgstr "Phím tắt"
+
+#: src/lotus-config.h:193 src/lotus-config.h:213 src/lotus-config.h:215
+msgid "Custom Keymap"
+msgstr "Keymap tuỳ chỉnh"
+
+#: src/lotus-config.h:201
+msgid "Mode"
+msgstr "Chế độ"
+
+#: src/lotus-config.h:203
+msgid "Input Method"
+msgstr "Kiểu gõ"
+
+#: src/lotus-config.h:204
+msgid "Output Charset"
+msgstr "Bảng mã"
+
+#: src/lotus-config.h:205 src/lotus-engine.cpp:182
+msgid "Enable spell check"
+msgstr "Bật kiểm tra chính tả"
+
+#: src/lotus-config.h:205 src/lotus-engine.cpp:194
+msgid "Enable Macro"
+msgstr "Bật gõ tắt"
+
+#: src/lotus-config.h:206 src/lotus-engine.cpp:206
+msgid "Capitalize Macro"
+msgstr "Gõ tắt chữ hoa"
+
+#: src/lotus-config.h:207 src/lotus-engine.cpp:218
+msgid "Auto restore keys with invalid words"
+msgstr "Tự động khôi phục phím với từ sai"
+
+#: src/lotus-config.h:208 src/lotus-engine.cpp:230
+msgid "Use oà, _uý (instead of òa, úy)"
+msgstr "Sử dụng oà, _uý (thay vì òa, _úy)"
+
+#: src/lotus-config.h:209 src/lotus-engine.cpp:242
+msgid "Allow type with more freedom"
+msgstr "Cho phép gõ dấu tự do"
+
+#: src/lotus-config.h:210 src/lotus-engine.cpp:254
+msgid "Fix uinput mode with ack"
+msgstr "Sửa lỗi chế độ uinput với ack"
+
+#: src/lotus-config.h:211 src/lotus-engine.cpp:266
+msgid "Use Lotus status icons"
+msgstr "Sử dụng biểu tượng trạng thái Lotus"
+
+#: src/lotus-config.h:218
+msgid "Mode menu hotkey"
+msgstr "Phím tắt menu chế độ gõ"
+
 #: src/lotus-engine.cpp:100
 msgid "Typing Mode"
 msgstr "Chế Độ Gõ"
@@ -25,38 +89,6 @@ msgstr "Chế Độ Gõ"
 #: src/lotus-engine.cpp:154
 msgid "Charset"
 msgstr "Bảng mã"
-
-#: src/lotus-engine.cpp:182 src/lotus-config.h:205
-msgid "Enable spell check"
-msgstr "Bật kiểm tra chính tả"
-
-#: src/lotus-engine.cpp:194 src/lotus-config.h:205
-msgid "Enable Macro"
-msgstr "Bật gõ tắt"
-
-#: src/lotus-engine.cpp:206 src/lotus-config.h:206
-msgid "Capitalize Macro"
-msgstr "Gõ tắt chữ hoa"
-
-#: src/lotus-engine.cpp:218 src/lotus-config.h:207
-msgid "Auto restore keys with invalid words"
-msgstr "Tự động khôi phục phím với từ sai"
-
-#: src/lotus-engine.cpp:230 src/lotus-config.h:208
-msgid "Use oà, _uý (instead of òa, úy)"
-msgstr "Sử dụng oà, _uý (thay vì òa, _úy)"
-
-#: src/lotus-engine.cpp:242 src/lotus-config.h:209
-msgid "Allow type with more freedom"
-msgstr "Cho phép gõ dấu tự do"
-
-#: src/lotus-engine.cpp:254 src/lotus-config.h:210
-msgid "Fix uinput mode with ack"
-msgstr "Sửa lỗi chế độ uinput với ack"
-
-#: src/lotus-engine.cpp:266 src/lotus-config.h:211
-msgid "Use Lotus status icons"
-msgstr "Sử dụng biểu tượng trạng thái Lotus"
 
 #: src/lotus-engine.cpp:667
 msgid "Typing Mode: "
@@ -166,38 +198,6 @@ msgstr "[R] Chế độ gõ mặc định"
 msgid "Page "
 msgstr "Trang "
 
-#: src/lotus-config.h:185 keymap-editor/editor.cpp:59
-msgid "Key"
-msgstr "Phím"
-
-#: src/lotus-config.h:185
-msgid "Value"
-msgstr "Giá trị"
-
-#: src/lotus-config.h:189
-msgid "Macro"
-msgstr "Phím tắt"
-
-#: src/lotus-config.h:193 src/lotus-config.h:213 src/lotus-config.h:215
-msgid "Custom Keymap"
-msgstr "Keymap tuỳ chỉnh"
-
-#: src/lotus-config.h:201
-msgid "Mode"
-msgstr "Chế độ"
-
-#: src/lotus-config.h:203
-msgid "Input Method"
-msgstr "Kiểu gõ"
-
-#: src/lotus-config.h:204
-msgid "Output Charset"
-msgstr "Bảng mã"
-
-#: src/lotus-config.h:218
-msgid "Mode menu hotkey"
-msgstr "Phím tắt menu chế độ gõ"
-
 #: keymap-editor/editor.cpp:28
 msgid "Import from existing keymap"
 msgstr "Nhập từ keymap có sẵn"
@@ -218,19 +218,19 @@ msgstr "Thêm/ Cập nhật"
 msgid "Action"
 msgstr "Hành động"
 
-#: keymap-editor/editor.cpp:64
+#: keymap-editor/editor.cpp:66
 msgid "Remove selection entry"
 msgstr "Xoá mục đang chọn"
 
-#: keymap-editor/editor.cpp:75
+#: keymap-editor/editor.cpp:76
 msgid "Lotus Custom Keymap"
 msgstr "Keymap Tuỳ Chỉnh Lotus"
 
-#: keymap-editor/editor.cpp:119
+#: keymap-editor/editor.cpp:128
 msgid "Confirm"
 msgstr "Xác nhận"
 
-#: keymap-editor/editor.cpp:119
+#: keymap-editor/editor.cpp:128
 msgid ""
 "This operation will delete all existing keys on the current keymap and "
 "replace them with the input method "
@@ -238,6 +238,6 @@ msgstr ""
 "Hành động này sẽ xoá tất cả phím của keymap hiện tại và thế nó với keymap "
 "của kiểu gõ "
 
-#: keymap-editor/editor.cpp:119
+#: keymap-editor/editor.cpp:128
 msgid ". Are you sure?"
 msgstr ". Bạn có chắc chắn xoá?"
