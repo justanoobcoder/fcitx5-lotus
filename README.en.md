@@ -242,19 +242,19 @@ Rebuild the system to install.
 - **Debian/Ubuntu**
 
 ```bash
-sudo apt-get install cmake extra-cmake-modules libfcitx5core-dev libfcitx5config-dev libfcitx5utils-dev libinput-dev libudev-dev g++ golang hicolor-icon-theme pkg-config libx11-dev
+sudo apt-get install cmake extra-cmake-modules libfcitx5core-dev libfcitx5config-dev libfcitx5utils-dev libinput-dev libudev-dev g++ golang hicolor-icon-theme pkg-config libx11-dev libfcitx5-qt6-dev qt6-base-dev
 ```
 
 - **Fedora/RHEL**
 
 ```bash
-sudo dnf install cmake extra-cmake-modules fcitx5-devel libinput-devel libudev-devel gcc-c++ golang hicolor-icon-theme systemd-devel libX11-devel
+sudo dnf install cmake extra-cmake-modules fcitx5-devel libinput-devel libudev-devel gcc-c++ golang hicolor-icon-theme systemd-devel libX11-devel fcitx5-qt-devel
 ```
 
 - **openSUSE**
 
 ```bash
-sudo zypper install cmake extra-cmake-modules fcitx5-devel libinput-devel systemd-devel gcc-c++ go hicolor-icon-theme systemd-devel libX11-devel udev
+sudo zypper install cmake extra-cmake-modules fcitx5-devel libinput-devel systemd-devel gcc-c++ go hicolor-icon-theme systemd-devel libX11-devel udev fcitx5-qt-devel
 ```
 
 ##### Compilation and Installation
@@ -480,11 +480,11 @@ Add this line to file `~/.config/kanata/kanata.kbd`
 ### 1. Customize input method
 
 - **Access:** Right-click the Lotus icon on the system tray to open customization.
-- **Customization options:** _Typing Mode_, _Input Method_, _Charset_, _Spell Check_, _Macro_, _Capitalize Macro_, _Auto non-VN restore_, _Modern Style_, _Free Marking_, _Fix Uinput with ack_, _Lotus status icons_, _Mode menu_.
+- **Customization options:** _Typing Mode_, _Input Method_, _Charset_, _Spell Check_, _Macro_, _Capitalize Macro_, _Auto non-VN restore_, _Modern Style_, _Free Marking_, _Fix Uinput with ack_, _Lotus status icons_.
 
 ### 2. Typing mode menu
 
-In any application, press the **`** key to open the typing mode selection menu, where you can use the mouse or shortcuts to select. If the backtick shortcut interferes with your workflow (e.g. when writing Markdown code fences), you can turn it off in Lotus' settings using the **Mode menu** toggle.
+In any application, press the **`** key to open the typing mode selection menu, where you can use the mouse or shortcuts to select. If the backtick shortcut interferes with your workflow (e.g. when writing Markdown code fences), you can change this shortcut in Fcitx5 Configuration.
 
 | Mode                  | Shortcut | Description                                                                                                                                         |
 | :-------------------- | :------: | :-------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -496,7 +496,6 @@ In any application, press the **`** key to open the typing mode selection menu, 
 | **Emoji Picker**      |  **W**   | Search and input Emojis (EmojiOne source, fuzzy search supported).                                                                                  |
 | **OFF**               |  **E**   | Turn off input method.                                                                                                                              |
 | **Default Typing**    |  **R**   | Default typing mode configured in the _Typing mode_ option.                                                                                         |
-| **Type `**            |  **`**   | Type the **`** character.                                                                                                                           |
 
 The input method automatically saves the most recently used typing mode for each application and restores that configuration when you reopen them.
 

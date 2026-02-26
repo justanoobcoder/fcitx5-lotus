@@ -254,9 +254,6 @@ func (e *FcitxBambooEngine) getCommitText(keyVal, state uint32) (string, bool) {
 			if keyVal == FcitxSpace && e.macroTable.HasKey(oldText) {
 				e.preeditor.Reset()
 				return e.expandMacro(oldText) + keyS, keyVal == FcitxSpace
-			} else {
-				e.preeditor.ProcessKey(keyRune, e.getBambooInputMode())
-				return oldText + keyS, keyVal == FcitxSpace
 			}
 		}
 		if bamboo.HasAnyVietnameseRune(oldText) && e.mustFallbackToEnglish() {

@@ -208,8 +208,14 @@ namespace fcitx {
         Option<bool> modernStyle{this, "ModernStyle", _("Use oà, _uý (instead of òa, úy)"), true};
         Option<bool> freeMarking{this, "FreeMarking", _("Allow type with more freedom"), true};
         Option<bool> fixUinputWithAck{this, "FixUinputWithAck", _("Fix uinput mode with ack"), false};
-        Option<bool> useLotusIcons{this, "UseLotusIcons", _("Use Lotus status icons"), false}; Option<bool> modeMenu{this, "ModeMenu", _("Open typing mode menu with ` key"), true};
-        SubConfigOption customKeymap{this, "CustomKeymap", _("Custom Keymap"), "fcitx://config/addon/lotus/custom_keymap"};);
+        Option<bool> useLotusIcons{this, "UseLotusIcons", _("Use Lotus status icons"), false};
+#ifdef ENABLE_KEYMAP_EDITOR
+        ExternalOption customKeymapUI{this, "CustomKeymapUI", _("Custom Keymap"), "fcitx://config/addon/lotus/custom_keymap"};
+#else
+        SubConfigOption customKeymap{this, "CustomKeymap", _("Custom Keymap"), "fcitx://config/addon/lotus/custom_keymap"};
+#endif
+        KeyListOption modeMenuKey{
+            this, "ModeMenuKey", _("Mode menu hotkey"), {Key("grave")}, KeyListConstrain({KeyConstrainFlag::AllowModifierLess, KeyConstrainFlag::AllowModifierOnly})};);
 
 } // namespace fcitx
 
