@@ -85,7 +85,8 @@ func EnginePullCommit(engine uintptr) *C.char {
 	}
 	var commitText = bambooEngine.commitText
 	bambooEngine.commitText = ""
-	return C.CString(commitText)
+	encodedText := bamboo.Encode(bambooEngine.outputCharset, commitText)
+	return C.CString(encodedText) 
 }
 
 //export EngineSetOption

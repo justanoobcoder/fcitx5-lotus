@@ -156,10 +156,10 @@ namespace fcitx {
         const int    cursor  = s.cursor();
         const int    anchor  = s.anchor();
         const auto&  text    = s.text();
-        const size_t textLen = fcitx_utf8_strlen(text.c_str());
+        const size_t textLen = utf8::length(text);
 
         // Fix that surrounding text is delay update
-        const size_t buffLen    = fcitx_utf8_strlen(oldPreBuffer_.c_str());
+        const size_t buffLen    = utf8::length(oldPreBuffer_);
         const size_t pb         = text.find(oldPreBuffer_);
         size_t       rangeStart = buffLen >= static_cast<size_t>(cursor) ? 0 : static_cast<size_t>(cursor) - buffLen;
         const bool   sameprefix = !(pb == std::string::npos || pb < rangeStart || pb > static_cast<size_t>(cursor));
@@ -862,7 +862,7 @@ namespace fcitx {
     void LotusState::reset() {
         const auto& surrounding = ic_->surroundingText();
         const auto& text        = surrounding.text();
-        size_t      textLen     = fcitx_utf8_strlen(text.c_str());
+        size_t      textLen     = utf8::length(text);
         realtextLen             = textLen;
         if (is_deleting_.load(std::memory_order_acquire)) {
             return;
