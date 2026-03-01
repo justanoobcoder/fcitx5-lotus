@@ -596,15 +596,15 @@ namespace fcitx {
 
             if (!deletedPart.empty()) {
                 performReplacement(deletedPart, addedPart);
-            } else if (!addedPart.empty()) {
-                ic_->commitString(addedPart);
+                keyEvent.filterAndAccept();
+            } else {
+                keyEvent.forward();
             }
 
             history_.clear();
             ResetEngine(lotusEngine_.handle());
             oldPreBuffer_.clear();
 
-            keyEvent.filterAndAccept();
             return;
         }
 
