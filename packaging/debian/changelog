@@ -1,7 +1,8 @@
-fcitx5-lotus (1.2.0-1) unstable; urgency=medium
+fcitx5-lotus (1.2.1-1) unstable; urgency=medium
 
-  * Add option to set shortcut key for mode menu
-  * Add Qt UI for customizing keymap
-  * Fix bug: use macro and auto non vn restore at the same time
+  * Add version of fcitx5-lotus in taskbar menu
+  * Fix bug: encode text before commit
+  * Add icon for Breeze icon theme
+  * Fix some bug of uinput mode
 
- -- Nguyen Hoang Ky <nhktmdzhg@gmail.com>  Thu, 26 Feb 2026 19:17:00 +0700
+ -- Nguyen Hoang Ky <nhktmdzhg@gmail.com>  Sun, 01 Mar 2026 18:08:00 +0700

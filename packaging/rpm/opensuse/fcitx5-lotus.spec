@@ -3,7 +3,7 @@
 %global optflags %(echo "%{optflags}" | sed 's/-g[^ ]*//g')
 
 Name:           fcitx5-lotus
-Version:        1.2.0
+Version:        1.2.1
 Release:        1
 Summary:        Vietnamese input method for fcitx5
 License:        GPL-3.0-or-later
@@ -146,7 +146,8 @@ echo "------------------------------------------------"
 %systemd_postun_with_restart fcitx5-lotus-server@.service
 
 %changelog
-* Thu Feb 26 2026 Nguyen Hoang Ky <nhktmdzhg@gmail.com> - 1.2.0-1
-- Add option to set shortcut key for mode menu
-- Add Qt UI for customizing keymap
-- Fix bug: use macro and auto non vn restore at the same time
+* Sun Mar 01 2026 Nguyen Hoang Ky <nhktmdzhg@gmail.com> - 1.2.1-1
+- Add version of fcitx5-lotus in taskbar menu
+- Fix bug: encode text before commit
+- Add icon for Breeze icon theme
+- Fix some bug of uinput mode
