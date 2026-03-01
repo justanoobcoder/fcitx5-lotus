@@ -597,6 +597,9 @@ namespace fcitx {
             if (!deletedPart.empty()) {
                 performReplacement(deletedPart, addedPart);
                 keyEvent.filterAndAccept();
+            } else if (!addedPart.empty() && utf8::length(addedPart) > 1) {
+                ic_->commitString(addedPart);
+                keyEvent.filterAndAccept();
             } else {
                 keyEvent.forward();
             }
