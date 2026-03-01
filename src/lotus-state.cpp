@@ -602,10 +602,16 @@ namespace fcitx {
             if (!deletedPart.empty()) {
                 performReplacement(deletedPart, addedPart);
                 keyEvent.filterAndAccept();
-            } else if (!addedPart.empty() && keyUtf8 != addedPart) {
-                ic_->commitString(addedPart);
-                keyEvent.filterAndAccept();
             } else {
+                if (!addedPart.empty() && keyUtf8 != addedPart) {
+                    // Stripping the trigger key (space) from addedPart
+#if __cplusplus >= 202002L
+                    addedPart.resize(addedPart.size() - 1);
+#else
+                    addedPart = addedPart.substr(0, addedPart.size() - 1);
+#endif
+                    ic_->commitString(addedPart);
+                }
                 keyEvent.forward();
             }
 
