@@ -601,15 +601,18 @@ namespace fcitx {
 
             if (!deletedPart.empty()) {
                 performReplacement(deletedPart, addedPart);
-            } else if (!addedPart.empty()) {
+                keyEvent.filterAndAccept();
+            } else if (!addedPart.empty() && keyUtf8 != addedPart) {
                 ic_->commitString(addedPart);
+                keyEvent.filterAndAccept();
+            } else {
+                keyEvent.forward();
             }
 
             history_.clear();
             ResetEngine(lotusEngine_.handle());
             oldPreBuffer_.clear();
 
-            keyEvent.filterAndAccept();
             return;
         }
 
@@ -637,16 +640,24 @@ namespace fcitx {
             oldPreBuffer_.clear();
             return;
         }
-        keyEvent.filterAndAccept();
+
         UniqueCPtr<char> preeditC(EnginePullPreedit(lotusEngine_.handle()));
         std::string      preeditStr = (preeditC && preeditC.get()[0]) ? preeditC.get() : "";
 
         std::string      commonPrefix, deletedPart, addedPart;
         if (compareAndSplitStrings(oldPreBuffer_, preeditStr, commonPrefix, deletedPart, addedPart)) {
             if (deletedPart.empty()) {
+                bool isCommit = false;
                 if (!addedPart.empty()) {
-                    ic_->commitString(addedPart);
                     oldPreBuffer_ = preeditStr;
+                    if (addedPart != keyUtf8) {
+                        ic_->commitString(addedPart);
+                        keyEvent.filterAndAccept();
+                        isCommit = true;
+                    }
+                }
+                if (!isCommit) {
+                    keyEvent.forward();
                 }
             } else {
                 if (uinput_client_fd_ < 0) {
@@ -661,6 +672,7 @@ namespace fcitx {
                     is_deleting_.store(false, std::memory_order_release);
                 }
 
+                keyEvent.filterAndAccept();
                 performReplacement(deletedPart, addedPart);
                 oldPreBuffer_ = preeditStr;
             }
