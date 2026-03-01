@@ -632,7 +632,7 @@ namespace fcitx {
             oldPreBuffer_.clear();
             return;
         }
-        keyEvent.filterAndAccept();
+
         UniqueCPtr<char> preeditC(EnginePullPreedit(lotusEngine_.handle()));
         std::string      preeditStr = (preeditC && preeditC.get()[0]) ? preeditC.get() : "";
 
@@ -640,9 +640,9 @@ namespace fcitx {
         if (compareAndSplitStrings(oldPreBuffer_, preeditStr, commonPrefix, deletedPart, addedPart)) {
             if (deletedPart.empty()) {
                 if (!addedPart.empty()) {
-                    ic_->commitString(addedPart);
                     oldPreBuffer_ = preeditStr;
                 }
+                keyEvent.forward();
             } else {
                 if (uinput_client_fd_ < 0) {
                     std::string rawKey = keyEvent.key().toString();
@@ -656,6 +656,7 @@ namespace fcitx {
                     is_deleting_.store(false, std::memory_order_release);
                 }
 
+                keyEvent.filterAndAccept();
                 performReplacement(deletedPart, addedPart);
                 oldPreBuffer_ = preeditStr;
             }
