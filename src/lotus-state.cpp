@@ -597,7 +597,7 @@ namespace fcitx {
             if (!deletedPart.empty()) {
                 performReplacement(deletedPart, addedPart);
                 keyEvent.filterAndAccept();
-            } else if (!addedPart.empty() && utf8::length(addedPart) > 1) {
+            } else if (!addedPart.empty() && keyUtf8 != addedPart) {
                 ic_->commitString(addedPart);
                 keyEvent.filterAndAccept();
             } else {
@@ -642,10 +642,18 @@ namespace fcitx {
         std::string      commonPrefix, deletedPart, addedPart;
         if (compareAndSplitStrings(oldPreBuffer_, preeditStr, commonPrefix, deletedPart, addedPart)) {
             if (deletedPart.empty()) {
+                bool isCommit = false;
                 if (!addedPart.empty()) {
                     oldPreBuffer_ = preeditStr;
+                    if (addedPart != keyUtf8) {
+                        ic_->commitString(addedPart);
+                        keyEvent.filterAndAccept();
+                        isCommit = true;
+                    }
                 }
-                keyEvent.forward();
+                if (!isCommit) {
+                    keyEvent.forward();
+                }
             } else {
                 if (uinput_client_fd_ < 0) {
                     std::string rawKey = keyEvent.key().toString();
