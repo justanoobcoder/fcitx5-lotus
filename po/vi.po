@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: fcitx5-lotus\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-26 19:14+0700\n"
-"PO-Revision-Date: 2026-02-26 11:56+0700\n"
+"POT-Creation-Date: 2026-02-27 10:33+0700\n"
+"PO-Revision-Date: 2026-02-27 10:59+0700\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
 "Language: vi\n"
@@ -46,35 +46,35 @@ msgstr "Kiểu gõ"
 msgid "Output Charset"
 msgstr "Bảng mã"
 
-#: src/lotus-config.h:205 src/lotus-engine.cpp:182
+#: src/lotus-config.h:205 src/lotus-engine.cpp:190
 msgid "Enable spell check"
 msgstr "Bật kiểm tra chính tả"
 
-#: src/lotus-config.h:205 src/lotus-engine.cpp:194
+#: src/lotus-config.h:205 src/lotus-engine.cpp:202
 msgid "Enable Macro"
 msgstr "Bật gõ tắt"
 
-#: src/lotus-config.h:206 src/lotus-engine.cpp:206
+#: src/lotus-config.h:206 src/lotus-engine.cpp:214
 msgid "Capitalize Macro"
 msgstr "Gõ tắt chữ hoa"
 
-#: src/lotus-config.h:207 src/lotus-engine.cpp:218
+#: src/lotus-config.h:207 src/lotus-engine.cpp:226
 msgid "Auto restore keys with invalid words"
 msgstr "Tự động khôi phục phím với từ sai"
 
-#: src/lotus-config.h:208 src/lotus-engine.cpp:230
+#: src/lotus-config.h:208 src/lotus-engine.cpp:238
 msgid "Use oà, _uý (instead of òa, úy)"
 msgstr "Sử dụng oà, _uý (thay vì òa, _úy)"
 
-#: src/lotus-config.h:209 src/lotus-engine.cpp:242
+#: src/lotus-config.h:209 src/lotus-engine.cpp:250
 msgid "Allow type with more freedom"
 msgstr "Cho phép gõ dấu tự do"
 
-#: src/lotus-config.h:210 src/lotus-engine.cpp:254
+#: src/lotus-config.h:210 src/lotus-engine.cpp:262
 msgid "Fix uinput mode with ack"
 msgstr "Sửa lỗi chế độ uinput với ack"
 
-#: src/lotus-config.h:211 src/lotus-engine.cpp:266
+#: src/lotus-config.h:211 src/lotus-engine.cpp:274
 msgid "Use Lotus status icons"
 msgstr "Sử dụng biểu tượng trạng thái Lotus"
 
@@ -82,121 +82,121 @@ msgstr "Sử dụng biểu tượng trạng thái Lotus"
 msgid "Mode menu hotkey"
 msgstr "Phím tắt menu chế độ gõ"
 
-#: src/lotus-engine.cpp:100
-msgid "Typing Mode"
-msgstr "Chế Độ Gõ"
-
-#: src/lotus-engine.cpp:154
-msgid "Charset"
-msgstr "Bảng mã"
-
-#: src/lotus-engine.cpp:667
-msgid "Typing Mode: "
-msgstr "Chế Độ Gõ: "
-
-#: src/lotus-engine.cpp:698
-msgid "Spell Check: On"
-msgstr "Kiểm tra chính tả: Bật"
-
-#: src/lotus-engine.cpp:698
-msgid "Spell Check: Off"
-msgstr "Kiểm tra chính tả: Tắt"
-
-#: src/lotus-engine.cpp:706
-msgid "Macro: On"
-msgstr "Gõ tắt: Bật"
-
-#: src/lotus-engine.cpp:706
-msgid "Macro: Off"
-msgstr "Gõ tắt: Tắt"
-
-#: src/lotus-engine.cpp:714
-msgid "Capitalize Macro: On"
-msgstr "Gõ tắt chữ hoa: Bật"
-
-#: src/lotus-engine.cpp:714
-msgid "Capitalize Macro: Off"
-msgstr "Gõ tắt chữ hoa: Tắt"
-
-#: src/lotus-engine.cpp:722
-msgid "Auto Non-VN Restore: On"
-msgstr "Tự động khôi phục với từ không phải tiếng Việt: Bật"
-
-#: src/lotus-engine.cpp:722
-msgid "Auto Non-VN Restore: Off"
-msgstr "Tự động khôi phục với từ không phải tiếng Việt: Tắt"
-
-#: src/lotus-engine.cpp:730
-msgid "Modern Style: On"
-msgstr "Dấu chuẩn: Bật"
-
-#: src/lotus-engine.cpp:730
-msgid "Modern Style: Off"
-msgstr "Dấu chuẩn: Tắt"
-
-#: src/lotus-engine.cpp:738
-msgid "Free Marking: On"
-msgstr "Bỏ dấu tự do: Bật"
-
-#: src/lotus-engine.cpp:738
-msgid "Free Marking: Off"
-msgstr "Bỏ dấu tự do: Tắt"
-
-#: src/lotus-engine.cpp:746
-msgid "Fix Uinput With Ack: On"
-msgstr "Sửa lỗi chế độ uinput với ack: Bật"
-
-#: src/lotus-engine.cpp:746
-msgid "Fix Uinput With Ack: Off"
-msgstr "Sửa lỗi chế độ uinput với ack: Tắt"
-
-#: src/lotus-engine.cpp:754
-msgid "Lotus Icons: On"
-msgstr "Biểu tượng Lotus: Bật"
-
-#: src/lotus-engine.cpp:754
-msgid "Lotus Icons: Off"
-msgstr "Biểu tượng Lotus: Tắt"
-
-#: src/lotus-engine.cpp:834
-msgid "App: "
-msgstr "Ứng dụng: "
-
-#: src/lotus-engine.cpp:835
-msgid "[1] Uinput (Smooth)"
-msgstr "[1] Uinput (Mượt)"
-
-#: src/lotus-engine.cpp:836
-msgid "[2] Uinput (Slow)"
-msgstr "[2] Uinput (chậm)"
-
-#: src/lotus-engine.cpp:837
-msgid "[3] Uinput (Hardcore)"
-msgstr "[3] Uinput (Hardcore)"
-
-#: src/lotus-engine.cpp:838
-msgid "[4] Surrounding Text"
-msgstr "[4] Văn bản xung quanh"
-
-#: src/lotus-engine.cpp:839
-msgid "[Q] Preedit"
-msgstr "[Q] Gạch chân"
-
-#: src/lotus-engine.cpp:840
-msgid "[W] Emoji Picker"
-msgstr "[W] Chọn Emoji"
-
-#: src/lotus-engine.cpp:841
-msgid "[E] OFF"
-msgstr "[E] Tắt"
-
-#: src/lotus-engine.cpp:843
-msgid "[R] Default Typing"
-msgstr "[R] Chế độ gõ mặc định"
-
 #: src/lotus-state.cpp:243
 msgid "Page "
 msgstr "Trang "
+
+#: src/lotus-engine.cpp:108
+msgid "Typing Mode"
+msgstr "Chế Độ Gõ"
+
+#: src/lotus-engine.cpp:162
+msgid "Charset"
+msgstr "Bảng mã"
+
+#: src/lotus-engine.cpp:676
+msgid "Typing Mode: "
+msgstr "Chế Độ Gõ: "
+
+#: src/lotus-engine.cpp:707
+msgid "Spell Check: On"
+msgstr "Kiểm tra chính tả: Bật"
+
+#: src/lotus-engine.cpp:707
+msgid "Spell Check: Off"
+msgstr "Kiểm tra chính tả: Tắt"
+
+#: src/lotus-engine.cpp:715
+msgid "Macro: On"
+msgstr "Gõ tắt: Bật"
+
+#: src/lotus-engine.cpp:715
+msgid "Macro: Off"
+msgstr "Gõ tắt: Tắt"
+
+#: src/lotus-engine.cpp:723
+msgid "Capitalize Macro: On"
+msgstr "Gõ tắt chữ hoa: Bật"
+
+#: src/lotus-engine.cpp:723
+msgid "Capitalize Macro: Off"
+msgstr "Gõ tắt chữ hoa: Tắt"
+
+#: src/lotus-engine.cpp:731
+msgid "Auto Non-VN Restore: On"
+msgstr "Tự động khôi phục với từ không phải tiếng Việt: Bật"
+
+#: src/lotus-engine.cpp:731
+msgid "Auto Non-VN Restore: Off"
+msgstr "Tự động khôi phục với từ không phải tiếng Việt: Tắt"
+
+#: src/lotus-engine.cpp:739
+msgid "Modern Style: On"
+msgstr "Dấu chuẩn: Bật"
+
+#: src/lotus-engine.cpp:739
+msgid "Modern Style: Off"
+msgstr "Dấu chuẩn: Tắt"
+
+#: src/lotus-engine.cpp:747
+msgid "Free Marking: On"
+msgstr "Bỏ dấu tự do: Bật"
+
+#: src/lotus-engine.cpp:747
+msgid "Free Marking: Off"
+msgstr "Bỏ dấu tự do: Tắt"
+
+#: src/lotus-engine.cpp:755
+msgid "Fix Uinput With Ack: On"
+msgstr "Sửa lỗi chế độ uinput với ack: Bật"
+
+#: src/lotus-engine.cpp:755
+msgid "Fix Uinput With Ack: Off"
+msgstr "Sửa lỗi chế độ uinput với ack: Tắt"
+
+#: src/lotus-engine.cpp:763
+msgid "Lotus Icons: On"
+msgstr "Biểu tượng Lotus: Bật"
+
+#: src/lotus-engine.cpp:763
+msgid "Lotus Icons: Off"
+msgstr "Biểu tượng Lotus: Tắt"
+
+#: src/lotus-engine.cpp:843
+msgid "App: "
+msgstr "Ứng dụng: "
+
+#: src/lotus-engine.cpp:844
+msgid "[1] Uinput (Smooth)"
+msgstr "[1] Uinput (Mượt)"
+
+#: src/lotus-engine.cpp:845
+msgid "[2] Uinput (Slow)"
+msgstr "[2] Uinput (chậm)"
+
+#: src/lotus-engine.cpp:846
+msgid "[3] Uinput (Hardcore)"
+msgstr "[3] Uinput (Hardcore)"
+
+#: src/lotus-engine.cpp:847
+msgid "[4] Surrounding Text"
+msgstr "[4] Văn bản xung quanh"
+
+#: src/lotus-engine.cpp:848
+msgid "[Q] Preedit"
+msgstr "[Q] Gạch chân"
+
+#: src/lotus-engine.cpp:849
+msgid "[W] Emoji Picker"
+msgstr "[W] Chọn Emoji"
+
+#: src/lotus-engine.cpp:850
+msgid "[E] OFF"
+msgstr "[E] Tắt"
+
+#: src/lotus-engine.cpp:852
+msgid "[R] Default Typing"
+msgstr "[R] Chế độ gõ mặc định"
 
 #: keymap-editor/editor.cpp:28
 msgid "Import from existing keymap"
@@ -241,3 +241,20 @@ msgstr ""
 #: keymap-editor/editor.cpp:128
 msgid ". Are you sure?"
 msgstr ". Bạn có chắc chắn xoá?"
+
+#: org.fcitx.Fcitx5.Addon.Lotus.metainfo.xml.in.in:7
+msgid "Lotus"
+msgstr "Lotus"
+
+#: org.fcitx.Fcitx5.Addon.Lotus.metainfo.xml.in.in:8
+msgid "Vietnamese input method (Lotus)"
+msgstr "Bộ gõ tiếng Việt (Lotus)"
+
+#: org.fcitx.Fcitx5.Addon.Lotus.metainfo.xml.in.in:10
+msgid ""
+"Lotus is a Vietnamese input method for Fcitx5, supporting multiple typing "
+"modes and input methods."
+msgstr "Lotus là bộ gõ tiếng Việt cho Fcitx5, hỗ trợ nhiều chế độ và kiểu gõ."
+
+msgid "Lotus Wrapper For Fcitx"
+msgstr "Bộ gõ Lotus cho Fcitx"

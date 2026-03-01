@@ -1,3 +1,4 @@
+#!/bin/sh
 msginit \
   --input=po/fcitx5-lotus.pot \
   --locale=vi_VN \

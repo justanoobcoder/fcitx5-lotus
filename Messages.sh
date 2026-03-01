@@ -1,9 +1,33 @@
 #!/bin/bash
 
 xgettext \
-  --language=C++ \
-  --from-code=UTF-8 \
-  --keyword=_ \
-  --keyword=N_ \
-  -o po/fcitx5-lotus.pot \
-  $(find . \( -name "*.cpp" -o -name "*.h" -o -name "*.in" \))
+--language=C++ \
+--from-code=UTF-8 \
+--keyword=_ \
+--keyword=N_ \
+-o /tmp/lotus-cpp.pot \
+$(find . \( -name "*.cpp" -o -name "*.h" \))
+
+xgettext \
+--language=appdata \
+--from-code=UTF-8 \
+-o /tmp/lotus-xml.pot \
+org.fcitx.Fcitx5.Addon.Lotus.metainfo.xml.in.in
+
+{
+    echo 'msgid ""'
+    echo 'msgstr ""'
+    echo '"Content-Type: text/plain; charset=UTF-8\n"'
+    echo ""
+    grep -hE "^Name=" \
+    src/lotus.conf.in \
+    src/lotus-addon.conf.in.in \
+    | sed 's/^Name=\(.*\)/msgid "\1"\nmsgstr ""\n/'
+} > /tmp/lotus-conf.pot
+
+msgcat \
+--use-first \
+/tmp/lotus-cpp.pot \
+/tmp/lotus-xml.pot \
+/tmp/lotus-conf.pot \
+-o po/fcitx5-lotus.pot

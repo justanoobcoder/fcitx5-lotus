@@ -1,1 +1,4 @@
-msgmerge --update po/vi.po po/fcitx5-lotus.pot
+#!/bin/sh
+for po in po/*.po; do
+    msgmerge --update $po po/fcitx5-lotus.pot;
+done
