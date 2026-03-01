@@ -186,10 +186,21 @@ namespace fcitx {
          */
         bool isEmptyHistory();
 
+        /**
+         * @brief Replays keystrokes buffered during replacement.
+         *
+         * When is_deleting_ is true, non-special keystrokes are buffered
+         * instead of being discarded. This method replays them after the
+         * replacement completes.
+         */
+        void replayBufferedKeys();
+
         friend class EmojiCandidateWord;
         friend class LotusEngine;
 
       private:
+        static constexpr size_t MAX_BUFFERED_KEYS = 10;
+
         LotusEngine*            engine_;
         InputContext*           ic_;
         CGoObject               lotusEngine_;
@@ -202,6 +213,7 @@ namespace fcitx {
         std::string             emojiBuffer_;
         std::vector<EmojiEntry> emojiCandidates_;
         bool                    waitAck_ = false;
+        std::vector<KeySym>     buffered_keys_; ///< Keystrokes buffered during replacement
     };
 
 } // namespace fcitx
