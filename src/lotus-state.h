@@ -17,6 +17,7 @@
 
 #include "lotus.h"
 #include "emoji.h"
+#include "lotus-utils.h"
 #include <fcitx-utils/key.h>
 #include <fcitx/inputcontext.h>
 #include <fcitx/inputcontextproperty.h>
@@ -199,7 +200,7 @@ namespace fcitx {
         friend class LotusEngine;
 
       private:
-        static constexpr size_t MAX_BUFFERED_KEYS = 10;
+        static constexpr size_t MAX_BUFFERED_KEYS = 50;
 
         LotusEngine*            engine_;
         InputContext*           ic_;
@@ -213,7 +214,7 @@ namespace fcitx {
         std::string             emojiBuffer_;
         std::vector<EmojiEntry> emojiCandidates_;
         bool                    waitAck_ = false;
-        std::vector<KeySym>     buffered_keys_; ///< Keystrokes buffered during replacement
+        std::vector<KeyEntry>   buffered_keys_; ///< Keystrokes buffered during replacement
     };
 
 } // namespace fcitx
