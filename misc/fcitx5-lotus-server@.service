@@ -8,8 +8,6 @@ Group=input
 
 CapabilityBoundingSet=CAP_SYS_NICE CAP_SYS_PTRACE
 AmbientCapabilities=CAP_SYS_NICE CAP_SYS_PTRACE
-ProtectProc=default
-ProcSubset=all
 
 Type=simple
 
