@@ -7,8 +7,8 @@
  */
 
 #include "lotus-server.h"
+#include "lotus-logger.h"
 
-#include <iostream>
 #include <cstring>
 #include <vector>
 
@@ -21,6 +21,7 @@ std::atomic<bool> g_running{true};
 
 void              signal_handler(int sig) {
     if (sig == SIGTERM || sig == SIGINT) {
+        LOTUS_LOG_INFO("Terminating server...");
         g_running.store(false);
     }
 }
@@ -31,7 +32,9 @@ std::string get_current_username() {
 }
 
 void boost_process_priority() {
-    setpriority(PRIO_PROCESS, 0, -10);
+    if (setpriority(PRIO_PROCESS, 0, -10) != 0) {
+        LOTUS_LOG_ERROR("Failed to boost process priority");
+    }
 }
 
 void pin_to_pcore() {
@@ -39,12 +42,16 @@ void pin_to_pcore() {
     CPU_ZERO(&cpuset);
     for (int i = 0; i <= 3; ++i)
         CPU_SET(i, &cpuset);
-    sched_setaffinity(0, sizeof(cpuset), &cpuset);
+    if (sched_setaffinity(0, sizeof(cpuset), &cpuset) != 0) {
+        LOTUS_LOG_ERROR("Failed to pin process to core");
+    }
 }
 
 void send_single_backspace() {
-    if (uinput_fd_ < 0)
+    if (uinput_fd_ < 0) {
+        LOTUS_LOG_ERROR("Uinput device not initialized");
         return;
+    }
     struct input_event ev[2];
     memset(ev, 0, sizeof(ev));
 
@@ -57,13 +64,13 @@ void send_single_backspace() {
     ev[1].code  = SYN_REPORT;
     ev[1].value = 0;
     if (write(uinput_fd_, ev, sizeof(ev)) < 0) {
-        perror("Failed to write to uinput");
+        LOTUS_LOG_ERROR("Failed to write to uinput: " + std::string(strerror(errno)));
     }
 
     // Release
     ev[0].value = 0;
     if (write(uinput_fd_, ev, sizeof(ev)) < 0) {
-        perror("Failed to write to uinput");
+        LOTUS_LOG_ERROR("Failed to write to uinput: " + std::string(strerror(errno)));
     }
 }
 
@@ -88,6 +95,7 @@ int main(int argc, char* argv[]) {
     } else {
         target_user = get_current_username();
     }
+    LOTUS_LOG_INFO("Target user: " + target_user);
     boost_process_priority();
     pin_to_pcore();
 
@@ -103,9 +111,14 @@ int main(int argc, char* argv[]) {
     mouse_flag_socket += target_user;
     mouse_flag_socket += "-mouse_socket";
 
+    const size_t max_socket_path_length = UNIX_PATH_MAX - 1;
+    backspace_socket.resize(std::min(backspace_socket.length(), max_socket_path_length));
+    mouse_flag_socket.resize(std::min(mouse_flag_socket.length(), max_socket_path_length));
+
     // Setup Uinput
     uinput_fd_ = open("/dev/uinput", O_WRONLY | O_NONBLOCK);
     if (uinput_fd_ >= 0) {
+        LOTUS_LOG_INFO("Uinput device initialized");
         ioctl(uinput_fd_, UI_SET_EVBIT, EV_KEY);
         ioctl(uinput_fd_, UI_SET_KEYBIT, KEY_BACKSPACE);
         struct uinput_setup usetup;
@@ -117,6 +130,9 @@ int main(int argc, char* argv[]) {
         ioctl(uinput_fd_, UI_DEV_SETUP, &usetup);
         ioctl(uinput_fd_, UI_DEV_CREATE);
         sleep(1);
+    } else {
+        LOTUS_LOG_ERROR("Failed to initialize uinput device");
+        return 1;
     }
 
     int                server_fd       = socket(AF_UNIX, SOCK_STREAM | SOCK_NONBLOCK, 0);
@@ -138,12 +154,12 @@ int main(int argc, char* argv[]) {
     socklen_t mouse_len = offsetof(struct sockaddr_un, sun_path) + mouse_flag_socket.length() + 1;
 
     if (bind(server_fd, (struct sockaddr*)&addr_kb, kb_len) != 0) {
-        std::cerr << "Failed to bind socket" << std::endl;
+        LOTUS_LOG_ERROR("Failed to bind socket");
         return 1;
     }
 
     if (bind(mouse_server_fd, (struct sockaddr*)&addr_mouse, mouse_len) != 0) {
-        std::cerr << "Failed to bind socket" << std::endl;
+        LOTUS_LOG_ERROR("Failed to bind socket");
         return 1;
     }
 
@@ -213,11 +229,13 @@ int main(int argc, char* argv[]) {
                 }
 
                 if (strcmp(exe_path, "/usr/bin/fcitx5") == 0) {
+                    LOTUS_LOG_INFO("Fcitx5 connected to keyboard socket (PID: " + std::to_string(cred.pid) + ")");
                     if (fds[3].fd >= 0) {
                         close(fds[3].fd);
                     }
                     fds[3].fd = client_fd;
                 } else {
+                    LOTUS_LOG_WARN("Unauthorized connection attempt from: " + std::string(exe_path));
                     close(client_fd);
                 }
             }
@@ -229,6 +247,7 @@ int main(int argc, char* argv[]) {
             if (fds[3].fd >= 0) {
                 ssize_t n = recv(fds[3].fd, &count, sizeof(count), 0);
                 if (n <= 0) {
+                    LOTUS_LOG_WARN("Keyboard client disconnected or connection error");
                     close(fds[3].fd);
                     fds[3].fd = -1;
                 } else {
@@ -242,6 +261,7 @@ int main(int argc, char* argv[]) {
         if (fds[2].revents & POLLIN) {
             int new_fd = accept4(mouse_server_fd, nullptr, nullptr, SOCK_NONBLOCK);
             if (new_fd >= 0) {
+                LOTUS_LOG_INFO("New mouse flag client connected");
                 if (addon_fd >= 0)
                     close(addon_fd);
                 addon_fd = new_fd;
@@ -263,7 +283,9 @@ int main(int argc, char* argv[]) {
                         }
                     }
                 } else if (type == LIBINPUT_EVENT_DEVICE_ADDED) {
-                    struct libinput_device* dev = libinput_event_get_device(event);
+                    struct libinput_device* dev  = libinput_event_get_device(event);
+                    const char*             name = libinput_device_get_name(dev);
+                    LOTUS_LOG_INFO("Device added: " + std::string(name));
                     if (libinput_device_config_tap_get_finger_count(dev) > 0) {
                         libinput_device_config_tap_set_enabled(dev, LIBINPUT_CONFIG_TAP_ENABLED);
                         libinput_device_config_tap_set_button_map(dev, LIBINPUT_CONFIG_TAP_MAP_LRM);

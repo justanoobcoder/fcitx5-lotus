@@ -8,6 +8,7 @@
 #include "lotus-utils.h"
 #include "lotus-config.h"
 
+#include <cstddef>
 #include <fcitx-utils/utf8.h>
 
 // Global variables
@@ -38,6 +39,8 @@ std::string             buildSocketPath(const char* base_path_suffix) {
     path += (username_c ? username_c : "default");
     path += '-';
     path += base_path_suffix;
+    const size_t max_socket_path_length = UNIX_PATH_MAX - 1;
+    path.resize(std::min(path.length(), max_socket_path_length));
     return path;
 }
 

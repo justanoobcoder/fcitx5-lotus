@@ -17,6 +17,12 @@
 #include <condition_variable>
 #include <mutex>
 #include <atomic>
+#include <sys/un.h>
+
+/**
+ * @brief Maximum length of Unix socket paths.
+*/
+#define UNIX_PATH_MAX sizeof(((struct sockaddr_un*)0)->sun_path)
 
 // Forward declaration for fcitx types
 typedef uint32_t KeySym;
