@@ -293,8 +293,9 @@ namespace fcitx {
         LOTUS_INFO("App name: " + appName);
         LotusMode targetMode;
 
-        if (!appRules_.empty() && appRules_.count(appName)) {
-            targetMode = appRules_[appName];
+        auto      it = appRules_.find(appName);
+        if (it != appRules_.end()) {
+            targetMode = it->second;
         } else {
             targetMode = globalMode_;
         }
@@ -439,8 +440,7 @@ namespace fcitx {
                     break;
                 }
                 case FcitxKey_r: {
-                    if (appRules_.count(currentConfigureApp_)) {
-                        appRules_.erase(currentConfigureApp_);
+                    if (appRules_.erase(currentConfigureApp_) > 0) {
                         saveAppRules();
                     }
                     selectedMode  = globalMode_;
@@ -658,8 +658,7 @@ namespace fcitx {
         candidateList->append(std::make_unique<AppModeCandidateWord>(getLabel(LotusMode::Off, _("[e] OFF")), applyMode(LotusMode::Off)));
 
         candidateList->append(std::make_unique<AppModeCandidateWord>(Text(_("[r] Default Typing")), [this, cleanup](InputContext* ic) {
-            if (appRules_.count(currentConfigureApp_)) {
-                appRules_.erase(currentConfigureApp_);
+            if (appRules_.erase(currentConfigureApp_) > 0) {
                 saveAppRules();
             }
             setMode(globalMode_, ic);
