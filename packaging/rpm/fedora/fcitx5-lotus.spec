@@ -26,6 +26,7 @@ BuildRequires:  golang
 BuildRequires:  libgudev-devel
 
 %{?systemd_requires}
+Requires:       fcitx5-data
 Requires:       fcitx5
 Requires:       hicolor-icon-theme
 

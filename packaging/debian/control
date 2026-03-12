@@ -21,5 +21,5 @@ Standards-Version: 4.6.0
 
 Package: fcitx5-lotus
 Architecture: any
-Depends: fcitx5, udev, hicolor-icon-theme, ${misc:Depends}, ${shlibs:Depends}
+Depends: fcitx5, fcitx5-data, udev, hicolor-icon-theme, ${misc:Depends}, ${shlibs:Depends}
 Description: Vietnamese input method for fcitx5
