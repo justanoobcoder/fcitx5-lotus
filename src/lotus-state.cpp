@@ -70,6 +70,7 @@ namespace fcitx {
             .freeMarking         = *engine_->config().freeMarking,
         };
         EngineSetOption(lotusEngine_.handle(), &option);
+        doubleSpaceConfig_ = *engine_->config().doubleSpaceToPeriod;
     }
 
     bool LotusState::connect_uinput_server() {
@@ -462,7 +463,7 @@ namespace fcitx {
         return false;
     }
 
-    void LotusState::performReplacement(const std::string& deletedPart, const std::string& addedPart) {
+    void LotusState::performReplacement(const std::string& deletedPart, const std::string& addedPart, bool triggerKeyFiltered) {
         LOTUS_INFO("Perform replacement: " + deletedPart + " -> " + addedPart); //NOLINT
         int my_id                = ++current_thread_id_;
         current_backspace_count_ = 0;
@@ -473,7 +474,7 @@ namespace fcitx {
         // The isAutofillCertain function has been optimized to differentiate
         // between browser autofill and AI ghost text.
         int autofillOffset   = isAutofillCertain(surrounding) ? 1 : 0;
-        expected_backspaces_ = static_cast<int>(utf8::length(deletedPart)) + 1 + autofillOffset;
+        expected_backspaces_ = static_cast<int>(utf8::length(deletedPart)) + (triggerKeyFiltered ? 0 : 1) + 1 + autofillOffset;
         replacement_thread_id_.store(my_id, std::memory_order_release);
         replacement_start_ms_.store(now_ms(), std::memory_order_release);
         is_deleting_.store(true, std::memory_order_release);
@@ -594,7 +595,7 @@ namespace fcitx {
             compareAndSplitStrings(oldPreBuffer_, commitStr, commonPrefix, deletedPart, addedPart);
 
             if (!deletedPart.empty()) {
-                performReplacement(deletedPart, addedPart);
+                performReplacement(deletedPart, addedPart, true);
                 keyEvent.filterAndAccept();
             } else {
                 if (!addedPart.empty() && keyUtf8 != addedPart) {
@@ -643,7 +644,7 @@ namespace fcitx {
             compareAndSplitStrings(oldPreBuffer_, commitStr, commonPrefix, deletedPart, addedPart);
 
             if (!deletedPart.empty()) {
-                performReplacement(deletedPart, addedPart);
+                performReplacement(deletedPart, addedPart, true);
             } else if (!addedPart.empty()) {
                 ic_->commitString(addedPart);
                 LOTUS_INFO("Commit: " + addedPart);
@@ -693,7 +694,7 @@ namespace fcitx {
                 }
 
                 keyEvent.filterAndAccept();
-                performReplacement(deletedPart, addedPart);
+                performReplacement(deletedPart, addedPart, true);
                 oldPreBuffer_ = preeditStr;
             }
         }
@@ -842,6 +843,22 @@ namespace fcitx {
         }
     }
 
+    void LotusState::handleDoubleSpaceReplacement() {
+        switch (realMode) {
+            case LotusMode::SurroundingText:
+            case LotusMode::Preedit: {
+                ic_->deleteSurroundingText(-1, 1);
+                ic_->commitString(". ");
+                LOTUS_INFO("Commit: . ");
+                break;
+            }
+            default: { // Uinput, Smooth, etc.
+                performReplacement(" ", ". ", true);
+                break;
+            }
+        }
+    }
+
     void LotusState::keyEvent(KeyEvent& keyEvent) {
         if (!lotusEngine_ || keyEvent.isRelease())
             return;
@@ -877,9 +894,20 @@ namespace fcitx {
             replacement_start_ms_.store(0, std::memory_order_release);
             replayBufferedKeys();
         }
-        if (keyEvent.rawKey().check(FcitxKey_Shift_L) || keyEvent.rawKey().check(FcitxKey_Shift_R))
-            return;
         const KeySym currentSym = keyEvent.rawKey().sym();
+        if (doubleSpaceConfig_ && realMode != LotusMode::Off) {
+            if (currentSym == FcitxKey_space) {
+                if (isPrevSpace_) {
+                    keyEvent.filterAndAccept();
+                    handleDoubleSpaceReplacement();
+                    isPrevSpace_ = false;
+                    return;
+                }
+                isPrevSpace_ = true;
+            } else {
+                isPrevSpace_ = false;
+            }
+        }
 
         switch (realMode) {
             case LotusMode::Uinput: {
@@ -923,6 +951,7 @@ namespace fcitx {
         is_deleting_.store(false);
 
         if (lotusEngine_) {
+            isPrevSpace_ = false;
             if (realMode == LotusMode::Preedit) {
                 EngineCommitPreedit(lotusEngine_.handle());
                 UniqueCPtr<char> commit(EnginePullCommit(lotusEngine_.handle()));
@@ -1053,7 +1082,7 @@ namespace fcitx {
                             buffered_keys_.push_back(keys[j]);
                         }
                     }
-                    performReplacement(deletedPart, addedPart);
+                    performReplacement(deletedPart, addedPart, true);
                     history_.clear();
                     ResetEngine(lotusEngine_.handle());
                     oldPreBuffer_.clear();
@@ -1094,7 +1123,7 @@ namespace fcitx {
                             buffered_keys_.push_back(keys[j]);
                         }
                     }
-                    performReplacement(deletedPart, addedPart);
+                    performReplacement(deletedPart, addedPart, true);
                     history_.clear();
                     ResetEngine(lotusEngine_.handle());
                     oldPreBuffer_.clear();
@@ -1138,7 +1167,7 @@ namespace fcitx {
                             buffered_keys_.push_back(keys[j]);
                         }
                     }
-                    performReplacement(deletedPart, addedPart);
+                    performReplacement(deletedPart, addedPart, true);
                     oldPreBuffer_ = preeditStr;
                     return;
                 }
