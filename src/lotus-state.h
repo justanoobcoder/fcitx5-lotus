@@ -101,8 +101,7 @@ namespace fcitx {
         std::vector<EmojiEntry> emojiCandidates_;
         bool                    waitAck_ = false;
         std::vector<KeyEntry>   buffered_keys_; ///< Keystrokes buffered during replacement
-        bool                    doubleSpaceConfig_ = false;
-        bool                    isPrevSpace_       = false;
+        bool                    isPrevSpace_ = false;
 
         /**
          * @brief Connects to the uinput server.
@@ -173,7 +172,7 @@ namespace fcitx {
          * @param addedPart Text to insert.
          * @param triggerKeyFiltered Whether the triggering key was already filtered.
          */
-        void performReplacement(const std::string& deletedPart, const std::string& addedPart, bool triggerKeyFiltered = false);
+        void performReplacement(const std::string& deletedPart, const std::string& addedPart);
 
         /**
          * @brief Handles the double space to period replacement.
