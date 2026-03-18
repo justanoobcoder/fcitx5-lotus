@@ -200,7 +200,9 @@ namespace fcitx {
         FactoryFor<LotusState>                     factory_;
         std::vector<std::string>                   imNames_;
 
+#ifndef DISABLE_VERSION_ACTION
         std::unique_ptr<SimpleAction>              versionAction_;
+#endif
         std::unique_ptr<SimpleAction>              charsetAction_;
         std::vector<std::unique_ptr<SimpleAction>> charsetSubAction_;
         std::unique_ptr<Menu>                      charsetMenu_;

@@ -46,6 +46,7 @@ add_subdirectory(server)
 add_subdirectory(misc)
 
 if(ENABLE_QT)
+    target_compile_definitions(lotus PRIVATE DISABLE_VERSION_ACTION)
     add_subdirectory(settings-gui)
 endif(ENABLE_QT)
 

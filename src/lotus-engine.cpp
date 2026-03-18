@@ -13,7 +13,9 @@
 #include "lotus-monitor.h"
 #include "lotus-utils.h"
 #include "ack-apps.h"
+#ifndef DISABLE_VERSION_ACTION
 #include "lotus-version.h"
+#endif
 
 #include <fcitx-config/iniparser.h>
 #include <fcitx/menu.h>
@@ -114,11 +116,13 @@ namespace fcitx {
 
         auto& uiManager = instance_->userInterfaceManager();
 
+#ifndef DISABLE_VERSION_ACTION
         versionAction_ = std::make_unique<SimpleAction>();
         versionAction_->setShortText("Lotus " LOTUS_VERSION_STRING);
         versionAction_->setLongText("Lotus Input Method v" LOTUS_VERSION_STRING);
         versionAction_->setIcon("help-about");
         uiManager.registerAction("lotus-version", versionAction_.get());
+#endif
 
         charsetAction_ = std::make_unique<SimpleAction>();
         charsetAction_->setShortText(_("Charset"));
@@ -181,8 +185,11 @@ namespace fcitx {
         }
         appRulesPath_ = configDir + "/lotus-app-rules.conf";
         loadAppRules();
-        toggleActions_ = {versionAction_.get(),         charsetAction_.get(),          spellCheckAction_.get(), macroAction_.get(),
-                          capitalizeMacroAction_.get(), autoNonVnRestoreAction_.get(), settingsAction_.get()};
+        toggleActions_ = {
+#ifndef DISABLE_VERSION_ACTION
+            versionAction_.get(),
+#endif
+            charsetAction_.get(), spellCheckAction_.get(), macroAction_.get(), capitalizeMacroAction_.get(), autoNonVnRestoreAction_.get(), settingsAction_.get()};
     }
 
     void LotusEngine::initToggleAction(std::unique_ptr<SimpleAction>& action, Option<bool>& option, const std::string& actionId, const std::string& iconName,
