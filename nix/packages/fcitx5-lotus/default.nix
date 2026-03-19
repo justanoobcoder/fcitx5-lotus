@@ -9,23 +9,22 @@
   gettext,
   hicolor-icon-theme,
   fcitx5,
-  kdePackages,
   libinput,
   libx11,
-  libcap,
   udev,
   qt6,
+  python3,
 }:
 stdenv.mkDerivation rec {
   pname = "fcitx5-lotus";
-  version = "1.4.2";
+  version = "1.5.1";
 
   src = fetchFromGitHub {
     owner = "LotusInputMethod";
     repo = "fcitx5-lotus";
     rev = "v${version}";
     fetchSubmodules = true;
-    sha256 = "sha256-mn7xlRVuchBQcOwXklKUc+inld/uhdogkpmv2Y++R/0=";
+    sha256 = "sha256-+h1cpxB1g7J/wh5CqggYK8l08rn1pXQxYZPf8DsRKYM=";
   };
 
   nativeBuildInputs = [
@@ -36,14 +35,16 @@ stdenv.mkDerivation rec {
     gettext
     hicolor-icon-theme
     qt6.wrapQtAppsHook
+    (python3.withPackages (ps: with ps; [
+      pyside6
+      dbus-python
+    ]))
   ];
 
   buildInputs = [
     fcitx5
-    kdePackages.fcitx5-qt
     libinput
     libx11
-    libcap
     udev
     qt6.qtbase
   ];
@@ -80,8 +81,13 @@ stdenv.mkDerivation rec {
     fi
   '';
 
+  postFixup = ''
+    patchShebangs $out/share/fcitx5-lotus/settings-gui
+    wrapQtApp $out/bin/fcitx5-lotus-settings
+  '';
+
   meta = with lib; {
-    description = "Fcitx5 Lotus input method";
+    description = "Fcitx5 Lotus input method for Vietnamese typing";
     license = licenses.gpl3;
     platforms = platforms.linux;
   };
