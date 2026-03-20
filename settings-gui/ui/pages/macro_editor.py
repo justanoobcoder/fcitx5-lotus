@@ -93,6 +93,16 @@ class MacroEditorPage(BaseEditorPage):
         input_layout.addWidget(self.btn_add)
         content_layout.addLayout(input_layout)
 
+        # 1b. Search Bar
+        search_layout = QHBoxLayout()
+        self.search_input = QLineEdit()
+        self.search_input.setPlaceholderText(_("Search macros..."))
+        self.search_input.setClearButtonEnabled(True)
+        self.search_input.textChanged.connect(self.on_search_changed)
+        search_layout.addWidget(QLabel(_("Search:")))
+        search_layout.addWidget(self.search_input)
+        content_layout.addLayout(search_layout)
+
         # 2. Table Area
         self.table = QTableWidget(0, 2)
         self.table.setHorizontalHeaderLabels([_("Abbreviation"), _("Expanded Text")])
@@ -209,6 +219,7 @@ class MacroEditorPage(BaseEditorPage):
                 self._apply_row_highlight(row, key)
                 if sort:
                     self.sort_invalid_to_top()
+                self.on_search_changed()  # Re-apply filter
                 self.update_button_states()
                 return
 
@@ -220,6 +231,7 @@ class MacroEditorPage(BaseEditorPage):
         self._apply_row_highlight(row, key)
         if sort:
             self.sort_invalid_to_top()
+        self.on_search_changed()  # Re-apply filter
         self.update_button_states()
         self._on_item_changed()
 
@@ -266,7 +278,20 @@ class MacroEditorPage(BaseEditorPage):
             self.table.setItem(row_idx, 0, QTableWidgetItem(key))
             self.table.setItem(row_idx, 1, QTableWidgetItem(val))
             self._apply_row_highlight(row_idx, key)
+        self.on_search_changed()  # Re-apply filter
         self.blockSignals(False)
+
+    def on_search_changed(self):
+        """Filters the table rows based on the search input."""
+        search_text = self.search_input.text().lower()
+        for row in range(self.table.rowCount()):
+            key_item = self.table.item(row, 0)
+            val_item = self.table.item(row, 1)
+            key = key_item.text().lower() if key_item else ""
+            val = val_item.text().lower() if val_item else ""
+            
+            # Show row if either key or value matches search text
+            self.table.setRowHidden(row, search_text not in key and search_text not in val)
 
     def on_add(self):
         key = self.input_key.text().strip()
