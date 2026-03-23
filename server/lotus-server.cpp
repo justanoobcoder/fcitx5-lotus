@@ -161,12 +161,12 @@ int main(int argc, char* argv[]) {
     listen(mouse_server_fd, 5);
 
     struct udev*     udev = udev_new();
-    struct libinput* li   = libinput_udev_create_context(&interface, NULL, udev);
+    struct libinput* li   = libinput_udev_create_context(&interface, nullptr, udev);
     if (udev == nullptr) {
         LotusLogger::instance().error("Failed to create udev context");
         return 1;
     }
-    if (!li) {
+    if (li == nullptr) {
         LotusLogger::instance().error("Failed to create libinput context");
         udev_unref(udev);
         return 1;

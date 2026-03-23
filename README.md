@@ -34,7 +34,7 @@
       <img src="https://img.shields.io/github/issues/LotusInputMethod/fcitx5-lotus?style=flat&color=red" alt="Issues">
     </a>
     <a href="#contributors-">
-      <img src="https://img.shields.io/badge/all_contributors-5-orange.svg?style=flat-square" alt="All Contributors">
+      <img src="https://img.shields.io/badge/all_contributors-6-orange.svg?style=flat-square" alt="All Contributors">
     </a>
     <a href="https://deepwiki.com/LotusInputMethod/fcitx5-lotus"><img src="https://deepwiki.com/badge.svg" alt="Ask DeepWiki"></a>
   </p>
@@ -315,6 +315,17 @@ Kiểm tra status (nếu thấy active (running) là OK):
 systemctl status fcitx5-lotus-server@$(whoami).service
 ```
 
+Nếu bạn đang dùng **OpenRC** thay vì **systemd**, hãy chạy các lệnh sau:
+```sh
+sudo rc-update add fcitx5-lotus
+sudo ln -s /etc/init.d/fcitx5-lotus /etc/init.d/fcitx5-lotus.$(whoami)
+sudo rc-service fcitx5-lotus.$(whoami) restart
+```
+Để kiểm tra trạng thái dịch vụ:
+```sh
+rc-service fcitx5-lotus.$(whoami) status
+```
+
 ### 2. Thiết lập biến môi trường
 
 Bộ gõ sẽ không hoạt động nếu thiếu các biến này.
@@ -448,7 +459,7 @@ Sau khi đã log out và log in lại:
   <summary><b>Cấu hình thêm cho Wayland (KDE, Hyprland, Chromium-based, Electron)</b></summary>
 
 - **KDE Plasma:** _System Settings_ → _Keyboard_ → _Virtual Keyboard_ → Chọn **Fcitx 5**.
-- **Hyprland:** Thêm dòng sau vào `~/.config/hypr/hyprland.conf`:
+- **Hyprland:** Nếu dùng `ecosystem:enforce_permissions=1` thì phải thêm dòng sau vào `~/.config/hypr/hyprland.conf`:
 
 ```ini
 permission = fcitx5-lotus-server, keyboard, allow
@@ -471,6 +482,20 @@ Thêm dòng sau vào file `~/.config/kanata/kanata.kbd`
   ...
 )
 ```
+
+</details>
+
+<details>
+   <summary><b>Cấu hình thêm cho OpenRC</b></summary>
+
+Thêm dòng sau vào `/etc/environment` để fix lỗi không gõ được trên app x11/xcb trên wayland
+
+```sh
+DBUS_SESSION_BUS_ADDRESS=unix:path=$XDG_RUNTIME_DIR/bus
+```
+Hoặc set env trong config của DE/WM (Khuyên dùng).
+
+Ví dụ Hyprland: `env = DBUS_SESSION_BUS_ADDRESS,unix:path=$XDG_RUNTIME_DIR/bus`
 
 </details>
 
@@ -715,6 +740,7 @@ Cảm ơn những con người tuyệt vời ([chú thích emoji](https://allcon
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/justanoobcoder"><img src="https://avatars.githubusercontent.com/u/57614330?v=4?s=100" width="100px;" alt="Nguyễn Hồng Hiệp"/><br /><sub><b>Nguyễn Hồng Hiệp</b></sub></a><br /><a href="https://github.com/LotusInputMethod/fcitx5-lotus/commits?author=justanoobcoder" title="Documentation">📖</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/Miho1254"><img src="https://avatars.githubusercontent.com/u/83270073?v=4?s=100" width="100px;" alt="Đặng Quang Hiển"/><br /><sub><b>Đặng Quang Hiển</b></sub></a><br /><a href="https://github.com/LotusInputMethod/fcitx5-lotus/commits?author=Miho1254" title="Documentation">📖</a> <a href="https://github.com/LotusInputMethod/fcitx5-lotus/commits?author=Miho1254" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/Zebra2711"><img src="https://avatars.githubusercontent.com/u/89755535?v=4?s=100" width="100px;" alt="Zebra2711"/><br /><sub><b>Zebra2711</b></sub></a><br /><a href="https://github.com/LotusInputMethod/fcitx5-lotus/issues?q=author%3AZebra2711" title="Bug reports">🐛</a> <a href="https://github.com/LotusInputMethod/fcitx5-lotus/commits?author=Zebra2711" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/ductrantrong"><img src="https://avatars.githubusercontent.com/u/96020037?v=4?s=100" width="100px;" alt="ductrantrong"/><br /><sub><b>ductrantrong</b></sub></a><br /><a href="https://github.com/LotusInputMethod/fcitx5-lotus/commits?author=ductrantrong" title="Code">💻</a></td>
     </tr>
   </tbody>
   <tfoot>

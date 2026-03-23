@@ -24,10 +24,10 @@ import (
 	*/
 	"C"
 	"bamboo-core"
-	"runtime/cgo"
-	"unsafe"
 	"os/signal"
+	"runtime/cgo"
 	"syscall"
+	"unsafe"
 )
 import (
 	"bufio"
@@ -58,7 +58,6 @@ func EngineSetRestoreKeyStroke(engine uintptr) {
 	bambooEngine.shouldRestoreKeyStrokes = true
 }
 
-
 //export EnginePullPreedit
 func EnginePullPreedit(engine uintptr) *C.char {
 	bambooEngine, ok := cgo.Handle(engine).Value().(*FcitxBambooEngine)
@@ -86,7 +85,7 @@ func EnginePullCommit(engine uintptr) *C.char {
 	var commitText = bambooEngine.commitText
 	bambooEngine.commitText = ""
 	encodedText := bamboo.Encode(bambooEngine.outputCharset, commitText)
-	return C.CString(encodedText) 
+	return C.CString(encodedText)
 }
 
 //export EngineSetOption

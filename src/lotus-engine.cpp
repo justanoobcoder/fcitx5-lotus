@@ -24,6 +24,7 @@
 #include <fcitx-utils/utf8.h>
 
 #include <atomic>
+#include <cstdlib>
 #include <filesystem>
 #include <fstream>
 
@@ -96,6 +97,8 @@ namespace fcitx {
     }
 
     LotusEngine::LotusEngine(Instance* instance) : instance_(instance), factory_([this](InputContext& ic) { return new LotusState(this, &ic); }) { //NOLINT
+        const char* desktop = std::getenv("XDG_CURRENT_DESKTOP");
+        isGnome_            = (desktop != nullptr) && std::string(desktop).find("GNOME") != std::string::npos;
         startMonitoringOnce();
         Init();
         {
@@ -104,16 +107,6 @@ namespace fcitx {
             imNames_ = std::move(imNames);
         }
         config_.inputMethod.annotation().setList(imNames_);
-#if LOTUS_USE_MODERN_FCITX_API
-        auto fd = StandardPaths::global().open(StandardPathsType::PkgData, "lotus/vietnamese.cm.dict");
-#else
-        auto fd = StandardPath::global().open(StandardPath::Type::PkgData, "lotus/vietnamese.cm.dict", O_RDONLY);
-#endif
-        if (!fd.isValid()) {
-            LOTUS_ERROR("Failed to load dictionary");
-            throw std::runtime_error("Failed to load dictionary");
-        }
-        dictionary_.reset(NewDictionary(fd.release()));
 
         auto& uiManager = instance_->userInterfaceManager();
 
@@ -159,6 +152,8 @@ namespace fcitx {
                          uiManager);
         initToggleAction(autoNonVnRestoreAction_, config_.autoNonVnRestore, "lotus-autonvnrestore", "edit-undo", _("Auto Restore Keys With Invalid Wwords"),
                          _("Auto Non-VN Restore"), uiManager);
+        initToggleAction(enableDictionaryAction_, config_.enableDictionary, "lotus-dictionary", "accessories-dictionary", _("Enable Custom Dictionary"), _("Custom Dictionary"),
+                         uiManager);
 
         settingsAction_ = std::make_unique<SimpleAction>();
         settingsAction_->setShortText(_("Settings"));
@@ -186,7 +181,9 @@ namespace fcitx {
 #ifndef DISABLE_VERSION_ACTION
             versionAction_.get(),
 #endif
-            charsetAction_.get(), spellCheckAction_.get(), macroAction_.get(), capitalizeMacroAction_.get(), autoNonVnRestoreAction_.get(), settingsAction_.get()};
+            charsetAction_.get(),          spellCheckAction_.get(),       macroAction_.get(),   capitalizeMacroAction_.get(),
+            autoNonVnRestoreAction_.get(), enableDictionaryAction_.get(), settingsAction_.get()};
+        emptyCustomKeymap_.customKeymap.setValue(std::vector<lotusKeymap>{});
     }
 
     void LotusEngine::initToggleAction(std::unique_ptr<SimpleAction>& action, Option<bool>& option, const std::string& actionId, const std::string& iconName,
@@ -220,11 +217,50 @@ namespace fcitx {
         }
     }
 
+    const lotusCustomKeymap& LotusEngine::customKeymap() const {
+        if (config_.enableCustomKeymap.value()) {
+            return customKeymap_;
+        }
+        return emptyCustomKeymap_;
+    }
+
     void LotusEngine::reloadConfig() {
         readAsIni(config_, "conf/lotus.conf");
         readAsIni(customKeymap_, CustomKeymapFile);
         readAsIni(macroTables_, MacroTableFile);
         macroTableObject_.reset(newMacroTable(macroTables_));
+        if (config_.enableDictionary.value()) {
+#if LOTUS_USE_MODERN_FCITX_API
+            auto fd = StandardPaths::global().open(StandardPathsType::PkgData, "lotus/vietnamese.cm.dict");
+#else
+            auto fd = StandardPath::global().open(StandardPath::Type::PkgData, "lotus/vietnamese.cm.dict", O_RDONLY);
+#endif
+            if (fd.isValid()) {
+                dictionary_.reset(NewDictionary(fd.release()));
+            }
+        } else {
+#if LOTUS_USE_MODERN_FCITX_API
+            auto paths = StandardPaths::global().locateAll(StandardPathsType::PkgData, "lotus/vietnamese.cm.dict");
+#else
+            auto paths = StandardPath::global().locateAll(StandardPath::Type::PkgData, "lotus/vietnamese.cm.dict");
+#endif
+            for (const auto& p : paths) {
+#if LOTUS_USE_MODERN_FCITX_API
+                if (!isStartsWith(p.string(), "/home/")) {
+                    auto fd = fcitx::UnixFD(::open(p.c_str(), O_RDONLY));
+                    if (fd.isValid()) {
+                        dictionary_.reset(NewDictionary(fd.release()));
+#else
+                if (!isStartsWith(p, "home/")) {
+                    int fd = ::open(p.c_str(), O_RDONLY);
+                    if (fd != -1) {
+                        dictionary_.reset(NewDictionary(fd));
+#endif
+                        break;
+                    }
+                }
+            }
+        }
         loadAppRules();
         populateConfig();
     }
@@ -255,6 +291,7 @@ namespace fcitx {
         updateAction(nullptr, macroAction_, config_.enableMacro, _("Macro"));
         updateAction(nullptr, capitalizeMacroAction_, config_.capitalizeMacro, _("Capitalize Macro"));
         updateAction(nullptr, autoNonVnRestoreAction_, config_.autoNonVnRestore, _("Auto Non-VN Restore"));
+        updateAction(nullptr, enableDictionaryAction_, config_.enableDictionary, _("Custom Dictionary"));
     }
 
     void LotusEngine::setSubConfig(const std::string& path, const RawConfig& config) {
@@ -597,7 +634,9 @@ namespace fcitx {
                 std::string  mode = line.substr(delimiterPos + 1);
                 lotusAppRule rule;
                 rule.app.setValue(app);
-                rule.mode.setValue(std::stoi(mode));
+                try {
+                    rule.mode.setValue(std::stoi(mode));
+                } catch (const std::exception& e) { rule.mode.setValue(0); }
                 rules.push_back(std::move(rule));
             }
         }
@@ -781,7 +820,7 @@ namespace fcitx {
         switch (realMode) {
             case LotusMode::Off: return _("Lotus - Off");
             case LotusMode::Emoji: return "😄";
-            default: return "🪷";
+            default: return isGnome_ ? "vi" : "🪷";
         }
     }
 

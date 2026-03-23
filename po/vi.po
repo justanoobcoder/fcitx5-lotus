@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: fcitx5-lotus\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-18 19:08+0700\n"
-"PO-Revision-Date: 2026-03-18 19:18+0700\n"
+"POT-Creation-Date: 2026-03-23 10:15+0700\n"
+"PO-Revision-Date: 2026-03-23 10:36+0700\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
 "Language: vi\n"
@@ -28,135 +28,164 @@ msgstr "Phím"
 
 #: src/lotus-config.h:177
 msgid "Value"
-msgstr "Giá Trị"
+msgstr "Giá trị"
 
-#: src/lotus-config.h:181 src/lotus-config.h:206 src/lotus-engine.cpp:156
-#: src/lotus-engine.cpp:254
+#: src/lotus-config.h:181 src/lotus-config.h:214 src/lotus-engine.cpp:147
+#: src/lotus-engine.cpp:281
 msgid "Macro"
-msgstr "Gõ Tắt"
+msgstr "Gõ tắt"
 
-#: src/lotus-config.h:185 src/lotus-config.h:207
+#: src/lotus-config.h:185 src/lotus-config.h:215
 msgid "Custom Keymap"
-msgstr "Keymap Tuỳ Chỉnh"
+msgstr "Keymap tuỳ chỉnh"
 
-#: src/lotus-config.h:193
+#: src/lotus-config.h:187
+msgid "App"
+msgstr "App"
+
+#: src/lotus-config.h:187 src/lotus-config.h:198
 msgid "Mode"
-msgstr "Chế Độ"
+msgstr "Chế độ"
 
-#: src/lotus-config.h:195
-msgid "Input Method"
-msgstr "Kiểu Gõ"
-
-#: src/lotus-config.h:196
-msgid "Output Charset"
-msgstr "Bảng Mã"
-
-#: src/lotus-config.h:197 src/lotus-engine.cpp:155
-msgid "Enable Spell Check"
-msgstr "Bật Kiểm Tra Chính Tả"
-
-#: src/lotus-config.h:197 src/lotus-engine.cpp:156
-msgid "Enable Macro"
-msgstr "Bật Gõ Tắt"
-
-#: src/lotus-config.h:198 src/lotus-engine.cpp:157 src/lotus-engine.cpp:255
-msgid "Capitalize Macro"
-msgstr "Gõ Tắt Chữ Hoa"
-
-#: src/lotus-config.h:199
-msgid "Double Space to Period (experimental)"
-msgstr "Phím Cách 2 lần để Chấm Câu (Thử Nghiệm)"
+#: src/lotus-config.h:190
+msgid "Rules"
+msgstr "Quy tắc"
 
 #: src/lotus-config.h:200
-msgid "Auto Restore Keys With Invalid Words"
-msgstr "Tự Động Khôi Phục Phím Với Từ Sai"
+msgid "Input Method"
+msgstr "Kiểu gõ"
 
 #: src/lotus-config.h:201
-msgid "Use oà, uý (Instead Of òa, úy)"
-msgstr "Sử Sụng oà, uý (Thay Vì òa, _úy)"
+msgid "Output Charset"
+msgstr "Bảng mã"
 
-#: src/lotus-config.h:202
-msgid "Allow Type With More Freedom"
-msgstr "Cho Phép Gõ Dấu Tự Do"
+#: src/lotus-config.h:202 src/lotus-engine.cpp:146
+msgid "Enable Spell Check"
+msgstr "Bật kiểm tra chính tả"
 
-#: src/lotus-config.h:203
-msgid "Allow dd To Produce đ When Auto Restore Keys With Invalid Words Is On"
-msgstr ""
-"Cho Phép Gõ dd Thành đ Khi Bật Tự động Khôi Phục Với Từ Không Phải Tiếng Việt"
+#: src/lotus-config.h:202 src/lotus-engine.cpp:147
+msgid "Enable Macro"
+msgstr "Bật gõ tắt"
+
+#: src/lotus-config.h:203 src/lotus-engine.cpp:148 src/lotus-engine.cpp:282
+msgid "Capitalize Macro"
+msgstr "Gõ tắt chữ hoa"
 
 #: src/lotus-config.h:204
-msgid "Fix Uinput Mode With Ack"
-msgstr "Sửa Lỗi Chế Độ Uinput Với Ack"
+msgid ""
+"Auto capitalize after sentence-ending punctuation (. ! ? Enter) "
+"(experimental)"
+msgstr "Tự động ghi hoa sau dấu câu (. ! ? Enter) (thử nghiệm)"
 
 #: src/lotus-config.h:205
-msgid "Use Lotus Status Icons"
-msgstr "Sử Dụng Biểu Tượng Trạng Thái Lotus"
+msgid "Double Space to Period (experimental)"
+msgstr "Phím cách 2 lần để chấm câu (thử nghiệm)"
+
+#: src/lotus-config.h:206
+msgid "Auto Restore Keys With Invalid Words"
+msgstr "Tự động khôi phục phím với từ sai"
+
+#: src/lotus-config.h:207
+msgid "Use oà, uý (Instead Of òa, úy)"
+msgstr "Sử dụng oà, uý (Thay vì òa, úy)"
 
 #: src/lotus-config.h:208
+msgid "Allow Type With More Freedom"
+msgstr "Cho phép gõ dấu tự do"
+
+#: src/lotus-config.h:209
+msgid "Allow dd To Produce đ When Auto Restore Keys With Invalid Words Is On"
+msgstr "Cho phép gõ dd thành đ khi bật Tự động khôi phục với từ sai"
+
+#: src/lotus-config.h:210
+msgid "Fix Uinput Mode With Ack"
+msgstr "Sửa lỗi chế độ Uinput với Ack"
+
+#: src/lotus-config.h:211
+msgid "Use Lotus Status Icons"
+msgstr "Sử dụng biểu tượng trạng thái Lotus"
+
+#: src/lotus-config.h:212 src/lotus-engine.cpp:152
+msgid "Enable Custom Dictionary"
+msgstr "Bật từ điển tuỳ chỉnh"
+
+#: src/lotus-config.h:213
+msgid "Enable Custom Keymap"
+msgstr "Bật keymap tuỳ chỉnh"
+
+#: src/lotus-config.h:216
+msgid "App Rules"
+msgstr "Quy tắc ứng dụng"
+
+#: src/lotus-config.h:217
 msgid "Mode Menu Hotkey"
-msgstr "Phím Tắt Menu Chế Độ Gõ"
+msgstr "Phím tắt menu chế độ gõ"
 
-#: src/lotus-engine.cpp:128
+#: src/lotus-engine.cpp:119
 msgid "Charset"
-msgstr "Bảng Mã"
+msgstr "Bảng mã"
 
-#: src/lotus-engine.cpp:155 src/lotus-engine.cpp:253
+#: src/lotus-engine.cpp:146 src/lotus-engine.cpp:280
 msgid "Spell Check"
-msgstr "Kiểm Tra Chính Tả"
+msgstr "Kiểm tra chính tả"
 
-#: src/lotus-engine.cpp:159
+#: src/lotus-engine.cpp:150
 msgid "Auto Restore Keys With Invalid Wwords"
-msgstr "Tự động Khôi Phục Phím Với Từ Sai"
+msgstr "Tự động khôi phục phím với từ sai"
 
-#: src/lotus-engine.cpp:160 src/lotus-engine.cpp:256
+#: src/lotus-engine.cpp:151 src/lotus-engine.cpp:283
 msgid "Auto Non-VN Restore"
 msgstr "Tự động khôi phục với từ không phải tiếng Việt"
 
-#: src/lotus-engine.cpp:163
+#: src/lotus-engine.cpp:152 src/lotus-engine.cpp:284
+msgid "Custom Dictionary"
+msgstr "Từ điển tuỳ chỉnh"
+
+#: src/lotus-engine.cpp:156
 msgid "Settings"
-msgstr "Cài Đặt"
+msgstr "Cài đặt"
 
-#: src/lotus-engine.cpp:660
+#: src/lotus-engine.cpp:735
 msgid "App: "
-msgstr "Ứng Dụng: "
+msgstr "App: "
 
-#: src/lotus-engine.cpp:661
+#: src/lotus-engine.cpp:736
 msgid "[1] Uinput (Smooth)"
 msgstr "[1] Uinput (Mượt)"
 
-#: src/lotus-engine.cpp:662
+#: src/lotus-engine.cpp:737
 msgid "[2] Uinput (Slow)"
 msgstr "[2] Uinput (Chậm)"
 
-#: src/lotus-engine.cpp:663
+#: src/lotus-engine.cpp:738
 msgid "[3] Uinput (Hardcore)"
-msgstr "[3] Uinput (Hardcore)"
+msgstr "[3] Uinput (Cứng)"
 
-#: src/lotus-engine.cpp:664
+#: src/lotus-engine.cpp:739
 msgid "[4] Surrounding Text"
-msgstr "[4] Văn Bản Xung Quanh"
+msgstr "[4] Văn bản xung quanh"
 
-#: src/lotus-engine.cpp:665
+#: src/lotus-engine.cpp:740
 msgid "[q] Preedit"
 msgstr "[q] Gạch chân"
 
-#: src/lotus-engine.cpp:666
+#: src/lotus-engine.cpp:741
 msgid "[w] Emoji Picker"
 msgstr "[w] Chọn Emoji"
 
-#: src/lotus-engine.cpp:667
+#: src/lotus-engine.cpp:742
 msgid "[e] OFF"
 msgstr "[e] Tắt"
 
-#: src/lotus-engine.cpp:669
+#: src/lotus-engine.cpp:744
 msgid "[r] Default Typing"
-msgstr "[r] Chế Độ Gõ Mặc Định"
+msgstr "[r] Chế độ gõ mặc định"
 
-#: src/lotus-engine.cpp:684
+#: src/lotus-engine.cpp:756
 msgid "Type"
 msgstr "Gõ"
 
-#: src/lotus-engine.cpp:739
+#: src/lotus-engine.cpp:811
 msgid "Lotus - Off"
 msgstr "Lotus - Tắt"
 
@@ -175,7 +204,7 @@ msgid ""
 msgstr "Lotus là bộ gõ tiếng Việt cho Fcitx5, hỗ trợ nhiều chế độ và kiểu gõ."
 
 msgid "Lotus Wrapper For Fcitx"
-msgstr "Bộ Gõ Lotus Cho Fcitx"
+msgstr "Bộ gõ Lotus cho Fcitx"
 
 #: settings-gui/ui/pages/about.py:79
 msgid ""
@@ -187,15 +216,15 @@ msgstr ""
 
 #: settings-gui/ui/pages/about.py:96
 msgid "Report Bug"
-msgstr "Báo Cáo Lỗi"
+msgstr "Báo cáo lỗi"
 
 #: settings-gui/ui/pages/about.py:101
 msgid "Request Feature"
-msgstr "Đề Xuất Tính Năng"
+msgstr "Đề xuất tính năng"
 
 #: settings-gui/ui/pages/about.py:111
 msgid "Export Debug Logs"
-msgstr "Xuất Nhật Ký Gỡ Lỗi"
+msgstr "Xuất nhật ký gỡ lỗi"
 
 #: settings-gui/ui/pages/about.py:123
 msgid "DEVELOPED BY"
@@ -207,202 +236,433 @@ msgstr "Được cấp phép dưới Giấy phép Công cộng GNU v3.0"
 
 #: settings-gui/ui/pages/about.py:167
 msgid "Save Debug Log"
-msgstr "Lưu Nhật Ký Gỡ Lỗi"
+msgstr "Lưu nhật ký gỡ lỗi"
 
-#: settings-gui/ui/pages/about.py:206
-#: settings-gui/ui/pages/keymap_editor.py:354
-#: settings-gui/ui/pages/macro_editor.py:206 settings-gui/ui/main_window.py:229
+#: settings-gui/ui/pages/about.py:206 settings-gui/ui/pages/dict_editor.py:247
+#: settings-gui/ui/pages/keymap_editor.py:409
+#: settings-gui/ui/pages/macro_editor.py:235
+#: settings-gui/ui/pages/mode_manager.py:774 settings-gui/ui/main_window.py:256
 msgid "Success"
-msgstr "Thành Công"
+msgstr "Thành công"
 
 #: settings-gui/ui/pages/about.py:206
 msgid "Debug logs exported successfully to:\n"
-msgstr "Nhật Ký Gỡ Lỗi Được Xuất Thành Công Vào:\n"
+msgstr "Nhật ký gỡ lỗi được xuất thành công vào:\n"
 
-#: settings-gui/ui/pages/about.py:208
+#: settings-gui/ui/pages/about.py:208 settings-gui/ui/pages/dict_editor.py:249
+#: settings-gui/ui/pages/mode_manager.py:677
+#: settings-gui/ui/pages/mode_manager.py:761
+#: settings-gui/ui/pages/mode_manager.py:778
 msgid "Error"
 msgstr "Lỗi"
 
 #: settings-gui/ui/pages/about.py:208
 msgid "Failed to export logs:\n"
-msgstr "Xuất Nhật Ký Gỡ Lỗi Thất Bại\n"
+msgstr "Xuất nhật ký gỡ lỗi thất bại\n"
 
-#: settings-gui/ui/pages/dynamic_settings.py:114
-msgid "Failed to load configuration."
-msgstr "Tải cấu hình thất bại."
+#: settings-gui/ui/pages/dict_editor.py:72
+msgid ""
+"Words in the custom dictionary will be protected from 'Auto Restore'. Use "
+"this for names, technical terms, or words not yet in the standard dictionary."
+msgstr ""
+"Các từ trong từ điển tuỳ chỉnh sẽ được bảo vệ trong tuỳ chọn \"Tự động khôi "
+"phục với từ sai'. Sử dụng nó cho các tên, thuật ngữ kỹ thuật, hoặc các từ "
+"không có trong từ điển cơ bản."
 
-#: settings-gui/ui/pages/dynamic_settings.py:162
-msgid "No interface settings available yet."
-msgstr "Không có cài đặt nào hiện khả dụng."
+#: settings-gui/ui/pages/dict_editor.py:86
+msgid "Search words..."
+msgstr "Tìm từ..."
 
-#: settings-gui/ui/pages/keymap_editor.py:240
-#: settings-gui/ui/main_window.py:172
-msgid "Keymap"
-msgstr "Keymap"
+#: settings-gui/ui/pages/dict_editor.py:90
+#: settings-gui/ui/pages/keymap_editor.py:262
+#: settings-gui/ui/pages/macro_editor.py:72
+msgid "Search:"
+msgstr "Tìm:"
 
-#: settings-gui/ui/pages/keymap_editor.py:247
-msgid "Original Input Method:"
-msgstr "Kiểu Gõ Gốc:"
+#: settings-gui/ui/pages/dict_editor.py:105
+msgid "Word (e.g. khongdau)"
+msgstr "Từ (ví dụ: khongdau)"
 
-#: settings-gui/ui/pages/keymap_editor.py:254
-msgid "Apply Preset"
-msgstr "Áp Dụng Cài Đặt Sẵn"
-
-#: settings-gui/ui/pages/keymap_editor.py:271
-msgid "Key (Example: s)"
-msgstr "Phím (Ví Dụ: s)"
-
-#: settings-gui/ui/pages/keymap_editor.py:279
-#: settings-gui/ui/pages/macro_editor.py:88
-#: settings-gui/ui/pages/macro_editor.py:248
+#: settings-gui/ui/pages/dict_editor.py:109
+#: settings-gui/ui/pages/dict_editor.py:322
+#: settings-gui/ui/pages/keymap_editor.py:301
+#: settings-gui/ui/pages/macro_editor.py:95
+#: settings-gui/ui/pages/macro_editor.py:365
 msgid "Add"
 msgstr "Thêm"
 
-#: settings-gui/ui/pages/keymap_editor.py:280
-msgid "Add / Update Keymap"
-msgstr "Thêm / Cập Nhật Keymap"
+#: settings-gui/ui/pages/dict_editor.py:113
+msgid "Word:"
+msgstr "Từ:"
 
-#: settings-gui/ui/pages/keymap_editor.py:290
-msgid "Action"
-msgstr "Hành Động"
-
-#: settings-gui/ui/pages/keymap_editor.py:306
-#: settings-gui/ui/pages/macro_editor.py:117
+#: settings-gui/ui/pages/dict_editor.py:135
+#: settings-gui/ui/pages/keymap_editor.py:328
+#: settings-gui/ui/pages/macro_editor.py:125
+#: settings-gui/ui/pages/mode_manager.py:355
 msgid "Remove"
 msgstr "Xoá"
 
-#: settings-gui/ui/pages/keymap_editor.py:307
-msgid "Remove selected row"
-msgstr "Xoá Dòng Đang Chọn"
+#: settings-gui/ui/pages/dict_editor.py:247
+msgid "Dictionary saved successfully to local storage."
+msgstr "Từ điển đã được lưu thành công."
 
-#: settings-gui/ui/pages/keymap_editor.py:310
-#: settings-gui/ui/pages/macro_editor.py:123
-msgid "Import"
-msgstr "Nhập"
+#: settings-gui/ui/pages/dict_editor.py:276
+#: settings-gui/ui/pages/dict_editor.py:309
+msgid "Warning: Dictionary words should not contain spaces."
+msgstr "Cảnh báo: Từ trong từ điển không chứa dấu cách."
 
-#: settings-gui/ui/pages/keymap_editor.py:311
-#: settings-gui/ui/pages/keymap_editor.py:491
-#: settings-gui/ui/pages/macro_editor.py:124
-#: settings-gui/ui/pages/macro_editor.py:317
+#: settings-gui/ui/pages/dict_editor.py:318
+msgid "Exists"
+msgstr "Đã tồn tại"
+
+#: settings-gui/ui/pages/dict_editor.py:348
+msgid "Import Custom Dictionary"
+msgstr "Nhập từ điển tuỳ chỉnh"
+
+#: settings-gui/ui/pages/dict_editor.py:350
+msgid "Dictionary files (*.tsv *.txt);;All files (*)"
+msgstr "Tệp từ điển (*.tsv *.txt);; Tất cả tệp (*)"
+
+#: settings-gui/ui/pages/dict_editor.py:371
+#: settings-gui/ui/pages/keymap_editor.py:524
+#: settings-gui/ui/pages/macro_editor.py:410
+#: settings-gui/ui/pages/mode_manager.py:707
+msgid "Confirm Import"
+msgstr "Xác nhận nhập"
+
+#: settings-gui/ui/pages/dict_editor.py:373
+msgid ""
+"The current dictionary is not empty. Imported entries will be merged. "
+"Continue?"
+msgstr "Từ điển hiện tại không rỗng. Các mục nhập sẽ được gộp. Tiếp tục?"
+
+#: settings-gui/ui/pages/dict_editor.py:392
+#: settings-gui/ui/pages/keymap_editor.py:554
+#: settings-gui/ui/pages/macro_editor.py:427
+#: settings-gui/ui/pages/mode_manager.py:727
+msgid "Import Complete"
+msgstr "Nhập thành công"
+
+#: settings-gui/ui/pages/dict_editor.py:399
+#: settings-gui/ui/pages/keymap_editor.py:333
+#: settings-gui/ui/pages/keymap_editor.py:562
+#: settings-gui/ui/pages/macro_editor.py:132
+#: settings-gui/ui/pages/macro_editor.py:434
+#: settings-gui/ui/pages/mode_manager.py:735
 msgid "Export"
 msgstr "Xuất"
 
-#: settings-gui/ui/pages/keymap_editor.py:354
+#: settings-gui/ui/pages/dict_editor.py:399
+msgid "The custom dictionary is empty, nothing to export."
+msgstr "Từ điển tuỳ chỉnh đang rỗng, không có gì để xuất."
+
+#: settings-gui/ui/pages/dict_editor.py:404
+msgid "Export Custom Dictionary"
+msgstr "Xuất từ điển tuỳ chỉnh"
+
+#: settings-gui/ui/pages/dict_editor.py:406
+#: settings-gui/ui/pages/keymap_editor.py:570
+#: settings-gui/ui/pages/macro_editor.py:441
+#: settings-gui/ui/pages/mode_manager.py:668
+#: settings-gui/ui/pages/mode_manager.py:743
+msgid "Tab-separated (*.tsv);;Text files (*.txt);;All files (*)"
+msgstr "Phân cách tab (*.tsv);; Tệp văn bản (*txt);; Tất cả tệp (*)"
+
+#: settings-gui/ui/pages/dict_editor.py:417
+#: settings-gui/ui/pages/keymap_editor.py:587
+#: settings-gui/ui/pages/macro_editor.py:455
+#: settings-gui/ui/pages/mode_manager.py:757
+msgid "Export Complete"
+msgstr "Xuất hoàn tất"
+
+#: settings-gui/ui/pages/dynamic_settings.py:117
+msgid "Failed to load configuration."
+msgstr "Tải cấu hình thất bại."
+
+#: settings-gui/ui/pages/dynamic_settings.py:165
+msgid "No interface settings available yet."
+msgstr "Không có cài đặt nào hiện khả dụng."
+
+#: settings-gui/ui/pages/keymap_editor.py:242
+#: settings-gui/ui/main_window.py:194
+msgid "Keymap"
+msgstr "Keymap"
+
+#: settings-gui/ui/pages/keymap_editor.py:258
+msgid "Search keys..."
+msgstr "Tìm phím..."
+
+#: settings-gui/ui/pages/keymap_editor.py:268
+msgid "Original Input Method:"
+msgstr "Kiểu gõ gốc:"
+
+#: settings-gui/ui/pages/keymap_editor.py:274
+msgid "Apply Preset"
+msgstr "Áp dụng cài đặt sẵn"
+
+#: settings-gui/ui/pages/keymap_editor.py:293
+msgid "Key (Example: s)"
+msgstr "Phím (Ví dụ: s)"
+
+#: settings-gui/ui/pages/keymap_editor.py:302
+msgid "Add / Update Keymap"
+msgstr "Thêm / Cập Nhật Keymap"
+
+#: settings-gui/ui/pages/keymap_editor.py:312
+msgid "Action"
+msgstr "Hành động"
+
+#: settings-gui/ui/pages/keymap_editor.py:329
+msgid "Remove selected row"
+msgstr "Xoá dòng đang chọn"
+
+#: settings-gui/ui/pages/keymap_editor.py:332
+#: settings-gui/ui/pages/macro_editor.py:131
+msgid "Import"
+msgstr "Nhập"
+
+#: settings-gui/ui/pages/keymap_editor.py:409
 msgid "Keymap saved successfully."
 msgstr "Keymap đã được lưu thành công."
 
-#: settings-gui/ui/pages/keymap_editor.py:378
+#: settings-gui/ui/pages/keymap_editor.py:449
 msgid "Confirm"
 msgstr "Xác nhận"
 
-#: settings-gui/ui/pages/keymap_editor.py:379
+#: settings-gui/ui/pages/keymap_editor.py:450
 msgid "This operation will replace all existing keys with "
 msgstr "Việc này sẽ thay thế mọi phím sẵn có với "
 
-#: settings-gui/ui/pages/keymap_editor.py:381
+#: settings-gui/ui/pages/keymap_editor.py:452
 msgid ". Are you sure?"
-msgstr ". Bạn có chắc chắn xoá?"
+msgstr ". Bạn có chắc chắn?"
 
-#: settings-gui/ui/pages/keymap_editor.py:422
+#: settings-gui/ui/pages/keymap_editor.py:493
 msgid "Import Keymap"
 msgstr "Nhập Keymap"
 
-#: settings-gui/ui/pages/keymap_editor.py:424
-#: settings-gui/ui/pages/keymap_editor.py:499
-#: settings-gui/ui/pages/macro_editor.py:264
-#: settings-gui/ui/pages/macro_editor.py:324
+#: settings-gui/ui/pages/keymap_editor.py:495
+#: settings-gui/ui/pages/macro_editor.py:381
 msgid "Tab-separated (*.tsv *.txt);;All files (*)"
 msgstr "Phân cách tab (*.tsv *.txt);; Tất cả tệp (*)"
 
-#: settings-gui/ui/pages/keymap_editor.py:453
-#: settings-gui/ui/pages/macro_editor.py:293
-msgid "Confirm Import"
-msgstr "Xác Nhận Nhập"
-
-#: settings-gui/ui/pages/keymap_editor.py:454
+#: settings-gui/ui/pages/keymap_editor.py:525
 msgid "Merge imported entries?"
 msgstr "Gộp các mục đã nhập?"
 
-#: settings-gui/ui/pages/keymap_editor.py:483
-#: settings-gui/ui/pages/macro_editor.py:310
-msgid "Import Complete"
-msgstr "Nhập Thành Công"
-
-#: settings-gui/ui/pages/keymap_editor.py:491
+#: settings-gui/ui/pages/keymap_editor.py:562
 msgid "The keymap list is empty, nothing to export."
 msgstr "Danh sách keymap trống, không có gì để xuất."
 
-#: settings-gui/ui/pages/keymap_editor.py:497
+#: settings-gui/ui/pages/keymap_editor.py:568
 msgid "Export Keymap"
 msgstr "Xuất Keymap"
 
-#: settings-gui/ui/pages/keymap_editor.py:516
-#: settings-gui/ui/pages/macro_editor.py:338
-msgid "Export Complete"
-msgstr "Xuất Hoàn Tất"
-
-#: settings-gui/ui/pages/macro_editor.py:54 settings-gui/ui/main_window.py:167
+#: settings-gui/ui/pages/macro_editor.py:52 settings-gui/ui/main_window.py:184
 msgid "Macros"
-msgstr "Gõ Tắt"
+msgstr "Gõ tắt"
 
-#: settings-gui/ui/pages/macro_editor.py:80
+#: settings-gui/ui/pages/macro_editor.py:68
+msgid "Search macros..."
+msgstr "Tìm từ gõ tắt..."
+
+#: settings-gui/ui/pages/macro_editor.py:87
 msgid "Abbreviation (e.g. kg)"
 msgstr "Từ viết tắt (ví dụ: kg)"
 
-#: settings-gui/ui/pages/macro_editor.py:84
+#: settings-gui/ui/pages/macro_editor.py:91
 msgid "Full text (e.g. khô gà)"
 msgstr "Từ đầy đủ (ví dụ: khô gà)"
 
-#: settings-gui/ui/pages/macro_editor.py:92
+#: settings-gui/ui/pages/macro_editor.py:100
 msgid "Key:"
 msgstr "Khoá:"
 
-#: settings-gui/ui/pages/macro_editor.py:94
+#: settings-gui/ui/pages/macro_editor.py:102
 msgid "Value:"
-msgstr "Giá Trị:"
+msgstr "Giá trị:"
 
-#: settings-gui/ui/pages/macro_editor.py:101
+#: settings-gui/ui/pages/macro_editor.py:109
 msgid "Abbreviation"
 msgstr "Từ viết tắt"
 
-#: settings-gui/ui/pages/macro_editor.py:101
+#: settings-gui/ui/pages/macro_editor.py:109
 msgid "Expanded Text"
-msgstr "Từ Đầy Đủ"
+msgstr "Từ đầy đủ"
 
-#: settings-gui/ui/pages/macro_editor.py:119
+#: settings-gui/ui/pages/macro_editor.py:127
 msgid "Move Up"
-msgstr "Di Chuyển Lên"
+msgstr "Chuyển lên"
 
-#: settings-gui/ui/pages/macro_editor.py:121
+#: settings-gui/ui/pages/macro_editor.py:129
 msgid "Move Down"
-msgstr "Di Chuyển Xuống"
+msgstr "Chuyển xuống"
 
-#: settings-gui/ui/pages/macro_editor.py:206
+#: settings-gui/ui/pages/macro_editor.py:235
 msgid "Macros saved successfully."
 msgstr "Bảng gõ tắt đã được lưu thành công."
 
-#: settings-gui/ui/pages/macro_editor.py:245
-msgid "Update"
-msgstr "Cập Nhật"
+#: settings-gui/ui/pages/macro_editor.py:278
+#: settings-gui/ui/pages/macro_editor.py:348
+msgid "Warning: Macro key should not contain spaces or special characters."
+msgstr "Cảnh báo: từ gõ tắt không được chứa phím cách hoặc ký tự đặc biệt."
 
-#: settings-gui/ui/pages/macro_editor.py:262
+#: settings-gui/ui/pages/macro_editor.py:362
+msgid "Update"
+msgstr "Cập nhật"
+
+#: settings-gui/ui/pages/macro_editor.py:379
 msgid "Import Macros"
 msgstr "Nhập bảng gõ tắt"
 
-#: settings-gui/ui/pages/macro_editor.py:295
+#: settings-gui/ui/pages/macro_editor.py:412
 msgid ""
 "The current macro list is not empty. Imported entries will be merged. "
 "Continue?"
 msgstr ""
 "Danh sách gõ tắt hiện tại không rỗng. Các mục nhập sẽ được gộp. Tiếp tục?"
 
-#: settings-gui/ui/pages/macro_editor.py:317
+#: settings-gui/ui/pages/macro_editor.py:434
 msgid "The macro list is empty, nothing to export."
 msgstr "Danh sách gõ tắt đang rỗng, không có gì để xuất."
 
-#: settings-gui/ui/pages/macro_editor.py:322
+#: settings-gui/ui/pages/macro_editor.py:439
 msgid "Export Macros"
 msgstr "Xuất bảng gõ tắt"
+
+#: settings-gui/ui/pages/mode_manager.py:45
+msgid "Default"
+msgstr "Mặc định"
+
+#: settings-gui/ui/pages/mode_manager.py:46
+msgid "Off"
+msgstr "Tắt"
+
+#: settings-gui/ui/pages/mode_manager.py:47
+msgid "Uinput (Smooth)"
+msgstr "Uinput (Mượt)"
+
+#: settings-gui/ui/pages/mode_manager.py:48
+msgid "Uinput (Slow)"
+msgstr "Uinput (Chậm)"
+
+#: settings-gui/ui/pages/mode_manager.py:49
+msgid "Uinput (Hardcore)"
+msgstr "Uinput (Cứng)"
+
+#: settings-gui/ui/pages/mode_manager.py:50
+msgid "Surrounding Text"
+msgstr "Văn bản xung quanh"
+
+#: settings-gui/ui/pages/mode_manager.py:51
+msgid "Preedit"
+msgstr "Gạch chân"
+
+#: settings-gui/ui/pages/mode_manager.py:52
+msgid "Emoji Picker"
+msgstr "Chọn Emoji"
+
+#: settings-gui/ui/pages/mode_manager.py:118
+#: settings-gui/ui/pages/mode_manager.py:131
+#: settings-gui/ui/pages/mode_manager.py:354
+msgid "Add Application"
+msgstr "Thêm ứng dụng"
+
+#: settings-gui/ui/pages/mode_manager.py:133
+msgid "Assign a specific input mode to an application"
+msgstr "Gán một chế độ gõ cụ thể cho một ứng dụng"
+
+#: settings-gui/ui/pages/mode_manager.py:148
+msgid "Search process name..."
+msgstr "Tìm tên tiến trình..."
+
+#: settings-gui/ui/pages/mode_manager.py:152
+msgid "Refresh Process List"
+msgstr "Làm mới danh sách tiến trình"
+
+#: settings-gui/ui/pages/mode_manager.py:166
+msgid "Running"
+msgstr "Đang chạy"
+
+#: settings-gui/ui/pages/mode_manager.py:172
+msgid "Enter application name or path..."
+msgstr "Nhập tên ứng dụng hoặc đường dẫn..."
+
+#: settings-gui/ui/pages/mode_manager.py:176
+msgid "Manual input"
+msgstr "Nhập thủ công"
+
+#: settings-gui/ui/pages/mode_manager.py:180
+msgid "No application selected"
+msgstr "Không có ứng dụng được chọn"
+
+#: settings-gui/ui/pages/mode_manager.py:183 settings-gui/ui/main_window.py:149
+msgid "&Cancel"
+msgstr "&Huỷ"
+
+#: settings-gui/ui/pages/mode_manager.py:186
+msgid "&Add"
+msgstr "&Thêm"
+
+#: settings-gui/ui/pages/mode_manager.py:303
+msgid "Selected:"
+msgstr "Được chọn:"
+
+#: settings-gui/ui/pages/mode_manager.py:343
+msgid "Search applications..."
+msgstr "Tìm ứng dụng..."
+
+#: settings-gui/ui/pages/mode_manager.py:376 settings-gui/ui/main_window.py:179
+msgid "Applications"
+msgstr "Ứng dụng"
+
+#: settings-gui/ui/pages/mode_manager.py:383
+msgid "Global Default Mode:"
+msgstr "Chế độ toàn cục mặc định:"
+
+#: settings-gui/ui/pages/mode_manager.py:405
+msgid "Select an application"
+msgstr "Tìm một ứng dụng"
+
+#: settings-gui/ui/pages/mode_manager.py:633
+msgid "Confirm Remove"
+msgstr "Xác nhận xoá"
+
+#: settings-gui/ui/pages/mode_manager.py:634
+msgid "Are you sure you want to remove rules for this application?"
+msgstr "Bạn có chắc chắn muốn xoá quy tắc cho ứng dụng này?"
+
+#: settings-gui/ui/pages/mode_manager.py:666
+msgid "Import Application Rules"
+msgstr "Nhập quy tắc ứng dụng"
+
+#: settings-gui/ui/pages/mode_manager.py:677
+msgid "Cannot open file for reading:"
+msgstr "Không thể mở tệp để đọc:"
+
+#: settings-gui/ui/pages/mode_manager.py:708
+msgid "Merge imported application rules?"
+msgstr "Gộp các quy tắc ứng dụng đã nhập?"
+
+#: settings-gui/ui/pages/mode_manager.py:735
+msgid "The application rules list is empty, nothing to export."
+msgstr "Danh sách quy tắc ứng dụng đang rỗng, không có gì để xuất."
+
+#: settings-gui/ui/pages/mode_manager.py:741
+msgid "Export Application Rules"
+msgstr "Xuất quy tắc ứng dụng"
+
+#: settings-gui/ui/pages/mode_manager.py:761
+msgid "Cannot open file for writing:"
+msgstr "Không thể mở file để ghi:"
+
+#: settings-gui/ui/pages/mode_manager.py:774
+msgid "Application rules saved successfully."
+msgstr "Quy tắc ứng dụng đã được lưu thành công."
+
+#: settings-gui/ui/pages/mode_manager.py:778
+msgid "Failed to save app rules:"
+msgstr "Lưu quy tắc ứng dụng thất bại:"
 
 #: settings-gui/ui/components.py:46 settings-gui/ui/components.py:56
 msgid "None"
@@ -412,125 +672,66 @@ msgstr "Rỗng"
 msgid "[ Recording... ]"
 msgstr "[ Đang ghi lại... ]"
 
-#: settings-gui/ui/main_window.py:40
+#: settings-gui/ui/main_window.py:41
 msgid "Lotus Settings"
-msgstr "Cài Đặt Lotus"
+msgstr "Cài đặt Lotus"
 
-#: settings-gui/ui/main_window.py:131
+#: settings-gui/ui/main_window.py:133
 msgid "&Reset"
-msgstr "&Cài Đặt Lại"
+msgstr "&Cài đặt lại"
 
 #: settings-gui/ui/main_window.py:137
-msgid "&Cancel"
-msgstr "&Huỷ"
+msgid "&Import"
+msgstr "&Nhập"
 
 #: settings-gui/ui/main_window.py:142
-msgid "&Apply"
-msgstr "&Áp Dụng"
+msgid "&Export"
+msgstr "&Xuất"
 
-#: settings-gui/ui/main_window.py:147
+#: settings-gui/ui/main_window.py:154
+msgid "&Apply"
+msgstr "&Áp dụng"
+
+#: settings-gui/ui/main_window.py:159
 msgid "&OK"
 msgstr "&OK"
 
-#: settings-gui/ui/main_window.py:157
+#: settings-gui/ui/main_window.py:169
 msgid "General"
-msgstr "Chung"
+msgstr "Tổng quan"
 
-#: settings-gui/ui/main_window.py:162
+#: settings-gui/ui/main_window.py:174
 msgid "Typing"
 msgstr "Nhập liệu"
 
-#: settings-gui/ui/main_window.py:177
-msgid "Appearance"
-msgstr "Vẻ bề ngoài"
-
 #: settings-gui/ui/main_window.py:189
+msgid "Dictionary"
+msgstr "Từ điển"
+
+#: settings-gui/ui/main_window.py:199
+msgid "Appearance"
+msgstr "Giao diện"
+
+#: settings-gui/ui/main_window.py:211
 msgid "About"
-msgstr "Về"
+msgstr "Giới thiệu"
 
-#: settings-gui/ui/main_window.py:197
+#: settings-gui/ui/main_window.py:219
 msgid "Confirm Reset"
-msgstr "Xác Nhận Cài Đặt Lại"
+msgstr "Xác nhận cài đặt lại"
 
-#: settings-gui/ui/main_window.py:198
+#: settings-gui/ui/main_window.py:220
 msgid "Are you sure you want to restore all settings to their default values?"
 msgstr "Bạn có chắc chắn muốn khôi phục tất cả cài đặt về giá trị mặc định?"
 
-#: settings-gui/ui/main_window.py:229
+#: settings-gui/ui/main_window.py:256
 msgid "All settings applied successfully."
 msgstr "Tất cả cài đặt đã được áp dụng thành công."
 
 #: settings-gui/org.fcitx.Fcitx5.Addon.Lotus.Settings.desktop.in:2
 msgid "Fcitx5 Lotus Settings"
-msgstr "Cài Đặt Fcitx5 Lotus"
+msgstr "Cài đặt Fcitx5 Lotus"
 
 #: settings-gui/org.fcitx.Fcitx5.Addon.Lotus.Settings.desktop.in:3
 msgid "Configure Fcitx5 Lotus Input Method"
-msgstr "Tuỳ Biến Bộ Gõ Fcitx5 Lotus"
-
-#~ msgid "Options"
-#~ msgstr "Tuỳ chọn"
-
-#~ msgid "Original Input Method"
-#~ msgstr "Kiểu Gõ Gốc"
-
-#~ msgid "Import From Existing Keymap"
-#~ msgstr "Nhập Từ Keymap Có Sẵn"
-
-#~ msgid "Save to File"
-#~ msgstr "Lưu vào File"
-
-#~ msgid ""
-#~ "This operation will delete all existing keys on the current keymap and "
-#~ "replace them with the input method "
-#~ msgstr ""
-#~ "Hành động này sẽ xoá tất cả phím của keymap hiện tại và thế nó với keymap "
-#~ "của kiểu gõ "
-
-#~ msgid ""
-#~ "The current keymap list is not empty. Imported entries will be merged "
-#~ "(existing keys will be updated). Continue?"
-#~ msgstr ""
-#~ "Keymap hiện tại không rỗng. Các mục nhập sẽ được gộp (mục hiện có sẽ được "
-#~ "cập nhật). Tiếp tục?"
-
-#~ msgid "Abbr."
-#~ msgstr "Từ viết tắt."
-
-#~ msgid "Text"
-#~ msgstr "Văn bản"
-
-#~ msgid "Up"
-#~ msgstr "Lên"
-
-#~ msgid "Down"
-#~ msgstr "Xuống"
-
-#~ msgid ""
-#~ "The current macro list is not empty. Imported entries will be merged "
-#~ "(existing keys will be updated). Continue?"
-#~ msgstr ""
-#~ "Danh sách gõ tắt hiện tại không rỗng. Các mục nhập sẽ được gộp (các mục "
-#~ "hiện có sẽ được cập nhật). Tiếp tục?"
-
-#~ msgid "Lotus Custom Keymap"
-#~ msgstr "Keymap Tuỳ Chỉnh Lotus"
-
-#~ msgid "Cannot open file for reading."
-#~ msgstr "Không thể mở tệp để đọc."
-
-#~ msgid "Imported %1 entries, skipped %2 invalid lines."
-#~ msgstr "Nhập %1 mục, bỏ qua %2 dòng lỗi."
-
-#~ msgid "Cannot open file for writing."
-#~ msgstr "Không thể mở file để ghi."
-
-#~ msgid ""
-#~ "Exported %1 entries to:\n"
-#~ "%2"
-#~ msgstr ""
-#~ "Đã xuất %1 mục vào:\n"
-#~ "%2"
-
-#~ msgid "Lotus Macro"
-#~ msgstr "Gõ Tắt Lotus"
+msgstr "Tuỳ chỉnh bộ gõ Fcitx5 Lotus"

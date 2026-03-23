@@ -3,7 +3,7 @@
 %global optflags %(echo "%{optflags}" | sed 's/-g[^ ]*//g')
 
 Name:           fcitx5-lotus
-Version:        1.5.2
+Version:        1.6.0
 Release:        1
 Summary:        Vietnamese input method for fcitx5
 License:        GPL-3.0-or-later
@@ -59,6 +59,7 @@ Vietnamese input method for fcitx5
 
 %{_prefix}/lib/modules-load.d/fcitx5-lotus.conf
 %{_unitdir}/fcitx5-lotus-server@.service
+%{_sysconfdir}/init.d/fcitx5-lotus
 %{_prefix}/lib/sysusers.d/lotus.conf
 %{_prefix}/lib/udev/rules.d/99-lotus.rules
 
@@ -156,5 +157,10 @@ fi
 %systemd_postun_with_restart fcitx5-lotus-server@.service
 
 %changelog
-* Thu Mar 19 2026 Nguyen Hoang Ky <nhktmdzhg@gmail.com> - 1.5.2-1
-- Fix bug cannot save cofig
+* Mon Mar 23 2026 Nguyen Hoang Ky <nhktmdzhg@gmail.com> - 1.6.0-1
+- Add mode manager
+- Add OpenRC support
+- Macro validate, search macro
+- Auto capitalization
+- Fix show input engine mode name on gnome shell
+- Custom dictionary

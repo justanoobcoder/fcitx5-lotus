@@ -34,7 +34,7 @@
       <img src="https://img.shields.io/github/issues/LotusInputMethod/fcitx5-lotus?style=flat&color=red" alt="Issues">
     </a>
     <a href="#contributors-">
-      <img src="https://img.shields.io/badge/all_contributors-5-orange.svg?style=flat-square" alt="All Contributors">
+      <img src="https://img.shields.io/badge/all_contributors-6-orange.svg?style=flat-square" alt="All Contributors">
     </a>
     <a href="https://deepwiki.com/LotusInputMethod/fcitx5-lotus"><img src="https://deepwiki.com/badge.svg" alt="Ask DeepWiki"></a>
   </p>
@@ -309,6 +309,17 @@ end
 
 </details>
 
+If you are using **OpenRC** instead of **systemd**, run the following commands:
+```sh
+sudo rc-update add fcitx5-lotus
+sudo ln -s /etc/init.d/fcitx5-lotus /etc/init.d/fcitx5-lotus.$(whoami)
+sudo rc-service fcitx5-lotus.$(whoami) restart
+```
+To check the service status:
+```sh
+rc-service fcitx5-lotus.$(whoami) status
+```
+
 <p><b>Check status (if you see <span style="color: green;">active (running)</span>, it's OK):</b></p>
 
 ```bash
@@ -449,7 +460,7 @@ After logging out and logging in again:
   <summary><b>Additional configuration for Wayland (KDE, Hyprland Chromium-based, Electron)</b></summary>
 
 - **KDE Plasma:** _System Settings_ → _Keyboard_ → _Virtual Keyboard_ → Select **Fcitx 5**.
-- **Hyprland:** Add the following line to `~/.config/hypr/hyprland.conf`:
+- **Hyprland:** If you are using `ecosystem:enforce_permissions=1`, add the following line to `~/.config/hypr/hyprland.conf`:
 
 ```ini
 permission = fcitx5-lotus-server, keyboard, allow
@@ -472,6 +483,20 @@ Add this line to file `~/.config/kanata/kanata.kbd`
   ...
 )
 ```
+
+</details>
+
+<details>
+   <summary><b>Additional configurattion for OpenRC</b></summary>
+
+Add this line to `/etc/environment` to fix input issues for X11/XCB applications on Wayland:
+
+```sh
+DBUS_SESSION_BUS_ADDRESS=unix:path=$XDG_RUNTIME_DIR/bus
+```
+Or set the env in your DE/WM config (Recommended).
+
+Example for Hyprland: `env = DBUS_SESSION_BUS_ADDRESS,unix:path=$XDG_RUNTIME_DIR/bus`
 
 </details>
 
@@ -724,6 +749,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/justanoobcoder"><img src="https://avatars.githubusercontent.com/u/57614330?v=4?s=100" width="100px;" alt="Nguyễn Hồng Hiệp"/><br /><sub><b>Nguyễn Hồng Hiệp</b></sub></a><br /><a href="https://github.com/LotusInputMethod/fcitx5-lotus/commits?author=justanoobcoder" title="Documentation">📖</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/Miho1254"><img src="https://avatars.githubusercontent.com/u/83270073?v=4?s=100" width="100px;" alt="Đặng Quang Hiển"/><br /><sub><b>Đặng Quang Hiển</b></sub></a><br /><a href="https://github.com/LotusInputMethod/fcitx5-lotus/commits?author=Miho1254" title="Documentation">📖</a> <a href="https://github.com/LotusInputMethod/fcitx5-lotus/commits?author=Miho1254" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/Zebra2711"><img src="https://avatars.githubusercontent.com/u/89755535?v=4?s=100" width="100px;" alt="Zebra2711"/><br /><sub><b>Zebra2711</b></sub></a><br /><a href="https://github.com/LotusInputMethod/fcitx5-lotus/issues?q=author%3AZebra2711" title="Bug reports">🐛</a> <a href="https://github.com/LotusInputMethod/fcitx5-lotus/commits?author=Zebra2711" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/ductrantrong"><img src="https://avatars.githubusercontent.com/u/96020037?v=4?s=100" width="100px;" alt="ductrantrong"/><br /><sub><b>ductrantrong</b></sub></a><br /><a href="https://github.com/LotusInputMethod/fcitx5-lotus/commits?author=ductrantrong" title="Code">💻</a></td>
     </tr>
   </tbody>
   <tfoot>

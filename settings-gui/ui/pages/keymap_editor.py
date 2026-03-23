@@ -22,6 +22,7 @@ from PySide6.QtWidgets import (
     QFrame,
     QFileDialog,
     QAbstractItemView,
+    QCheckBox,
 )
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QIcon
@@ -229,6 +230,7 @@ class KeymapEditorPage(BaseEditorPage):
     def __init__(self, dbus_handler: LotusDBusHandler, parent=None):
         super().__init__(parent)
         self.dbus = dbus_handler
+        self.initial_state = {}
         self._setup_ui()
         self.load_data()
 
@@ -241,23 +243,43 @@ class KeymapEditorPage(BaseEditorPage):
         title.setObjectName("CategoryTitle")
         main_layout.addWidget(title)
 
-        # Preset card
-        preset_card = CardWidget("")
-        preset_layout = QHBoxLayout()
-        preset_layout.addWidget(QLabel(_("Original Input Method:")))
-
+        # Configuration card
+        config_card = CardWidget("")
+        config_layout = QVBoxLayout()
+        
+        # Row 1: Enable checkbox and Search
+        top_row = QHBoxLayout()
+        self.cb_enable = QCheckBox(_("Enable Custom Keymap"))
+        self.cb_enable.toggled.connect(self._on_item_changed)
+        top_row.addWidget(self.cb_enable)
+        top_row.addStretch()
+        
+        self.search_input = QLineEdit()
+        self.search_input.setPlaceholderText(_("Search keys..."))
+        self.search_input.setClearButtonEnabled(True)
+        self.search_input.setFixedWidth(200)
+        self.search_input.textChanged.connect(self.on_search_changed)
+        top_row.addWidget(QLabel(_("Search:")))
+        top_row.addWidget(self.search_input)
+        config_layout.addLayout(top_row)
+        
+        # Row 2: Original Input Method (Preset)
+        bottom_row = QHBoxLayout()
+        bottom_row.addWidget(QLabel(_("Original Input Method:")))
         self.combo_preset = QComboBox()
         self.combo_preset.addItems(PRESETS.keys())
-        preset_layout.addWidget(self.combo_preset)
-
+        bottom_row.addWidget(self.combo_preset)
+        
         btn_load_preset = QPushButton(
             QIcon.fromTheme("document-import"), _("Apply Preset")
         )
         btn_load_preset.clicked.connect(self.on_load_preset)
-        preset_layout.addWidget(btn_load_preset)
-        preset_layout.addStretch()
-        preset_card.content_layout.addLayout(preset_layout)
-        main_layout.addWidget(preset_card)
+        bottom_row.addWidget(btn_load_preset)
+        bottom_row.addStretch()
+        config_layout.addLayout(bottom_row)
+        
+        config_card.content_layout.addLayout(config_layout)
+        main_layout.addWidget(config_card)
 
         # Editor card
         editor_card = CardWidget("")
@@ -303,30 +325,40 @@ class KeymapEditorPage(BaseEditorPage):
         toolbar_layout = QHBoxLayout()
         toolbar_layout.setContentsMargins(0, 5, 0, 0)
 
-        btn_remove = QPushButton(QIcon.fromTheme("list-remove"), _("Remove"))
-        btn_remove.setToolTip(_("Remove selected row"))
-        btn_remove.clicked.connect(self.on_remove)
+        self.btn_remove = QPushButton(QIcon.fromTheme("list-remove"), _("Remove"))
+        self.btn_remove.setToolTip(_("Remove selected row"))
+        self.btn_remove.clicked.connect(self.on_remove)
 
         btn_import = QPushButton(QIcon.fromTheme("document-import"), _("Import"))
         btn_export = QPushButton(QIcon.fromTheme("document-export"), _("Export"))
         btn_import.clicked.connect(self.on_import)
         btn_export.clicked.connect(self.on_export)
 
-        toolbar_layout.addWidget(btn_remove)
+        toolbar_layout.addWidget(self.btn_remove)
         toolbar_layout.addStretch()
 
         editor_layout.addLayout(toolbar_layout)
+        self.update_button_states()
 
     def load_data(self):
         """Loads keymap data strictly via D-Bus."""
         self.blockSignals(True)
         try:
+            config_data = self.dbus.get_config()
+            if config_data:
+                values = config_data.get("values", {})
+                self.cb_enable.setChecked(
+                    str(values.get("EnableCustomKeymap", "False")).lower() == "true"
+                )
+
             self.table.setRowCount(0)
             data = self.dbus.get_sub_config_list("custom_keymap", "CustomKeymap")
             for item in data:
                 self._add_row(item.get("Key", ""), item.get("Value", ""))
+            self.initial_state = self._get_current_state()
         finally:
             self.blockSignals(False)
+            self.on_search_changed()
 
     def restore_defaults(self):
         """Clears all custom keymap entries, restoring to default."""
@@ -337,8 +369,32 @@ class KeymapEditorPage(BaseEditorPage):
         """Returns True if the keymap table has any entries."""
         return self.table.rowCount() > 0
 
+    def is_modified(self):
+        """Returns True if the current state differs from the initial loaded state."""
+        return self._get_current_state() != self.initial_state
+
+    def _get_current_state(self):
+        """Captures the current UI state for comparison."""
+        data = []
+        for row in range(self.table.rowCount()):
+            key_item = self.table.item(row, 0)
+            combo_widget = self.table.cellWidget(row, 1)
+            if key_item and combo_widget:
+                data.append({"Key": key_item.text(), "Value": combo_widget.currentData()})
+        return {
+            "data": data,
+            "EnableCustomKeymap": self.cb_enable.isChecked(),
+        }
+
     def save_data(self, quiet=False):
         """Saves current table via DBus to C++ Engine."""
+        # Save toggle
+        config_data = self.dbus.get_config()
+        if config_data:
+            values = config_data.get("values", {})
+            values["EnableCustomKeymap"] = "True" if self.cb_enable.isChecked() else "False"
+            self.dbus.set_config(values)
+
         data = []
         for row in range(self.table.rowCount()):
             key_item = self.table.item(row, 0)
@@ -348,8 +404,25 @@ class KeymapEditorPage(BaseEditorPage):
             data.append({"Key": key_item.text(), "Value": combo_widget.currentData()})
 
         self.dbus.set_sub_config_list("custom_keymap", "CustomKeymap", data)
+        self.initial_state = self._get_current_state()
         if not quiet:
             QMessageBox.information(self, _("Success"), _("Keymap saved successfully."))
+
+    def on_search_changed(self):
+        """Filters the table rows based on the search input."""
+        search_text = self.search_input.text().lower()
+        for row in range(self.table.rowCount()):
+            key_item = self.table.item(row, 0)
+            action_item = self.table.cellWidget(row, 1) if isinstance(self.table.cellWidget(row, 1), QComboBox) else self.table.item(row, 1)
+            
+            key = key_item.text().lower() if key_item else ""
+            action = ""
+            if isinstance(action_item, QComboBox):
+                action = action_item.currentText().lower()
+            elif action_item:
+                action = action_item.text().lower()
+                
+            self.table.setRowHidden(row, search_text not in key and search_text not in action)
 
     def on_add(self):
         """Adds a new keymap entry."""
@@ -494,7 +567,7 @@ class KeymapEditorPage(BaseEditorPage):
             self,
             _("Export Keymap"),
             "lotus-keymap.tsv",
-            _("Tab-separated (*.tsv *.txt);;All files (*)"),
+            _("Tab-separated (*.tsv);;Text files (*.txt);;All files (*)"),
         )
         if not path:
             return

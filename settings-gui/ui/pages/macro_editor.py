@@ -22,7 +22,7 @@ from PySide6.QtWidgets import (
     QFileDialog,
     QCheckBox,
 )
-from PySide6.QtGui import QIcon
+from PySide6.QtGui import QIcon, QColor
 from PySide6.QtCore import Qt
 from i18n import _
 from core.dbus_handler import LotusDBusHandler
@@ -40,6 +40,7 @@ class MacroEditorPage(BaseEditorPage):
     ):
         super().__init__(parent)
         self.dbus = dbus_handler
+        self.initial_state = {}
         self._setup_ui()
         self.load_data()
 
@@ -62,6 +63,15 @@ class MacroEditorPage(BaseEditorPage):
         toggles_layout.addWidget(self.cb_enable)
         toggles_layout.addWidget(self.cb_capitalize)
         toggles_layout.addStretch()
+
+        self.search_input = QLineEdit()
+        self.search_input.setPlaceholderText(_("Search macros..."))
+        self.search_input.setClearButtonEnabled(True)
+        self.search_input.setFixedWidth(200)
+        self.search_input.textChanged.connect(self.on_search_changed)
+        toggles_layout.addWidget(QLabel(_("Search:")))
+        toggles_layout.addWidget(self.search_input)
+
         toggles_card.content_layout.addLayout(toggles_layout)
         main_layout.addWidget(toggles_card)
 
@@ -85,6 +95,7 @@ class MacroEditorPage(BaseEditorPage):
         self.btn_add = QPushButton(QIcon.fromTheme("list-add"), _("Add"))
         self.btn_add.clicked.connect(self.on_add)
         self.input_key.textChanged.connect(self._update_add_button_icon)
+        self.input_val.textChanged.connect(self._update_add_button_icon)
 
         input_layout.addWidget(QLabel(_("Key:")))
         input_layout.addWidget(self.input_key, 1)
@@ -103,7 +114,7 @@ class MacroEditorPage(BaseEditorPage):
         self.table.setSelectionBehavior(QAbstractItemView.SelectRows)
         self.table.setEditTriggers(QAbstractItemView.NoEditTriggers)
         self.table.setAlternatingRowColors(True)
-        self.apply_table_style()  # Bơm CSS xịn vào đây
+        self.apply_table_style()  # Apply custom table styling
         self.table.cellClicked.connect(self.on_row_selected)
         content_layout.addWidget(self.table)
 
@@ -151,7 +162,9 @@ class MacroEditorPage(BaseEditorPage):
             self.table.setRowCount(0)
             data = self.dbus.get_sub_config_list("lotus-macro", "Macro")
             for item in data:
-                self.upsert_row(item.get("Key", ""), item.get("Value", ""))
+                self.upsert_row(item.get("Key", ""), item.get("Value", ""), sort=False)
+            self.on_search_changed()
+            self.initial_state = self._get_current_state()
         finally:
             self.blockSignals(False)
 
@@ -175,6 +188,26 @@ class MacroEditorPage(BaseEditorPage):
             or not self.cb_capitalize.isChecked()
         )
 
+    def is_modified(self):
+        """Returns True if the current state differs from the initial loaded state."""
+        return self._get_current_state() != self.initial_state
+
+    def _get_current_state(self):
+        """Captures the current UI state for comparison."""
+        data = []
+        for row in range(self.table.rowCount()):
+            key_item = self.table.item(row, 0)
+            val_item = self.table.item(row, 1)
+            if key_item and key_item.text():
+                data.append(
+                    {"Key": key_item.text(), "Value": val_item.text() if val_item else ""}
+                )
+        return {
+            "data": data,
+            "EnableMacro": self.cb_enable.isChecked(),
+            "CapitalizeMacro": self.cb_capitalize.isChecked(),
+        }
+
     def save_data(self, quiet=False):
         # Save global macro settings via DBus
         config_data = self.dbus.get_config()
@@ -197,14 +230,19 @@ class MacroEditorPage(BaseEditorPage):
             )
 
         self.dbus.set_sub_config_list("lotus-macro", "Macro", data)
+        self.initial_state = self._get_current_state()
         if not quiet:
             QMessageBox.information(self, _("Success"), _("Macros saved successfully."))
 
-    def upsert_row(self, key: str, value: str):
+    def upsert_row(self, key: str, value: str, sort: bool = True):
         # Update existing
         for row in range(self.table.rowCount()):
             if self.table.item(row, 0) and self.table.item(row, 0).text() == key:
                 self.table.item(row, 1).setText(value)
+                self._apply_row_highlight(row, key)
+                if sort:
+                    self.on_search_changed()  # Re-apply filter
+                self.on_search_changed()  # Re-apply filter
                 self.update_button_states()
                 return
 
@@ -213,8 +251,77 @@ class MacroEditorPage(BaseEditorPage):
         self.table.insertRow(row)
         self.table.setItem(row, 0, QTableWidgetItem(key))
         self.table.setItem(row, 1, QTableWidgetItem(value))
+        self._apply_row_highlight(row, key)
+        if sort:
+            self.on_search_changed()  # Re-apply filter
         self.update_button_states()
         self._on_item_changed()
+
+    def _is_invalid_macro(self, key: str) -> bool:
+        """Checks if macro key contains spaces or non-letter characters."""
+        if not key:
+            return False
+        # Allow alphanumeric characters (including Unicode letters) and no spaces
+        return not key.isalnum() or " " in key
+
+    def _apply_row_highlight(self, row: int, key: str):
+        """Applies red background and warning icon to rows with invalid keys."""
+        is_invalid = self._is_invalid_macro(key)
+        bg_color = Qt.transparent
+        tooltip = ""
+        icon = QIcon()
+        if is_invalid:
+            # Use a soft red for warning background
+            bg_color = QColor(Qt.red)
+            bg_color.setAlpha(60)
+            icon = QIcon.fromTheme("dialog-warning")
+            tooltip = _("Warning: Macro key should not contain spaces or special characters.")
+
+        for col in range(self.table.columnCount()):
+            item = self.table.item(row, col)
+            if item:
+                item.setBackground(bg_color)
+                item.setData(Qt.ForegroundRole, None)
+                item.setToolTip(tooltip)
+                # Show icon in the first column
+                if col == 0:
+                    item.setIcon(icon)
+                else:
+                    item.setIcon(QIcon())
+
+    def sort_invalid_to_top(self):
+        """Moves all invalid entries to the top, then sorts by key."""
+        # We'll extract all items, sort them, and put them back.
+        rows = []
+        for row in range(self.table.rowCount()):
+            key = self.table.item(row, 0).text() if self.table.item(row, 0) else ""
+            val = self.table.item(row, 1).text() if self.table.item(row, 1) else ""
+            rows.append((key, val))
+
+        rows.sort(key=lambda x: (not self._is_invalid_macro(x[0]), x[0].lower()))
+
+        self.blockSignals(True)
+        self.table.setRowCount(0)
+        for key, val in rows:
+            row_idx = self.table.rowCount()
+            self.table.insertRow(row_idx)
+            self.table.setItem(row_idx, 0, QTableWidgetItem(key))
+            self.table.setItem(row_idx, 1, QTableWidgetItem(val))
+            self._apply_row_highlight(row_idx, key)
+        self.on_search_changed()  # Re-apply filter
+        self.blockSignals(False)
+
+    def on_search_changed(self):
+        """Filters the table rows based on the search input."""
+        search_text = self.search_input.text().lower()
+        for row in range(self.table.rowCount()):
+            key_item = self.table.item(row, 0)
+            val_item = self.table.item(row, 1)
+            key = key_item.text().lower() if key_item else ""
+            val = val_item.text().lower() if val_item else ""
+            
+            # Show row if either key or value matches search text
+            self.table.setRowHidden(row, search_text not in key and search_text not in val)
 
     def on_add(self):
         key = self.input_key.text().strip()
@@ -229,8 +336,23 @@ class MacroEditorPage(BaseEditorPage):
         self.input_key.setFocus()
 
     def _update_add_button_icon(self):
-        """Changes the Add button icon to Update if key exists."""
+        """Changes the Add button icon to Update if key exists and handles validation."""
         key = self.input_key.text().strip()
+        val = self.input_val.text().strip()
+        is_invalid = self._is_invalid_macro(key)
+        
+        # Validation feedback for input field
+        # Validation feedback for input field
+        if is_invalid:
+            self.input_key.setStyleSheet("color: red;")
+            self.input_key.setToolTip(_("Warning: Macro key should not contain spaces or special characters."))
+        else:
+            self.input_key.setStyleSheet("")
+            self.input_key.setToolTip("")
+
+        # Disable button if key is invalid, empty, or value is empty
+        self.btn_add.setEnabled(not is_invalid and bool(key) and bool(val))
+
         found = any(
             self.table.item(r, 0) and self.table.item(r, 0).text() == key
             for r in range(self.table.rowCount())
@@ -316,7 +438,7 @@ class MacroEditorPage(BaseEditorPage):
             self,
             _("Export Macros"),
             "lotus-macro.tsv",
-            _("Tab-separated (*.tsv *.txt);;All files (*)"),
+            _("Tab-separated (*.tsv);;Text files (*.txt);;All files (*)"),
         )
         if not path:
             return

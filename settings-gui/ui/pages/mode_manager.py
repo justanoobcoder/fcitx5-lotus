@@ -323,6 +323,7 @@ class ModeManagerPage(QWidget):
         self.dbus = dbus_handler
         self.app_rules = {}
         self.original_app_rules = {}
+        self.original_global_mode = ""
         self.selected_app = None
         self._icon_cache = {}
         self._setup_ui()
@@ -338,12 +339,12 @@ class ModeManagerPage(QWidget):
         self.sidebar_widget.setFixedWidth(240)
         self.sidebar_layout = QVBoxLayout(self.sidebar_widget)
         self.sidebar_layout.setContentsMargins(15, 20, 15, 20)
-        self.sidebar_layout.setSpacing(10)
-
         self.app_search = QLineEdit()
         self.app_search.setPlaceholderText(_("Search applications..."))
         self.app_search.textChanged.connect(self._filter_apps)
         self.sidebar_layout.addWidget(self.app_search)
+
+        self.sidebar_layout.setSpacing(10)
 
         self.app_list = QListWidget()
         self.app_list.setIconSize(QSize(24, 24))
@@ -458,6 +459,7 @@ class ModeManagerPage(QWidget):
         if idx >= 0:
             self.combo_global_mode.setCurrentIndex(idx)
         self.combo_global_mode.blockSignals(False)
+        self.original_global_mode = mode_str
         
         self._populate_app_list()
         self.original_app_rules = self.app_rules.copy()
@@ -585,12 +587,9 @@ class ModeManagerPage(QWidget):
         self._update_mode_cards()
 
     def _on_global_mode_changed(self, index):
-        mode_text = self.combo_global_mode.currentText()
-        config_data = self.dbus.get_config()
-        if config_data:
-            latest_values = config_data.get("values", {})
-            latest_values["Mode"] = mode_text
-            self.dbus.set_config(latest_values)
+        if not self.isVisible():
+            return
+        
         self._notify_changed()
 
 
@@ -602,7 +601,6 @@ class ModeManagerPage(QWidget):
         else:
             self.app_rules[self.selected_app] = mode
         
-        self.save_data(quiet=True)
         self._update_mode_cards()
         self._populate_app_list()
         self._notify_changed()
@@ -619,7 +617,6 @@ class ModeManagerPage(QWidget):
             if new_app not in self.app_rules:
                 self.app_rules[new_app] = MODE_SMOOTH
             self.selected_app = new_app
-            self.save_data(quiet=True)
             self._populate_app_list()
             self._notify_changed()
 
@@ -641,7 +638,6 @@ class ModeManagerPage(QWidget):
         self.selected_app = None
         self.app_settings_card.setVisible(False)
         self.btn_remove_app.setEnabled(False)
-        self.save_data(quiet=True)
         self._populate_app_list()
         self._notify_changed()
 
@@ -650,8 +646,19 @@ class ModeManagerPage(QWidget):
         if hasattr(main_win, "on_changed"):
             main_win.on_changed()
 
+    def is_modified(self):
+        """Returns True if the current state differs from the initial loaded state."""
+        return (
+            self.app_rules != self.original_app_rules
+            or self.combo_global_mode.currentText() != self.original_global_mode
+        )
+
     def is_modified_from_default(self):
-        return self.app_rules != self.original_app_rules
+        """Returns True if the current state differs from the default state."""
+        return (
+            len(self.app_rules) > 0
+            or self.combo_global_mode.currentText() != "Uinput (Smooth)"
+        )
 
     def on_import(self):
         """Imports app rules from a TSV file."""
@@ -659,7 +666,7 @@ class ModeManagerPage(QWidget):
             self,
             _("Import Application Rules"),
             "",
-            _("Tab-separated (*.tsv *.txt);;All files (*)"),
+            _("Tab-separated (*.tsv);;Text files (*.txt);;All files (*)"),
         )
         if not path:
             return
@@ -712,7 +719,6 @@ class ModeManagerPage(QWidget):
             imported += 1
 
         if imported > 0:
-            self.save_data(quiet=True)
             self._populate_app_list()
             self._notify_changed()
 
@@ -734,7 +740,7 @@ class ModeManagerPage(QWidget):
             self,
             _("Export Application Rules"),
             "lotus-app-rules.tsv",
-            _("Tab-separated (*.tsv *.txt);;All files (*)"),
+            _("Tab-separated (*.tsv);;Text files (*.txt);;All files (*)"),
         )
         if not path:
             return
@@ -756,12 +762,20 @@ class ModeManagerPage(QWidget):
 
     def save_data(self, quiet=False):
         try:
+            if self.combo_global_mode.currentText() != self.original_global_mode:
+                config_data = self.dbus.get_config()
+                if config_data:
+                    latest_values = config_data.get("values", {})
+                    latest_values["Mode"] = self.combo_global_mode.currentText()
+                    self.dbus.set_config(latest_values)
+
             data = []
             for app, mode in sorted(self.app_rules.items()):
                 data.append({"App": app, "Mode": str(mode)})
             
             self.dbus.set_sub_config_list("app_rules", "Rules", data)
             self.original_app_rules = self.app_rules.copy()
+            self.original_global_mode = self.combo_global_mode.currentText()
 
             if not quiet:
                 QMessageBox.information(self, _("Success"), _("Application rules saved successfully."))
