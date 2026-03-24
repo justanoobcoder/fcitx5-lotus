@@ -29,7 +29,8 @@ namespace fcitx {
     constexpr int      MAX_SCAN_LENGTH = 15;
 
     static inline bool isWordBreak(uint32_t ucs4) {
-        return ucs4 == ' ' || ucs4 == '\t' || ucs4 == '\n' || ucs4 == '\r' || ucs4 == 0 || (ucs4 < 65 && ucs4 > 57);
+        // Space, tab, newline, carriage return, null, or punctuation/symbols (: ; < = > ? @)
+        return ucs4 == ' ' || ucs4 == '\t' || ucs4 == '\n' || ucs4 == '\r' || ucs4 == 0 || (ucs4 >= 58 && ucs4 <= 64);
     }
 
     LotusState::LotusState(LotusEngine* engine, InputContext* ic) : engine_(engine), ic_(ic) {
