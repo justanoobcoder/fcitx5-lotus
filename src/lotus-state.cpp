@@ -909,8 +909,8 @@ namespace fcitx {
             needEngineReset.store(false);
         }
 
-        if (g_mouse_clicked.load(std::memory_order_relaxed) && !is_deleting_.load()) {
-            g_mouse_clicked.store(false, std::memory_order_relaxed);
+        if (g_mouse_clicked.load(std::memory_order_acquire) && !is_deleting_.load(std::memory_order_acquire)) {
+            g_mouse_clicked.store(false, std::memory_order_release);
             clearAllBuffers();
         }
 

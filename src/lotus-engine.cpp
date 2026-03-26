@@ -13,6 +13,7 @@
 #include "lotus-monitor.h"
 #include "lotus-utils.h"
 #include "ack-apps.h"
+#include <sys/socket.h>
 #include <utility>
 #ifndef DISABLE_VERSION_ACTION
 #include "lotus-version.h"
@@ -214,8 +215,15 @@ namespace fcitx {
         monitor_cv.notify_all();
         int fd = mouse_socket_fd.load(std::memory_order_acquire);
         if (fd >= 0) {
-            close(fd);
+            shutdown(fd, SHUT_RDWR);
         }
+        if (mouse_thread.joinable()) {
+            mouse_thread.join();
+        }
+        if (monitor_thread.joinable()) {
+            monitor_thread.join();
+        }
+        LOTUS_INFO("Engine destroyed.");
     }
 
     const lotusCustomKeymap& LotusEngine::customKeymap() const {
@@ -383,7 +391,7 @@ namespace fcitx {
         FCITX_UNUSED(entry);
         auto* ic = keyEvent.inputContext();
 
-        if (isSelectingAppMode_ && g_mouse_clicked.load(std::memory_order_relaxed)) {
+        if (isSelectingAppMode_ && g_mouse_clicked.load(std::memory_order_acquire)) {
             closeAppModeMenu();
             ic->inputPanel().reset();
             ic->updateUserInterface(UserInterfaceComponent::InputPanel);
@@ -544,7 +552,7 @@ namespace fcitx {
         if (!keyEvent.isRelease() && !config_.modeMenuKey->empty() && keyEvent.key().checkKeyList(*config_.modeMenuKey)) {
             LOTUS_INFO("Mode menu key pressed");
             currentConfigureApp_ = getProgramName(ic);
-            g_mouse_clicked.store(false, std::memory_order_relaxed);
+            g_mouse_clicked.store(false, std::memory_order_release);
             showAppModeMenu(ic);
             keyEvent.filterAndAccept();
             return;
@@ -715,7 +723,7 @@ namespace fcitx {
 
     void LotusEngine::closeAppModeMenu() {
         isSelectingAppMode_ = false;
-        g_mouse_clicked.store(false, std::memory_order_relaxed);
+        g_mouse_clicked.store(false, std::memory_order_release);
     }
 
     void LotusEngine::showAppModeMenu(InputContext* ic) {
