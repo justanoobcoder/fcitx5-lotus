@@ -170,9 +170,10 @@ func NewCustomEngine(definition **C.char, dictHandle uintptr, tableHandle uintpt
 		"Custom": map[string]string{},
 	}
 	def := (*[1<<20 - 1]*C.char)(unsafe.Pointer(definition))
+	maxEntries := 1<<20 - 1
 
 	i := 0
-	for def[i] != nil {
+	for i < maxEntries && def[i] != nil {
 		definitions["Custom"][C.GoString(def[i])] = C.GoString(def[i+1])
 		i += 2
 	}
@@ -202,8 +203,9 @@ func NewMacroTable(definition **C.char) uintptr {
 		mTable: map[string]string{},
 	}
 	def := (*[1<<20 - 1]*C.char)(unsafe.Pointer(definition))
+	maxEntries := 1<<20 - 1
 	i := 0
-	for def[i] != nil {
+	for i < maxEntries && def[i] != nil {
 		table.mTable[C.GoString(def[i])] = C.GoString(def[i+1])
 		i += 2
 	}
