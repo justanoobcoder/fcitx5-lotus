@@ -156,7 +156,7 @@ namespace fcitx {
          * @brief Initializes with default mode list.
          */
         ModeListAnnotation() {
-            list_ = {"Uinput (Smooth)", "Uinput (Slow)", "Surrounding Text", "Preedit", "Uinput (Hardcore)", "OFF", "Minecraft"};
+            list_ = {_("Uinput (Smooth)"), _("Uinput (Slow)"), _("Surrounding Text"), _("Preedit"), _("Uinput (Hardcore)"), _("OFF"), _("Minecraft")};
         }
     };
 
