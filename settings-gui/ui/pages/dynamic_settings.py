@@ -5,7 +5,7 @@
 Dynamic Settings Page with Card-based Layout matching modern guidelines.
 """
 
-from PySide6.QtWidgets import (
+from qtpy.QtWidgets import (
     QWidget,
     QVBoxLayout,
     QHBoxLayout,

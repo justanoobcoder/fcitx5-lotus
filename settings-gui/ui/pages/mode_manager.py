@@ -7,7 +7,7 @@ Mode Manager Page for per-application input mode configuration.
 
 import os
 import re
-from PySide6.QtWidgets import (
+from qtpy.QtWidgets import (
     QWidget,
     QVBoxLayout,
     QHBoxLayout,
@@ -25,8 +25,8 @@ from PySide6.QtWidgets import (
     QGridLayout,
     QMessageBox,
 )
-from PySide6.QtCore import Qt, QSize, Signal
-from PySide6.QtGui import QIcon
+from qtpy.QtCore import Qt, QSize, Signal
+from qtpy.QtGui import QIcon
 from i18n import _
 from ui.pages.dynamic_settings import CardWidget
 from core.dbus_handler import LotusDBusHandler

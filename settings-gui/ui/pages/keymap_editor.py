@@ -7,7 +7,7 @@ Implements custom keymap presets and TSV import/export.
 """
 
 import os
-from PySide6.QtWidgets import (
+from qtpy.QtWidgets import (
     QWidget,
     QVBoxLayout,
     QHBoxLayout,
@@ -24,8 +24,8 @@ from PySide6.QtWidgets import (
     QAbstractItemView,
     QCheckBox,
 )
-from PySide6.QtCore import Qt
-from PySide6.QtGui import QIcon
+from qtpy.QtCore import Qt
+from qtpy.QtGui import QIcon
 from i18n import _
 from core.dbus_handler import LotusDBusHandler
 from ui.pages.base_editor import BaseEditorPage

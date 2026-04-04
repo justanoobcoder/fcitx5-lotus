@@ -8,7 +8,7 @@ Implements UI with row reordering and TSV import/export.
 
 import os
 from pathlib import Path
-from PySide6.QtWidgets import (
+from qtpy.QtWidgets import (
     QVBoxLayout,
     QHBoxLayout,
     QPushButton,
@@ -22,8 +22,8 @@ from PySide6.QtWidgets import (
     QFileDialog,
     QCheckBox,
 )
-from PySide6.QtGui import QIcon, QColor
-from PySide6.QtCore import Qt
+from qtpy.QtGui import QIcon, QColor
+from qtpy.QtCore import Qt
 from i18n import _
 from core.dbus_handler import LotusDBusHandler
 from ui.pages.base_editor import BaseEditorPage
