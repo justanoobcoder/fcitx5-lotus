@@ -190,10 +190,9 @@ namespace fcitx {
          * @brief Handles uinput mode processing.
          * @param keyEvent The key event.
          * @param currentSym Current key symbol.
-         * @param checkEmptyPreedit Whether to check for empty preedit.
          * @param sleepTime Delay in microseconds.
          */
-        void handleUinputMode(KeyEvent& keyEvent, KeySym currentSym, bool checkEmptyPreedit);
+        void handleUinputMode(KeyEvent& keyEvent, KeySym currentSym);
 
         /**
          * @brief Handles surrounding text mode.

@@ -1,6 +1,5 @@
-fcitx5-lotus (2.0.0-1) unstable; urgency=medium
+fcitx5-lotus (2.0.1-1) unstable; urgency=medium
 
-  * Use qtpy UI for configuration
-  * Add option to disable mode in mode menu
+  * Use flexible Qt backend deps
 
- -- Nguyen Hoang Ky <nhktmdzhg@gmail.com>  Sun, 5 Apr 2026 00:37:00 +0700
+ -- Nguyen Hoang Ky <nhktmdzhg@gmail.com>  Sun, 5 Apr 2026 08:32:00 +0700
