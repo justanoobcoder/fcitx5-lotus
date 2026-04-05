@@ -561,7 +561,7 @@ namespace fcitx {
         return false;
     }
 
-    void LotusState::handleUinputMode(KeyEvent& keyEvent, KeySym currentSym, bool checkEmptyPreedit) {
+    void LotusState::handleUinputMode(KeyEvent& keyEvent, KeySym currentSym) {
         if (checkForwardSpecialKey(keyEvent, currentSym)) {
             keyEvent.forward();
             return;
@@ -633,14 +633,12 @@ namespace fcitx {
         }
 
         if (!processed) {
-            if (checkEmptyPreedit) {
-                UniqueCPtr<char> preeditC(EnginePullPreedit(lotusEngine_.handle()));
-                if (!preeditC || (*preeditC.get() == 0)) {
-                    hasHistory_ = false;
-                    ResetEngine(lotusEngine_.handle());
-                    oldPreBuffer_.clear();
-                    keyEvent.forward();
-                }
+            UniqueCPtr<char> preeditC(EnginePullPreedit(lotusEngine_.handle()));
+            if (!preeditC || (*preeditC.get() == 0)) {
+                hasHistory_ = false;
+                ResetEngine(lotusEngine_.handle());
+                oldPreBuffer_.clear();
+                keyEvent.forward();
             }
             return;
         }
@@ -986,7 +984,7 @@ namespace fcitx {
             case LotusMode::Uinput:
             case LotusMode::Smooth:
             case LotusMode::Minecraft: {
-                handleUinputMode(keyEvent, currentSym, true);
+                handleUinputMode(keyEvent, currentSym);
                 break;
             }
             case LotusMode::SurroundingText: {
