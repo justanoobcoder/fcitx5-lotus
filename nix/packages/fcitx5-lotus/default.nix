@@ -2,10 +2,10 @@
   lib,
   stdenv,
   buildGoModule,
-  fetchFromGitHub,
   cmake,
   extra-cmake-modules,
   fcitx5,
+  fetchFromGitHub,
   gettext,
   go,
   hicolor-icon-theme,
@@ -18,14 +18,14 @@
 }:
 stdenv.mkDerivation rec {
   pname = "fcitx5-lotus";
-  version = "1.9.0";
+  version = "2.0.1";
 
   src = fetchFromGitHub {
     owner = "LotusInputMethod";
     repo = "fcitx5-lotus";
     rev = "v${version}";
     fetchSubmodules = true;
-    hash = "sha256-rTs5Rt6+rwRkNEMTDSZ1NtXA0l0LcFZuaeViLM7B7Tc=";
+    hash = "sha256-/Ydg6CCNtko2ptlPSCH/jmC78T9IIjXlcKE5qh1RgnQ=";
   };
 
   nativeBuildInputs = [
@@ -45,6 +45,7 @@ stdenv.mkDerivation rec {
     (python3.withPackages (ps: with ps; [
       pyside6
       dbus-python
+      qtpy
     ]))
     qt6.qtbase
     udev
