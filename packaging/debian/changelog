@@ -1,5 +1,6 @@
-fcitx5-lotus (2.0.1-1) unstable; urgency=medium
+fcitx5-lotus (2.0.2-1) unstable; urgency=medium
 
-  * Use flexible Qt backend deps
+  * Small fix
+  * Auto detect system color scheme
 
- -- Nguyen Hoang Ky <nhktmdzhg@gmail.com>  Sun, 5 Apr 2026 08:32:00 +0700
+ -- Nguyen Hoang Ky <nhktmdzhg@gmail.com>  Sun, 10 Apr 2026 23:36:00 +0700

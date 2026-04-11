@@ -62,6 +62,35 @@ namespace fcitx {
         return isAppModeMenuReservedKey(hotkeySym) ? FcitxKey_f : hotkeySym;
     }
 
+    bool LotusEngine::isDarkMode() {
+        FILE* pipe = popen("dbus-send --session --dest=org.freedesktop.portal.Desktop --print-reply /org/freedesktop/portal/desktop org.freedesktop.portal.Settings.ReadOne "
+                           "string:'org.freedesktop.appearance' string:'color-scheme' 2>/dev/null",
+                           "r");
+        if (pipe != nullptr) {
+            char buffer[256];
+            while (fgets(buffer, sizeof(buffer), pipe) != nullptr) {
+                uint32_t value = 0;
+                if (sscanf(buffer, "%*[^v]variant uint32 %u", &value) == 1) {
+                    pclose(pipe);
+                    return value == 1;
+                }
+            }
+            pclose(pipe);
+        }
+
+        pipe = popen("gsettings get org.gnome.desktop.interface color-scheme 2>/dev/null", "r");
+        if (pipe != nullptr) {
+            char buffer[256];
+            if (fgets(buffer, sizeof(buffer), pipe) != nullptr) {
+                pclose(pipe);
+                return strstr(buffer, "prefer-dark") != nullptr;
+            }
+            pclose(pipe);
+        }
+
+        return false;
+    }
+
     static inline uintptr_t newMacroTable(const lotusMacroTable& macroTable) {
         const auto&        macros = *macroTable.macros;
         std::vector<char*> charArray;
@@ -880,19 +909,26 @@ namespace fcitx {
     }
 
     std::string LotusEngine::subModeIconImpl(const InputMethodEntry& /*entry*/, InputContext& /*inputContext*/) {
-        if (!*config_.useLotusIcons) {
-            bool useBlack = *config_.useBlackDefaultIcons;
-            switch (realMode) {
-                case LotusMode::Off: return useBlack ? "fcitx-lotus-off-default-black" : "fcitx-lotus-off-default";
-                case LotusMode::Emoji: return useBlack ? "fcitx-lotus-emoji-default-black" : "fcitx-lotus-emoji-default";
-                default: return useBlack ? "fcitx-lotus-default-black" : "fcitx-lotus-default";
-            }
-        }
+        std::string baseIconName;
         switch (realMode) {
-            case LotusMode::Off: return "fcitx-lotus-off";
-            case LotusMode::Emoji: return "fcitx-lotus-emoji";
-            default: return "fcitx-lotus";
+            case LotusMode::Off: baseIconName = "fcitx-lotus-off"; break;
+            case LotusMode::Emoji: baseIconName = "fcitx-lotus-emoji"; break;
+            default: baseIconName = "fcitx-lotus"; break;
         }
+
+        if (*config_.useLotusIcons) {
+            return baseIconName;
+        }
+
+        const auto& iconTheme = config_.iconTheme.value();
+        if (iconTheme == "Light") {
+            return baseIconName + "-default-black";
+        }
+        if (iconTheme == "Dark") {
+            return baseIconName + "-default";
+        }
+
+        return baseIconName + (isDarkMode() ? "-default" : "-default-black");
     }
 
     std::string LotusEngine::subModeLabelImpl(const InputMethodEntry& /*entry*/, InputContext& /*inputContext*/) {

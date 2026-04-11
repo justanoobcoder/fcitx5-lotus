@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.10)
 
-project(fcitx5-lotus VERSION 2.0.1)
+project(fcitx5-lotus VERSION 2.0.2)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 set(REQUIRED_FCITX_VERSION 5.0.5)
