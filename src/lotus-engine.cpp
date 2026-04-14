@@ -372,7 +372,7 @@ namespace fcitx {
         LOTUS_INFO("App name: " + appName);
 
         const LotusMode targetMode = getAppRule(appName);
-        LOTUS_INFO("Target mode: " + modeEnumToString(targetMode));
+        LOTUS_INFO("Target mode: " + LotusModeI18NAnnotation::toString(targetMode));
 
         updateCharsetAction(event.inputContext());
 
@@ -541,7 +541,7 @@ namespace fcitx {
             }
 
             if (selectedMode != LotusMode::NoMode) {
-                LOTUS_INFO("Selected mode: " + modeEnumToString(selectedMode));
+                LOTUS_INFO("Selected mode: " + LotusModeI18NAnnotation::toString(selectedMode));
                 if (selectedMode != LotusMode::Emoji) {
                     if (keySym == FcitxKey_r) { // Default Typing key (R)
                         std::lock_guard<std::mutex> lock(appRulesMutex_);
@@ -747,7 +747,7 @@ namespace fcitx {
         if (it != appRules_.end()) {
             return it->second;
         }
-        return modeStringToEnum(config_.mode.value());
+        return config_.mode.value();
     }
 
     void LotusEngine::setAppRule(const std::string& appName, LotusMode mode) {
@@ -840,7 +840,7 @@ namespace fcitx {
             {LotusMode::Off, _("OFF"), FcitxKey_e, *config_.showModeOff},
         };
 
-        const LotusMode defaultMode = modeStringToEnum(config_.mode.value());
+        const LotusMode defaultMode = config_.mode.value();
         allModes.push_back({defaultMode, _("Default Typing"), FcitxKey_r, *config_.showModeDefault}); // Add reset option
 
         candidateList->append(std::make_unique<DisplayOnlyCandidateWord>(Text(_("App: ") + currentConfigureApp_)));
@@ -921,10 +921,10 @@ namespace fcitx {
         }
 
         const auto& iconTheme = config_.iconTheme.value();
-        if (iconTheme == "Light") {
+        if (iconTheme == IconTheme::Light) {
             return baseIconName + "-default-black";
         }
-        if (iconTheme == "Dark") {
+        if (iconTheme == IconTheme::Dark) {
             return baseIconName + "-default";
         }
 

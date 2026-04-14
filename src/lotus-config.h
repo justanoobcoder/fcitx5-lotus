@@ -17,6 +17,7 @@
 
 #include <cstdint>
 #include <fcitx-config/configuration.h>
+#include <fcitx-config/enum.h>
 #include <fcitx-utils/i18n.h>
 #include <fcitx-utils/stringutils.h>
 
@@ -36,42 +37,30 @@ namespace fcitx {
         Minecraft       = 8,
     };
 
-    /**
-     * @brief Converts LotusMode enum to display string.
-     * @param mode The mode to convert.
-     * @return Human-readable mode name.
-     */
-    inline std::string modeEnumToString(LotusMode mode) {
-        switch (mode) {
-            case LotusMode::Off: return "OFF";
-            case LotusMode::Uinput: return "Uinput (Slow)";
-            case LotusMode::SurroundingText: return "Surrounding Text";
-            case LotusMode::Preedit: return "Preedit";
-            case LotusMode::Emoji: return "Emoji Picker";
-            case LotusMode::Smooth: return "Uinput (Smooth)";
-            case LotusMode::Minecraft: return "Minecraft";
-            default: return "";
-        }
-    }
+    FCITX_CONFIG_ENUM_NAME_WITH_I18N(LotusMode, N_("OFF"), N_("Uinput (Smooth)"), N_("Uinput (Slow)"), N_("Surrounding Text"), N_("Preedit"), N_("Emoji Picker"), N_("No mode"),
+                                     N_("Minecraft"));
 
     /**
-     * @brief Converts mode string to LotusMode enum.
-     * @param mode The string to parse.
-     * @return Corresponding LotusMode value.
+     * @brief W2U mode for w to ư conversion.
      */
-    inline LotusMode modeStringToEnum(const std::string& mode) {
-        static const std::unordered_map<std::string_view, LotusMode> modeMap = {
-            {"OFF", LotusMode::Off},
-            {"Uinput (Slow)", LotusMode::Uinput},
-            {"Surrounding Text", LotusMode::SurroundingText},
-            {"Preedit", LotusMode::Preedit},
-            {"Emoji Picker", LotusMode::Emoji},
-            {"Uinput (Smooth)", LotusMode::Smooth},
-            {"Minecraft", LotusMode::Minecraft},
-        };
-        auto it = modeMap.find(mode);
-        return it != modeMap.end() ? it->second : LotusMode::NoMode;
-    }
+    enum class W2UMode : std::uint8_t {
+        Disabled   = 0,
+        NonStart   = 1,
+        Everywhere = 2,
+    };
+
+    FCITX_CONFIG_ENUM_NAME_WITH_I18N(W2UMode, N_("Disabled"), N_("Non-Start"), N_("Everywhere"));
+
+    /**
+     * @brief Icon theme options.
+     */
+    enum class IconTheme : std::uint8_t {
+        Auto,
+        Light,
+        Dark,
+    };
+
+    FCITX_CONFIG_ENUM_NAME_WITH_I18N(IconTheme, N_("Auto"), N_("Light"), N_("Dark"));
 
     struct InputMethodConstrain;
     struct InputMethodAnnotation;
@@ -114,41 +103,6 @@ namespace fcitx {
         std::vector<std::string> list_; // NOLINT
     };
 
-    /**
-     * @brief Annotation for input method selection with sub-config support.
-     */
-    enum class W2UMode : std::uint8_t {
-        Disabled   = 0,
-        NonStart   = 1,
-        Everywhere = 2,
-    };
-
-    inline std::string w2uEnumToString(W2UMode mode) {
-        switch (mode) {
-            case W2UMode::Disabled: return "Disabled";
-            case W2UMode::NonStart: return "Non-Start";
-            case W2UMode::Everywhere: return "Everywhere";
-            default: return "Disabled";
-        }
-    }
-
-    inline int w2uStringToEnum(const std::string& mode) {
-        W2UMode modeEnum = W2UMode::Disabled;
-        if (mode == "Disabled")
-            modeEnum = W2UMode::Disabled;
-        if (mode == "Non-Start")
-            modeEnum = W2UMode::NonStart;
-        if (mode == "Everywhere")
-            modeEnum = W2UMode::Everywhere;
-        return static_cast<int>(modeEnum);
-    }
-
-    struct W2UAnnotation : public StringListAnnotation {
-        W2UAnnotation() {
-            list_ = {"Disabled", "Non-Start", "Everywhere"};
-        }
-    };
-
     struct InputMethodAnnotation : public StringListAnnotation {
         /**
          * @brief Dumps description with sub-config paths.
@@ -175,27 +129,6 @@ namespace fcitx {
     struct DateFormatAnnotation : public StringListAnnotation {
         DateFormatAnnotation() {
             list_ = {"%d/%m/%Y", "%m/%d/%Y", "%Y-%m-%d", "%d/%m/%y", "%y-%m-%d", ""};
-        }
-    };
-
-    /**
-     * @brief Annotation for mode list with predefined options.
-     */
-    struct ModeListAnnotation : public StringListAnnotation {
-        /**
-         * @brief Initializes with default mode list.
-         */
-        ModeListAnnotation() {
-            list_ = {_("Uinput (Smooth)"), _("Uinput (Slow)"), _("Minecraft"), _("Surrounding Text"), _("Preedit"), _("Emoji Picker"), _("OFF")};
-        }
-    };
-
-    /**
-     * @brief Annotation for icon theme list.
-     */
-    struct IconThemeAnnotation : public StringListAnnotation {
-        IconThemeAnnotation() {
-            list_ = {_("Auto"), _("Light"), _("Dark")};
         }
     };
 
@@ -255,28 +188,28 @@ namespace fcitx {
     FCITX_CONFIGURATION(
         lotusConfig,
 
-        OptionWithAnnotation<std::string, ModeListAnnotation> mode{this, "Mode", _("Mode"), "Uinput (Smooth)", {}, {}, ModeListAnnotation()};
+        OptionWithAnnotation<LotusMode, LotusModeI18NAnnotation>                                         mode{this, "Mode", _("Mode"), LotusMode::Smooth};
         Option<std::string, InputMethodConstrain, DefaultMarshaller<std::string>, InputMethodAnnotation> inputMethod{
             this, "InputMethod", _("Input Method"), "Telex", InputMethodConstrain(&inputMethod), {}, InputMethodAnnotation()};
         OptionWithAnnotation<std::string, StringListAnnotation> outputCharset{this, "OutputCharset", _("Output Charset"), "Unicode", {}, {}, StringListAnnotation()};
         KeyListOption                                           modeMenuKey{
             this, "ModeMenuKey", _("Mode Menu Hotkey"), {Key("grave")}, KeyListConstrain({KeyConstrainFlag::AllowModifierLess, KeyConstrainFlag::AllowModifierOnly})};
-        SubConfigOption appRules{this, "AppRules", _("App Rules"), "fcitx://config/addon/lotus/app_rules"};
+        SubConfigOption                                      appRules{this, "AppRules", _("App Rules"), "fcitx://config/addon/lotus/app_rules"};
+        OptionWithAnnotation<W2UMode, W2UModeI18NAnnotation> w2u{this, "W2U", _("Type w to Produce ư"), W2UMode::Disabled};
 
         Option<bool> spellCheck{this, "SpellCheck", _("Enable Spell Check"), true}; Option<bool> enableMacro{this, "EnableMacro", _("Enable Macro"), true};
         Option<bool> capitalizeMacro{this, "CapitalizeMacro", _("Capitalize Macro"), true}; Option<bool> autoCapitalizeAfterPunctuation{
             this, "AutoCapitalizeAfterPunctuation", _("Auto capitalize after sentence-ending punctuation (. ! ? Enter) (experimental)"), false};
-        Option<bool>                                     doubleSpaceToPeriod{this, "DoubleSpaceToPeriod", _("Double Space to Period (experimental)"), false};
-        OptionWithAnnotation<std::string, W2UAnnotation> w2u{this, "W2U", _("Type w to Produce ư"), "Disabled", {}, {}, W2UAnnotation()};
-        Option<bool>                                     autoNonVnRestore{this, "AutoNonVnRestore", _("Auto Restore Keys With Invalid Words"), true};
-        Option<bool>                                     modernStyle{this, "ModernStyle", _("Use oà, uý (Instead Of òa, úy)"), true};
-        Option<bool>                                     freeMarking{this, "FreeMarking", _("Allow Type With More Freedom"), true};
-        Option<bool>                                     ddFreeStyle{this, "DdFreeStyle", _("Allow dd To Produce đ When Auto Restore Keys With Invalid Words Is On"), true};
-        Option<bool>                                     fixUinputWithAck{this, "FixUinputWithAck", _("Fix Uinput Mode With Ack"), false};
-        Option<bool>                                     useLotusIcons{this, "UseLotusIcons", _("Use Lotus Status Icons"), false};
+        Option<bool> doubleSpaceToPeriod{this, "DoubleSpaceToPeriod", _("Double Space to Period (experimental)"), false};
+        Option<bool> autoNonVnRestore{this, "AutoNonVnRestore", _("Auto Restore Keys With Invalid Words"), true};
+        Option<bool> modernStyle{this, "ModernStyle", _("Use oà, uý (Instead Of òa, úy)"), true};
+        Option<bool> freeMarking{this, "FreeMarking", _("Allow Type With More Freedom"), true};
+        Option<bool> ddFreeStyle{this, "DdFreeStyle", _("Allow dd To Produce đ When Auto Restore Keys With Invalid Words Is On"), true};
+        Option<bool> fixUinputWithAck{this, "FixUinputWithAck", _("Fix Uinput Mode With Ack"), false};
+        Option<bool> useLotusIcons{this, "UseLotusIcons", _("Use Lotus Status Icons"), false};
 
-        Option<bool>                                     enableDictionary{this, "EnableDictionary", _("Enable Custom Dictionary"), false};
-        Option<bool>                                     enableCustomKeymap{this, "EnableCustomKeymap", _("Enable Custom Keymap"), false};
+        Option<bool> enableDictionary{this, "EnableDictionary", _("Enable Custom Dictionary"), false};
+        Option<bool> enableCustomKeymap{this, "EnableCustomKeymap", _("Enable Custom Keymap"), false};
 
         Option<bool> showModeSmooth{this, "ShowModeSmooth", _("Show Uinput (Smooth)"), true}; Option<bool> showModeUinput{this, "ShowModeUinput", _("Show Uinput (Slow)"), true};
         Option<bool>                                                                                       showModeMinecraft{this, "ShowModeMinecraft", _("Show Minecraft"), true};
@@ -284,12 +217,12 @@ namespace fcitx {
         Option<bool> showModePreedit{this, "ShowModePreedit", _("Show Preedit"), true}; Option<bool> showModeEmoji{this, "ShowModeEmoji", _("Show Emoji Picker"), true};
         Option<bool> showModeOff{this, "ShowModeOff", _("Show OFF"), true}; Option<bool> showModeDefault{this, "ShowModeDefault", _("Show Default Typing"), true};
 
-        OptionWithAnnotation<std::string, TimeFormatAnnotation> timeFormat{this, "TimeFormat", _("Time Format ($TIME in macro)"), "%H:%M", {}, {}, TimeFormatAnnotation()};
-        OptionWithAnnotation<std::string, DateFormatAnnotation> dateFormat{this, "DateFormat", _("Date Format ($DATE in macro)"), "%d/%m/%Y", {}, {}, DateFormatAnnotation()};
+        OptionWithAnnotation<std::string, TimeFormatAnnotation>  timeFormat{this, "TimeFormat", _("Time Format ($TIME in macro)"), "%H:%M", {}, {}, TimeFormatAnnotation()};
+        OptionWithAnnotation<std::string, DateFormatAnnotation>  dateFormat{this, "DateFormat", _("Date Format ($DATE in macro)"), "%d/%m/%Y", {}, {}, DateFormatAnnotation()};
 
-        SubConfigOption                                         macroEditor{this, "MacroEditor", _("Macro"), "fcitx://config/addon/lotus/lotus-macro"};
-        SubConfigOption                                         customKeymap{this, "CustomKeymap", _("Custom Keymap"), "fcitx://config/addon/lotus/custom_keymap"};
-        OptionWithAnnotation<std::string, IconThemeAnnotation>  iconTheme{this, "IconTheme", _("Icon Color"), "Auto", {}, {}, IconThemeAnnotation()};);
+        SubConfigOption                                          macroEditor{this, "MacroEditor", _("Macro"), "fcitx://config/addon/lotus/lotus-macro"};
+        SubConfigOption                                          customKeymap{this, "CustomKeymap", _("Custom Keymap"), "fcitx://config/addon/lotus/custom_keymap"};
+        OptionWithAnnotation<IconTheme, IconThemeI18NAnnotation> iconTheme{this, "IconTheme", _("Icon Color"), IconTheme::Auto};);
 
 } // namespace fcitx
 

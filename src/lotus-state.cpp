@@ -41,7 +41,7 @@ namespace fcitx {
 
     void LotusState::setEngine() {
         lotusEngine_.reset();
-        realMode = modeStringToEnum(engine_->config().mode.value());
+        realMode = engine_->config().mode.value();
 
         if (engine_->config().inputMethod.value() == "Custom") {
             const auto&        keymaps = *engine_->customKeymap().customKeymap;
@@ -71,7 +71,7 @@ namespace fcitx {
             .outputCharset       = engine_->config().outputCharset->data(),
             .modernStyle         = *engine_->config().modernStyle,
             .freeMarking         = *engine_->config().freeMarking,
-            .w2u                 = w2uStringToEnum(*engine_->config().w2u),
+            .w2u                 = static_cast<int>(*engine_->config().w2u),
             .timeFormat          = engine_->config().timeFormat->data(),
             .dateFormat          = engine_->config().dateFormat->data(),
         };
