@@ -296,7 +296,7 @@ jobs:
           subject-path: 'artifacts/**/*'
 
       - name: Upload to GitHub Releases
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v3
         with:
           files: |
             artifacts/**/*.deb
