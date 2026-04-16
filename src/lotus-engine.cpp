@@ -13,6 +13,7 @@
 #include "lotus-monitor.h"
 #include "lotus-utils.h"
 #include "ack-apps.h"
+#include <optional>
 #include <sys/socket.h>
 #include <utility>
 
@@ -478,8 +479,8 @@ namespace fcitx {
 
             keyEvent.filterAndAccept();
 
-            LotusMode selectedMode  = static_cast<LotusMode>(-1);
-            bool      selectionMade = false;
+            std::optional<LotusMode> selectedMode  = std::nullopt;
+            bool                     selectionMade = false;
 
             switch (keySym) {
                 case FcitxKey_Tab:
@@ -518,7 +519,7 @@ namespace fcitx {
                         selectedMode = it->second;
                     }
 
-                    if (selectedMode == static_cast<LotusMode>(-1)) {
+                    if (selectedMode == std::nullopt) {
                         const auto& kl = *config_.modeMenuKey;
                         if (kl.size() == 1 && !kl[0].hasModifier()) {
                             std::string charStr = Key::keySymToUTF8(kl[0].sym());
@@ -540,8 +541,8 @@ namespace fcitx {
                 }
             }
 
-            if (selectedMode != static_cast<LotusMode>(-1)) {
-                LOTUS_INFO("Selected mode: " + LotusModeI18NAnnotation::toString(selectedMode));
+            if (selectedMode != std::nullopt) {
+                LOTUS_INFO("Selected mode: " + LotusModeI18NAnnotation::toString(selectedMode.value()));
                 if (selectedMode != LotusMode::Emoji) {
                     if (keySym == FcitxKey_r) { // Default Typing key (R)
                         std::lock_guard<std::mutex> lock(appRulesMutex_);
@@ -551,7 +552,7 @@ namespace fcitx {
                         rules.erase(std::remove_if(rules.begin(), rules.end(), [this](const auto& rule) { return *rule.app == currentConfigureApp_; }), rules.end());
                         appRulesTables_.rules.setValue(std::move(rules));
                     } else {
-                        setAppRule(currentConfigureApp_, selectedMode);
+                        setAppRule(currentConfigureApp_, selectedMode.value());
                     }
                     if (!isStartsWith(currentConfigureApp_, "ctx_")) {
                         saveAppRules();
@@ -566,10 +567,10 @@ namespace fcitx {
                 ic->updateUserInterface(UserInterfaceComponent::InputPanel);
                 auto* state = ic->propertyFor(&factory_);
 
-                if (selectedMode != static_cast<LotusMode>(-1)) {
+                if (selectedMode != std::nullopt) {
                     state->commitBuffer();
                     state->reset();
-                    setMode(selectedMode, ic);
+                    setMode(selectedMode.value(), ic);
                     if (selectedMode == LotusMode::Emoji) {
                         state->updateEmojiPreedit();
                     }
