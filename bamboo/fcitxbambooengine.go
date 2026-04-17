@@ -182,6 +182,9 @@ func (e *FcitxBambooEngine) getRawKeyLen() int {
 
 func (e *FcitxBambooEngine) getPreeditString() string {
 	if e.macroEnabled {
+		if e.autoNonVnRestore && e.shouldFallbackToEnglish(true) {
+			return e.getProcessedString(bamboo.EnglishMode)
+		}
 		return e.getProcessedString(bamboo.PunctuationMode)
 	}
 	if e.shouldFallbackToEnglish(true) {
@@ -303,6 +306,9 @@ func (e *FcitxBambooEngine) getCommitText(keyVal, state uint32) (string, bool) {
 				return e.getPreeditString(), false
 			}
 		} else if e.macroEnabled {
+			if e.autoNonVnRestore && e.shouldFallbackToEnglish(true) {
+				return e.getProcessedString(bamboo.EnglishMode), false
+			}
 			return e.getProcessedString(bamboo.PunctuationMode), false
 		} else {
 			return e.getPreeditString(), false

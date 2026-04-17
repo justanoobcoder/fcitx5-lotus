@@ -27,6 +27,8 @@ jobs:
             codename: plucky
           - distro: ubuntu:25.10
             codename: questing
+          - distro: ubuntu:26.04
+            codename: resolute
 
     runs-on: ubuntu-latest
 
@@ -61,6 +63,8 @@ jobs:
             releasever: 42
           - distro: fedora:43
             releasever: 43
+          - distro: fedora:44
+            releasever: 44
           - distro: fedora:rawhide
             releasever: rawhide
 

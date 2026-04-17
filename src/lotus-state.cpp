@@ -41,7 +41,7 @@ namespace fcitx {
 
     void LotusState::setEngine() {
         lotusEngine_.reset();
-        realMode = modeStringToEnum(engine_->config().mode.value());
+        realMode = engine_->config().mode.value();
 
         if (engine_->config().inputMethod.value() == "Custom") {
             const auto&        keymaps = *engine_->customKeymap().customKeymap;
@@ -71,7 +71,7 @@ namespace fcitx {
             .outputCharset       = engine_->config().outputCharset->data(),
             .modernStyle         = *engine_->config().modernStyle,
             .freeMarking         = *engine_->config().freeMarking,
-            .w2u                 = *engine_->config().w2u,
+            .w2u                 = static_cast<int>(*engine_->config().w2u),
             .timeFormat          = engine_->config().timeFormat->data(),
             .dateFormat          = engine_->config().dateFormat->data(),
         };
@@ -601,10 +601,9 @@ namespace fcitx {
         auto commitF = UniqueCPtr<char>(EnginePullCommit(lotusEngine_.handle()));
         if (commitF && (*commitF.get() != 0)) {
             std::string commitStr = commitF.get();
-            std::string commonPrefix;
             std::string deletedPart;
             std::string addedPart;
-            compareAndSplitStrings(oldPreBuffer_, commitStr, commonPrefix, deletedPart, addedPart);
+            compareAndSplitStrings(oldPreBuffer_, commitStr, deletedPart, addedPart);
 
             if (!deletedPart.empty()) {
                 performReplacement(deletedPart, addedPart);
@@ -653,14 +652,13 @@ namespace fcitx {
         UniqueCPtr<char> preeditC(EnginePullPreedit(lotusEngine_.handle()));
         std::string      preeditStr = (preeditC && (*preeditC.get() != 0)) ? preeditC.get() : "";
 
-        std::string      commonPrefix;
         std::string      deletedPart;
         std::string      addedPart;
 
         if (wa_chromium_flag)
             keyEvent.filterAndAccept();
 
-        if (compareAndSplitStrings(oldPreBuffer_, preeditStr, commonPrefix, deletedPart, addedPart) != 0) {
+        if (compareAndSplitStrings(oldPreBuffer_, preeditStr, deletedPart, addedPart) != 0) {
             if (deletedPart.empty()) {
                 bool isCommit           = false;
                 bool wasAutoCapitalized = (currentSym != keyEvent.rawKey().sym());
@@ -788,10 +786,9 @@ namespace fcitx {
             if (preeditPtr && (*preeditPtr.get() != 0))
                 newWord += preeditPtr.get();
 
-            std::string commonPrefix;
             std::string deletedPart;
             std::string addedPart;
-            compareAndSplitStrings(oldWord, newWord, commonPrefix, deletedPart, addedPart);
+            compareAndSplitStrings(oldWord, newWord, deletedPart, addedPart);
             if ((deletedPart.empty() || deletedPart == oldWord) && addedPart == keyEvent.key().toString()) {
                 ResetEngine(lotusEngine_.handle());
                 keyEvent.forward();
@@ -1136,10 +1133,9 @@ namespace fcitx {
             auto commitF = UniqueCPtr<char>(EnginePullCommit(lotusEngine_.handle()));
             if (commitF && (*commitF.get() != 0)) {
                 std::string commitStr = commitF.get();
-                std::string commonPrefix;
                 std::string deletedPart;
                 std::string addedPart;
-                compareAndSplitStrings(oldPreBuffer_, commitStr, commonPrefix, deletedPart, addedPart);
+                compareAndSplitStrings(oldPreBuffer_, commitStr, deletedPart, addedPart);
 
                 if (!deletedPart.empty()) {
                     // Re-buffer remaining keys for next replay cycle.
@@ -1175,10 +1171,9 @@ namespace fcitx {
             UniqueCPtr<char> preeditC(EnginePullPreedit(lotusEngine_.handle()));
             std::string      preeditStr = (preeditC && (*preeditC.get() != 0)) ? preeditC.get() : "";
 
-            std::string      commonPrefix;
             std::string      deletedPart;
             std::string      addedPart;
-            if (compareAndSplitStrings(oldPreBuffer_, preeditStr, commonPrefix, deletedPart, addedPart) != 0) {
+            if (compareAndSplitStrings(oldPreBuffer_, preeditStr, deletedPart, addedPart) != 0) {
                 if (deletedPart.empty()) {
                     if (!addedPart.empty()) {
                         ic_->commitString(addedPart);

@@ -78,12 +78,11 @@ bool isBackspace(uint32_t sym);
  * @brief Compares two strings and computes diff.
  * @param A First string.
  * @param B Second string.
- * @param commonPrefix Output common prefix.
  * @param deletedPart Output deleted portion.
  * @param addedPart Output added portion.
  * @return Comparison result code.
  */
-int compareAndSplitStrings(const std::string& A, const std::string& B, std::string& commonPrefix, std::string& deletedPart, std::string& addedPart);
+int compareAndSplitStrings(const std::string& A, const std::string& B, std::string& deletedPart, std::string& addedPart);
 
 /**
  * @brief Checks if string starts with prefix.

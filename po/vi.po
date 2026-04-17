@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: fcitx5-lotus\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-10 23:32+0700\n"
-"PO-Revision-Date: 2026-04-10 23:40+0700\n"
+"POT-Creation-Date: 2026-04-16 16:50+0700\n"
+"PO-Revision-Date: 2026-04-16 16:33+0700\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
 "Language: vi\n"
@@ -18,194 +18,202 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Poedit 3.8\n"
 
-#: src/lotus-state.cpp:234
-msgid "Page "
-msgstr "Trang "
-
-#: src/lotus-config.h:157 src/lotus-engine.cpp:834
-msgid "Uinput (Smooth)"
-msgstr "Uinput (Mượt)"
-
-#: src/lotus-config.h:157 src/lotus-engine.cpp:835
-msgid "Uinput (Slow)"
-msgstr "Uinput (Chậm)"
-
-#: src/lotus-config.h:157 src/lotus-engine.cpp:836
-msgid "Minecraft"
-msgstr "Minecraft"
-
-#: src/lotus-config.h:157 src/lotus-engine.cpp:837
-msgid "Surrounding Text"
-msgstr "Văn bản xung quanh"
-
-#: src/lotus-config.h:157 src/lotus-engine.cpp:838
-msgid "Preedit"
-msgstr "Gạch chân"
-
-#: src/lotus-config.h:157 src/lotus-engine.cpp:839
-msgid "Emoji Picker"
-msgstr "Chọn Emoji"
-
-#: src/lotus-config.h:157 src/lotus-engine.cpp:840
+#: src/lotus-config.h:39 src/lotus-engine.cpp:840
 msgid "OFF"
 msgstr "Tắt"
 
-#: src/lotus-config.h:166
+#: src/lotus-config.h:39 src/lotus-engine.cpp:834
+msgid "Uinput (Smooth)"
+msgstr "Uinput (Mượt)"
+
+#: src/lotus-config.h:39 src/lotus-engine.cpp:835
+msgid "Uinput (Slow)"
+msgstr "Uinput (Chậm)"
+
+#: src/lotus-config.h:39 src/lotus-engine.cpp:837
+msgid "Surrounding Text"
+msgstr "Văn bản xung quanh"
+
+#: src/lotus-config.h:39 src/lotus-engine.cpp:838
+msgid "Preedit"
+msgstr "Gạch chân"
+
+#: src/lotus-config.h:39 src/lotus-engine.cpp:839
+msgid "Emoji Picker"
+msgstr "Chọn Emoji"
+
+#: src/lotus-config.h:39 src/lotus-engine.cpp:836
+msgid "Minecraft"
+msgstr "Minecraft"
+
+#: src/lotus-config.h:50
+msgid "Disabled"
+msgstr "Tắt"
+
+#: src/lotus-config.h:50
+msgid "Non-Start"
+msgstr "Không phải đầu từ"
+
+#: src/lotus-config.h:50
+msgid "Everywhere"
+msgstr "Mọi nơi"
+
+#: src/lotus-config.h:61
 msgid "Auto"
 msgstr "Tự động"
 
-#: src/lotus-config.h:166
+#: src/lotus-config.h:61
 msgid "Light"
 msgstr "Sáng"
 
-#: src/lotus-config.h:166
+#: src/lotus-config.h:61
 msgid "Dark"
 msgstr "Tối"
 
-#: src/lotus-config.h:205
+#: src/lotus-config.h:168
 msgid "Key"
 msgstr "Phím"
 
-#: src/lotus-config.h:205
+#: src/lotus-config.h:168
 msgid "Value"
 msgstr "Giá trị"
 
-#: src/lotus-config.h:209 src/lotus-config.h:257 src/lotus-engine.cpp:170
+#: src/lotus-config.h:172 src/lotus-config.h:221 src/lotus-engine.cpp:170
 #: src/lotus-engine.cpp:319
 msgid "Macro"
 msgstr "Gõ tắt"
 
-#: src/lotus-config.h:213 src/lotus-config.h:258
+#: src/lotus-config.h:176 src/lotus-config.h:222
 msgid "Custom Keymap"
 msgstr "Keymap tuỳ chỉnh"
 
-#: src/lotus-config.h:215
+#: src/lotus-config.h:178
 msgid "App"
 msgstr "App"
 
-#: src/lotus-config.h:215 src/lotus-config.h:226
+#: src/lotus-config.h:178 src/lotus-config.h:189
 msgid "Mode"
 msgstr "Chế độ"
 
-#: src/lotus-config.h:218
+#: src/lotus-config.h:181
 msgid "Rules"
 msgstr "Quy tắc"
 
-#: src/lotus-config.h:228
+#: src/lotus-config.h:191
 msgid "Input Method"
 msgstr "Kiểu gõ"
 
-#: src/lotus-config.h:229
+#: src/lotus-config.h:192
 msgid "Output Charset"
 msgstr "Bảng mã"
 
-#: src/lotus-config.h:231
+#: src/lotus-config.h:194
 msgid "Mode Menu Hotkey"
 msgstr "Phím tắt menu chế độ gõ"
 
-#: src/lotus-config.h:232
+#: src/lotus-config.h:195
 msgid "App Rules"
 msgstr "Quy tắc ứng dụng"
 
-#: src/lotus-config.h:234 src/lotus-engine.cpp:169
+#: src/lotus-config.h:196
+msgid "Type w to Produce ư"
+msgstr "Gõ w thành ư"
+
+#: src/lotus-config.h:198 src/lotus-engine.cpp:169
 msgid "Enable Spell Check"
 msgstr "Bật kiểm tra chính tả"
 
-#: src/lotus-config.h:234 src/lotus-engine.cpp:170
+#: src/lotus-config.h:198 src/lotus-engine.cpp:170
 msgid "Enable Macro"
 msgstr "Bật gõ tắt"
 
-#: src/lotus-config.h:235 src/lotus-engine.cpp:171 src/lotus-engine.cpp:320
+#: src/lotus-config.h:199 src/lotus-engine.cpp:171 src/lotus-engine.cpp:320
 msgid "Capitalize Macro"
 msgstr "Gõ tắt chữ hoa"
 
-#: src/lotus-config.h:236
+#: src/lotus-config.h:200
 msgid ""
 "Auto capitalize after sentence-ending punctuation (. ! ? Enter) "
 "(experimental)"
 msgstr "Tự động ghi hoa sau dấu câu (. ! ? Enter) (thử nghiệm)"
 
-#: src/lotus-config.h:237
+#: src/lotus-config.h:201
 msgid "Double Space to Period (experimental)"
 msgstr "Phím cách 2 lần để chấm câu (thử nghiệm)"
 
-#: src/lotus-config.h:238
-msgid "Type w to Produce ư"
-msgstr "Gõ w thành ư"
-
-#: src/lotus-config.h:238 src/lotus-engine.cpp:173
+#: src/lotus-config.h:202 src/lotus-engine.cpp:173
 msgid "Auto Restore Keys With Invalid Words"
 msgstr "Tự động khôi phục phím với từ sai"
 
-#: src/lotus-config.h:239
+#: src/lotus-config.h:203
 msgid "Use oà, uý (Instead Of òa, úy)"
 msgstr "Sử dụng oà, uý (Thay vì òa, úy)"
 
-#: src/lotus-config.h:240
+#: src/lotus-config.h:204
 msgid "Allow Type With More Freedom"
 msgstr "Cho phép gõ dấu tự do"
 
-#: src/lotus-config.h:241
+#: src/lotus-config.h:205
 msgid "Allow dd To Produce đ When Auto Restore Keys With Invalid Words Is On"
 msgstr "Cho phép gõ dd thành đ khi bật Tự động khôi phục với từ sai"
 
-#: src/lotus-config.h:242
+#: src/lotus-config.h:206
 msgid "Fix Uinput Mode With Ack"
 msgstr "Sửa lỗi chế độ Uinput với Ack"
 
-#: src/lotus-config.h:243
+#: src/lotus-config.h:207
 msgid "Use Lotus Status Icons"
 msgstr "Sử dụng biểu tượng trạng thái Lotus"
 
-#: src/lotus-config.h:245 src/lotus-engine.cpp:175
+#: src/lotus-config.h:209 src/lotus-engine.cpp:175
 msgid "Enable Custom Dictionary"
 msgstr "Bật từ điển tuỳ chỉnh"
 
-#: src/lotus-config.h:246
+#: src/lotus-config.h:210
 msgid "Enable Custom Keymap"
 msgstr "Bật keymap tuỳ chỉnh"
 
-#: src/lotus-config.h:248
+#: src/lotus-config.h:212
 msgid "Show Uinput (Smooth)"
 msgstr "Hiển thị chế độ Uinput (Mượt)"
 
-#: src/lotus-config.h:248
+#: src/lotus-config.h:212
 msgid "Show Uinput (Slow)"
 msgstr "Hiển thị chế độ Uinput (Chậm)"
 
-#: src/lotus-config.h:249
+#: src/lotus-config.h:213
 msgid "Show Minecraft"
 msgstr "Hiển thị chế độ Minecraft"
 
-#: src/lotus-config.h:250
+#: src/lotus-config.h:214
 msgid "Show Surrounding Text"
 msgstr "Hiển thị chế độ Văn bản xung quanh"
 
-#: src/lotus-config.h:251
+#: src/lotus-config.h:215
 msgid "Show Preedit"
 msgstr "Hiển thị chế độ Gạch chân"
 
-#: src/lotus-config.h:251
+#: src/lotus-config.h:215
 msgid "Show Emoji Picker"
 msgstr "Hiển thị chế độ Chọn Emoji"
 
-#: src/lotus-config.h:252
+#: src/lotus-config.h:216
 msgid "Show OFF"
 msgstr "Hiển thị chế độ Tắt"
 
-#: src/lotus-config.h:252
+#: src/lotus-config.h:216
 msgid "Show Default Typing"
 msgstr "Hiển thị chế độ gõ mặc định"
 
-#: src/lotus-config.h:254
+#: src/lotus-config.h:218
 msgid "Time Format ($TIME in macro)"
 msgstr "Định dạng giờ ($TIME trong gõ tắt)"
 
-#: src/lotus-config.h:255
+#: src/lotus-config.h:219
 msgid "Date Format ($DATE in macro)"
 msgstr "Định dạng ngày ($DATE trong macro)"
 
-#: src/lotus-config.h:259
+#: src/lotus-config.h:223
 msgid "Icon Color"
 msgstr "Màu biểu tượng"
 
@@ -244,6 +252,10 @@ msgstr "Gõ"
 #: src/lotus-engine.cpp:936
 msgid "Lotus - Off"
 msgstr "Lotus - Tắt"
+
+#: src/lotus-state.cpp:234
+msgid "Page "
+msgstr "Trang "
 
 #: org.fcitx.Fcitx5.Addon.Lotus.metainfo.xml.in.in:7
 msgid "Lotus"
@@ -695,6 +707,14 @@ msgstr "Tải cấu hình thất bại."
 msgid "No interface settings available yet."
 msgstr "Không có cài đặt nào hiện khả dụng."
 
+#: settings-gui/ui/components.py:208
+msgid "[ Recording... ]"
+msgstr "[ Đang ghi lại... ]"
+
+#: settings-gui/ui/components.py:222
+msgid "None"
+msgstr "Rỗng"
+
 #: settings-gui/ui/main_window.py:40
 msgid "Lotus Settings"
 msgstr "Cài đặt Lotus"
@@ -746,14 +766,6 @@ msgstr "Bạn có chắc chắn muốn khôi phục tất cả cài đặt về 
 #: settings-gui/ui/main_window.py:260
 msgid "All settings applied successfully."
 msgstr "Tất cả cài đặt đã được áp dụng thành công."
-
-#: settings-gui/ui/components.py:208
-msgid "[ Recording... ]"
-msgstr "[ Đang ghi lại... ]"
-
-#: settings-gui/ui/components.py:222
-msgid "None"
-msgstr "Rỗng"
 
 #: settings-gui/org.fcitx.Fcitx5.Addon.Lotus.Settings.desktop.in:2
 msgid "Fcitx5 Lotus Settings"

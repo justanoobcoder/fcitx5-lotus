@@ -1,6 +1,5 @@
-fcitx5-lotus (2.0.2-1) unstable; urgency=medium
+fcitx5-lotus (3.0.0-1) unstable; urgency=medium
 
-  * Small fix
-  * Auto detect system color scheme
+  * Using 3 option for w2ư
 
- -- Nguyen Hoang Ky <nhktmdzhg@gmail.com>  Sun, 10 Apr 2026 23:36:00 +0700
+ -- Nguyen Hoang Ky <nhktmdzhg@gmail.com>  Thu, 16 Apr 2026 16:20:00 +0700

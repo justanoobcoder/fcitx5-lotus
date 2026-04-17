@@ -13,6 +13,8 @@
 #include <pwd.h>
 #include <unistd.h>
 
+#include <algorithm>
+
 // Global variables
 std::atomic<fcitx::LotusMode> realMode{fcitx::LotusMode::Smooth};
 std::atomic<bool>             needEngineReset{false};
@@ -67,30 +69,30 @@ bool isBackspace(uint32_t sym) {
     return sym == 65288 || sym == 8 || sym == FcitxKey_BackSpace;
 }
 
-int compareAndSplitStrings(const std::string& A, const std::string& B, std::string& commonPrefix, std::string& deletedPart, std::string& addedPart) {
-    size_t i = 0;
-    size_t j = 0;
+int compareAndSplitStrings(const std::string& A, const std::string& B, std::string& deletedPart, std::string& addedPart) {
+    size_t minLen   = std::min(A.size(), B.size());
+    size_t startPos = (minLen > 20) ? (minLen - 20) : 0;
 
-    while (i < A.size() && j < B.size()) {
-        unsigned int lenA = fcitx_utf8_char_len(&A[i]);
-        unsigned int lenB = fcitx_utf8_char_len(&B[j]);
-        if (lenA == 0 || lenB == 0) {
-            break;
-        }
-        if (i + lenA > A.size() || j + lenB > B.size()) {
-            break;
-        }
-        if (lenA == lenB && std::strncmp(&A[i], &B[j], lenA) == 0) {
-            i += lenA;
-            j += lenB;
-        } else {
-            break;
+    while (startPos > 0 && (static_cast<unsigned char>(A[startPos]) & 0xC0) == 0x80) {
+        --startPos;
+    }
+
+    auto [itA, itB] = std::mismatch(A.begin() + static_cast<std::ptrdiff_t>(startPos), A.end(), B.begin() + static_cast<std::ptrdiff_t>(startPos), B.end());
+
+    size_t splitPoint = 0;
+    if (itA == A.end()) {
+        splitPoint = minLen;
+    } else {
+        size_t pos = std::distance(A.begin(), itA);
+        splitPoint = startPos + pos;
+        while (splitPoint > 0 && (static_cast<unsigned char>(A[splitPoint]) & 0xC0) == 0x80) {
+            --splitPoint;
         }
     }
 
-    commonPrefix.assign(A, 0, i);
-    deletedPart.assign(A, i);
-    addedPart.assign(B, j);
+    deletedPart.assign(A, splitPoint);
+    addedPart.assign(B, splitPoint);
+
     return (deletedPart.empty() && addedPart.empty()) ? 1 : 2;
 }
 

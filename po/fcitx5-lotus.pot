@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-10 23:32+0700\n"
+"POT-Creation-Date: 2026-04-16 16:50+0700\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,194 +17,202 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/lotus-state.cpp:234
-msgid "Page "
-msgstr ""
-
-#: src/lotus-config.h:157 src/lotus-engine.cpp:834
-msgid "Uinput (Smooth)"
-msgstr ""
-
-#: src/lotus-config.h:157 src/lotus-engine.cpp:835
-msgid "Uinput (Slow)"
-msgstr ""
-
-#: src/lotus-config.h:157 src/lotus-engine.cpp:836
-msgid "Minecraft"
-msgstr ""
-
-#: src/lotus-config.h:157 src/lotus-engine.cpp:837
-msgid "Surrounding Text"
-msgstr ""
-
-#: src/lotus-config.h:157 src/lotus-engine.cpp:838
-msgid "Preedit"
-msgstr ""
-
-#: src/lotus-config.h:157 src/lotus-engine.cpp:839
-msgid "Emoji Picker"
-msgstr ""
-
-#: src/lotus-config.h:157 src/lotus-engine.cpp:840
+#: src/lotus-config.h:39 src/lotus-engine.cpp:840
 msgid "OFF"
 msgstr ""
 
-#: src/lotus-config.h:166
+#: src/lotus-config.h:39 src/lotus-engine.cpp:834
+msgid "Uinput (Smooth)"
+msgstr ""
+
+#: src/lotus-config.h:39 src/lotus-engine.cpp:835
+msgid "Uinput (Slow)"
+msgstr ""
+
+#: src/lotus-config.h:39 src/lotus-engine.cpp:837
+msgid "Surrounding Text"
+msgstr ""
+
+#: src/lotus-config.h:39 src/lotus-engine.cpp:838
+msgid "Preedit"
+msgstr ""
+
+#: src/lotus-config.h:39 src/lotus-engine.cpp:839
+msgid "Emoji Picker"
+msgstr ""
+
+#: src/lotus-config.h:39 src/lotus-engine.cpp:836
+msgid "Minecraft"
+msgstr ""
+
+#: src/lotus-config.h:50
+msgid "Disabled"
+msgstr ""
+
+#: src/lotus-config.h:50
+msgid "Non-Start"
+msgstr ""
+
+#: src/lotus-config.h:50
+msgid "Everywhere"
+msgstr ""
+
+#: src/lotus-config.h:61
 msgid "Auto"
 msgstr ""
 
-#: src/lotus-config.h:166
+#: src/lotus-config.h:61
 msgid "Light"
 msgstr ""
 
-#: src/lotus-config.h:166
+#: src/lotus-config.h:61
 msgid "Dark"
 msgstr ""
 
-#: src/lotus-config.h:205
+#: src/lotus-config.h:168
 msgid "Key"
 msgstr ""
 
-#: src/lotus-config.h:205
+#: src/lotus-config.h:168
 msgid "Value"
 msgstr ""
 
-#: src/lotus-config.h:209 src/lotus-config.h:257 src/lotus-engine.cpp:170
+#: src/lotus-config.h:172 src/lotus-config.h:221 src/lotus-engine.cpp:170
 #: src/lotus-engine.cpp:319
 msgid "Macro"
 msgstr ""
 
-#: src/lotus-config.h:213 src/lotus-config.h:258
+#: src/lotus-config.h:176 src/lotus-config.h:222
 msgid "Custom Keymap"
 msgstr ""
 
-#: src/lotus-config.h:215
+#: src/lotus-config.h:178
 msgid "App"
 msgstr ""
 
-#: src/lotus-config.h:215 src/lotus-config.h:226
+#: src/lotus-config.h:178 src/lotus-config.h:189
 msgid "Mode"
 msgstr ""
 
-#: src/lotus-config.h:218
+#: src/lotus-config.h:181
 msgid "Rules"
 msgstr ""
 
-#: src/lotus-config.h:228
+#: src/lotus-config.h:191
 msgid "Input Method"
 msgstr ""
 
-#: src/lotus-config.h:229
+#: src/lotus-config.h:192
 msgid "Output Charset"
 msgstr ""
 
-#: src/lotus-config.h:231
+#: src/lotus-config.h:194
 msgid "Mode Menu Hotkey"
 msgstr ""
 
-#: src/lotus-config.h:232
+#: src/lotus-config.h:195
 msgid "App Rules"
 msgstr ""
 
-#: src/lotus-config.h:234 src/lotus-engine.cpp:169
+#: src/lotus-config.h:196
+msgid "Type w to Produce ư"
+msgstr ""
+
+#: src/lotus-config.h:198 src/lotus-engine.cpp:169
 msgid "Enable Spell Check"
 msgstr ""
 
-#: src/lotus-config.h:234 src/lotus-engine.cpp:170
+#: src/lotus-config.h:198 src/lotus-engine.cpp:170
 msgid "Enable Macro"
 msgstr ""
 
-#: src/lotus-config.h:235 src/lotus-engine.cpp:171 src/lotus-engine.cpp:320
+#: src/lotus-config.h:199 src/lotus-engine.cpp:171 src/lotus-engine.cpp:320
 msgid "Capitalize Macro"
 msgstr ""
 
-#: src/lotus-config.h:236
+#: src/lotus-config.h:200
 msgid ""
 "Auto capitalize after sentence-ending punctuation (. ! ? Enter) "
 "(experimental)"
 msgstr ""
 
-#: src/lotus-config.h:237
+#: src/lotus-config.h:201
 msgid "Double Space to Period (experimental)"
 msgstr ""
 
-#: src/lotus-config.h:238
-msgid "Type w to Produce ư"
-msgstr ""
-
-#: src/lotus-config.h:238 src/lotus-engine.cpp:173
+#: src/lotus-config.h:202 src/lotus-engine.cpp:173
 msgid "Auto Restore Keys With Invalid Words"
 msgstr ""
 
-#: src/lotus-config.h:239
+#: src/lotus-config.h:203
 msgid "Use oà, uý (Instead Of òa, úy)"
 msgstr ""
 
-#: src/lotus-config.h:240
+#: src/lotus-config.h:204
 msgid "Allow Type With More Freedom"
 msgstr ""
 
-#: src/lotus-config.h:241
+#: src/lotus-config.h:205
 msgid "Allow dd To Produce đ When Auto Restore Keys With Invalid Words Is On"
 msgstr ""
 
-#: src/lotus-config.h:242
+#: src/lotus-config.h:206
 msgid "Fix Uinput Mode With Ack"
 msgstr ""
 
-#: src/lotus-config.h:243
+#: src/lotus-config.h:207
 msgid "Use Lotus Status Icons"
 msgstr ""
 
-#: src/lotus-config.h:245 src/lotus-engine.cpp:175
+#: src/lotus-config.h:209 src/lotus-engine.cpp:175
 msgid "Enable Custom Dictionary"
 msgstr ""
 
-#: src/lotus-config.h:246
+#: src/lotus-config.h:210
 msgid "Enable Custom Keymap"
 msgstr ""
 
-#: src/lotus-config.h:248
+#: src/lotus-config.h:212
 msgid "Show Uinput (Smooth)"
 msgstr ""
 
-#: src/lotus-config.h:248
+#: src/lotus-config.h:212
 msgid "Show Uinput (Slow)"
 msgstr ""
 
-#: src/lotus-config.h:249
+#: src/lotus-config.h:213
 msgid "Show Minecraft"
 msgstr ""
 
-#: src/lotus-config.h:250
+#: src/lotus-config.h:214
 msgid "Show Surrounding Text"
 msgstr ""
 
-#: src/lotus-config.h:251
+#: src/lotus-config.h:215
 msgid "Show Preedit"
 msgstr ""
 
-#: src/lotus-config.h:251
+#: src/lotus-config.h:215
 msgid "Show Emoji Picker"
 msgstr ""
 
-#: src/lotus-config.h:252
+#: src/lotus-config.h:216
 msgid "Show OFF"
 msgstr ""
 
-#: src/lotus-config.h:252
+#: src/lotus-config.h:216
 msgid "Show Default Typing"
 msgstr ""
 
-#: src/lotus-config.h:254
+#: src/lotus-config.h:218
 msgid "Time Format ($TIME in macro)"
 msgstr ""
 
-#: src/lotus-config.h:255
+#: src/lotus-config.h:219
 msgid "Date Format ($DATE in macro)"
 msgstr ""
 
-#: src/lotus-config.h:259
+#: src/lotus-config.h:223
 msgid "Icon Color"
 msgstr ""
 
@@ -242,6 +250,10 @@ msgstr ""
 
 #: src/lotus-engine.cpp:936
 msgid "Lotus - Off"
+msgstr ""
+
+#: src/lotus-state.cpp:234
+msgid "Page "
 msgstr ""
 
 #: org.fcitx.Fcitx5.Addon.Lotus.metainfo.xml.in.in:7
@@ -679,6 +691,14 @@ msgstr ""
 msgid "No interface settings available yet."
 msgstr ""
 
+#: settings-gui/ui/components.py:208
+msgid "[ Recording... ]"
+msgstr ""
+
+#: settings-gui/ui/components.py:222
+msgid "None"
+msgstr ""
+
 #: settings-gui/ui/main_window.py:40
 msgid "Lotus Settings"
 msgstr ""
@@ -729,14 +749,6 @@ msgstr ""
 
 #: settings-gui/ui/main_window.py:260
 msgid "All settings applied successfully."
-msgstr ""
-
-#: settings-gui/ui/components.py:208
-msgid "[ Recording... ]"
-msgstr ""
-
-#: settings-gui/ui/components.py:222
-msgid "None"
 msgstr ""
 
 #: settings-gui/org.fcitx.Fcitx5.Addon.Lotus.Settings.desktop.in:2
