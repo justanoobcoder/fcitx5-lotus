@@ -112,17 +112,18 @@ def pretty_format_hotkey_parts(hotkey_str):
 
     pretty_parts = []
     explicit_shift_needed = "Shift" in raw_mods
+    has_non_shift_modifier = any(mod in raw_mods for mod in ("Control", "Alt", "Super"))
 
     # Process base key for UI display
     if base_key_part:
+        if len(base_key_part) == 1 and base_key_part.isupper():
+            explicit_shift_needed = explicit_shift_needed or not has_non_shift_modifier
+            base_key_label = base_key_part # Keep uppercase A-Z
         # Check for symbols that imply Shift (Display only)
-        if base_key_part in HOTKEY_UI_UNSHIFT_MAP:
+        elif base_key_part in HOTKEY_UI_UNSHIFT_MAP:
             explicit_shift_needed = True
             display_base = HOTKEY_UI_UNSHIFT_MAP[base_key_part]
             base_key_label = HOTKEY_SYM_MAP.get(display_base, display_base.capitalize())
-        elif len(base_key_part) == 1 and base_key_part.isupper():
-            explicit_shift_needed = True
-            base_key_label = base_key_part # Keep uppercase A-Z
         else:
             base_key_label = HOTKEY_SYM_MAP.get(base_key_part, base_key_part.capitalize())
     else:
@@ -289,6 +290,7 @@ class HotkeyCaptureWidget(QPushButton):
     def _handle_key_event(self, event):
         """Internal helper to process captured keys."""
         key_code = event.key()
+        modifiers = event.modifiers()
 
         # Escape cancels the recording
         if key_code == Qt.Key_Escape:
@@ -326,14 +328,27 @@ class HotkeyCaptureWidget(QPushButton):
         if not base_key:
             base_key = event.text() if event.text() and event.text().isprintable() else QKeySequence(key_code).toString()
 
+        has_non_shift_modifier = bool(
+            modifiers & (Qt.ControlModifier | Qt.AltModifier | Qt.MetaModifier)
+        )
+        is_ascii_alpha = (
+            len(base_key) == 1 and base_key.isascii() and base_key.isalpha()
+        )
+
+        if has_non_shift_modifier and is_ascii_alpha:
+            base_key = base_key.upper()
+
         # Build modifier list from current event state
         mods = []
-        if event.modifiers() & Qt.ControlModifier: mods.append("Control")
-        if event.modifiers() & Qt.AltModifier: mods.append("Alt")
-        if event.modifiers() & Qt.MetaModifier: mods.append("Super")
+        if modifiers & Qt.ControlModifier: mods.append("Control")
+        if modifiers & Qt.AltModifier: mods.append("Alt")
+        if modifiers & Qt.MetaModifier: mods.append("Super")
 
         # Selective Shift suppression for symbols
-        if (event.modifiers() & Qt.ShiftModifier) and (base_key not in HOTKEY_UI_UNSHIFT_MAP):
+        if (modifiers & Qt.ShiftModifier) and (
+            (has_non_shift_modifier and is_ascii_alpha)
+            or (base_key not in HOTKEY_UI_UNSHIFT_MAP)
+        ):
             mods.append("Shift")
 
         mods.append(base_key)
