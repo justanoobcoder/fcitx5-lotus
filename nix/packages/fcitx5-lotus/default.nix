@@ -28,7 +28,7 @@ let
 in
 stdenv.mkDerivation rec {
   pname = "fcitx5-lotus";
-  version = "3.1.0";
+  version = "3.1.1";
 
   src = fetchFromGitHub {
     owner = "LotusInputMethod";
