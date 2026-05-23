@@ -1,5 +1,5 @@
 Name:           fcitx5-lotus
-Version:        3.1.0
+Version:        3.1.1
 Release:        1
 Summary:        Vietnamese input method for fcitx5
 License:        GPL-3.0-or-later
@@ -168,7 +168,5 @@ fi
 %systemd_postun_with_restart fcitx5-lotus-server@.service
 
 %changelog
-* Sun May 14 2026 Nguyen Hoang Ky <nhktmdzhg@gmail.com> - 3.1.0-1
-- Add option to type em-dash from double hyphen
-- Add bracket transform option
-- Fix some bug
+* Fri May 22 2026 Nguyen Hoang Ky <nhktmdzhg@gmail.com> - 3.1.1-1
+- Fix bug record wrong hotkey in settings-gui

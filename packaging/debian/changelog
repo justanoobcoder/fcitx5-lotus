@@ -1,7 +1,5 @@
-fcitx5-lotus (3.1.0-1) unstable; urgency=medium
+fcitx5-lotus (3.1.1-1) unstable; urgency=medium
 
-  * Add option to type em-dash from double hyphen
-  * Add bracket transform option
-  * Fix some bug
+  * Fix bug record wrong hotkey in settings-gui
 
- -- Nguyen Hoang Ky <nhktmdzhg@gmail.com>  Sun, 14 May 2026 16:15:00 +0700
+ -- Nguyen Hoang Ky <nhktmdzhg@gmail.com>  Fri, 22 May 2026 15:29:00 +0700
