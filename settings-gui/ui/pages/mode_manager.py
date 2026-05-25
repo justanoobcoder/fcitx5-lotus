@@ -35,6 +35,7 @@ from core.dbus_handler import LotusDBusHandler
 MODE_OFF = 0
 MODE_SMOOTH = 1
 MODE_SLOW = 2
+MODE_SUPER_SMOOTH = 3
 MODE_SURROUNDING = 4
 MODE_PREEDIT = 5
 MODE_EMOJI = 6
@@ -46,6 +47,7 @@ MODE_INFO = {
     MODE_OFF: {"title": "OFF", "icon": "input-keyboard"},
     MODE_SMOOTH: {"title": "Uinput (Smooth)", "icon": "input-keyboard"},
     MODE_SLOW: {"title": "Uinput (Slow)", "icon": "input-keyboard"},
+    MODE_SUPER_SMOOTH: {"title": "Uinput (Super Smooth)", "icon": "input-keyboard"},
     MODE_SURROUNDING: {"title": "Surrounding Text", "icon": "text-field"},
     MODE_PREEDIT: {"title": "Preedit", "icon": "text-field"},
     MODE_EMOJI: {"title": "Emoji Picker", "icon": "face-smile"},
@@ -403,7 +405,7 @@ class ModeManagerPage(QWidget):
         global_layout.addWidget(QLabel(_("Global Default Mode:")))
         self.combo_global_mode = QComboBox()
         global_modes = [
-            MODE_SMOOTH, MODE_SLOW, MODE_MINECRAFT,
+            MODE_SMOOTH, MODE_SLOW, MODE_SUPER_SMOOTH, MODE_MINECRAFT,
             MODE_SURROUNDING, MODE_PREEDIT, MODE_EMOJI,
             MODE_OFF
         ]
@@ -437,7 +439,7 @@ class ModeManagerPage(QWidget):
         self.mode_cards = {}
         
         grid_modes = [
-            MODE_SMOOTH, MODE_SLOW,
+            MODE_SMOOTH, MODE_SLOW, MODE_SUPER_SMOOTH,
             MODE_MINECRAFT, MODE_SURROUNDING,
             MODE_PREEDIT, MODE_EMOJI,
             MODE_OFF, MODE_DEFAULT

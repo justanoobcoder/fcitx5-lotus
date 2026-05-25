@@ -477,12 +477,17 @@ namespace fcitx {
         LOTUS_INFO("Perform replacement: " + deletedPart + " -> " + addedPart); //NOLINT
         current_backspace_count_ = 0;
         pending_commit_string_   = addedPart;
-        const auto& surrounding  = ic_->surroundingText();
-        // Enable Autofill detection for all frontends (Wayland/IBus).
-        // This fixes the "toôi" duplication bug in Chromium-based search bars.
-        // The isAutofillCertain function has been optimized to differentiate
-        // between browser autofill and AI ghost text.
-        int autofillOffset   = isAutofillCertain(surrounding) ? 1 : 0;
+        int autofillOffset       = 0;
+        if (realMode != LotusMode::SuperSmooth) {
+            const auto& surrounding = ic_->surroundingText();
+            // Enable Autofill detection for all frontends (Wayland/IBus).
+            // This fixes the "toôi" duplication bug in Chromium-based search bars.
+            // The isAutofillCertain function has been optimized to differentiate
+            // between browser autofill and AI ghost text.
+            if (isAutofillCertain(surrounding)) {
+                autofillOffset = 1;
+            }
+        }
         expected_backspaces_ = static_cast<int>(utf8::length(deletedPart)) + 1 + autofillOffset;
         if (realMode == LotusMode::Minecraft) {
             --expected_backspaces_;
@@ -870,7 +875,7 @@ namespace fcitx {
     }
 
     void LotusState::keyEvent(KeyEvent& keyEvent) {
-        if (!lotusEngine_ || keyEvent.isRelease())
+        if (!lotusEngine_ || keyEvent.isRelease() || keyEvent.rawKey().check(FcitxKey_Shift_L) || keyEvent.rawKey().check(FcitxKey_Shift_R))
             return;
         if (uinput_client_fd_ < 0) {
             LOTUS_WARN("Cannot connect to uinput server, reconnecting....");
@@ -943,7 +948,7 @@ namespace fcitx {
             if (isBackspace(currentSym)) {
                 if (realtextLen.load(std::memory_order_acquire) > 0)
                     realtextLen.fetch_sub(1, std::memory_order_acq_rel);
-                if (handleUInputKeyPress(keyEvent, currentSym, (realMode == LotusMode::Smooth) ? 5 : 20)) {
+                if (handleUInputKeyPress(keyEvent, currentSym, (realMode == LotusMode::Smooth || realMode == LotusMode::SuperSmooth) ? 5 : 20)) {
                     return;
                 }
             } else {
@@ -990,7 +995,8 @@ namespace fcitx {
         switch (realMode) {
             case LotusMode::Uinput:
             case LotusMode::Smooth:
-            case LotusMode::Minecraft: {
+            case LotusMode::Minecraft:
+            case LotusMode::SuperSmooth: {
                 handleUinputMode(keyEvent, currentSym);
                 break;
             }
@@ -1049,7 +1055,8 @@ namespace fcitx {
             case LotusMode::SurroundingText:
             case LotusMode::Uinput:
             case LotusMode::Smooth:
-            case LotusMode::Minecraft: {
+            case LotusMode::Minecraft:
+            case LotusMode::SuperSmooth: {
                 ic_->inputPanel().reset();
                 break;
             }
@@ -1083,7 +1090,8 @@ namespace fcitx {
             case LotusMode::Uinput:
             case LotusMode::Smooth:
             case LotusMode::SurroundingText:
-            case LotusMode::Minecraft: {
+            case LotusMode::Minecraft:
+            case LotusMode::SuperSmooth: {
                 if (lotusEngine_) {
                     ResetEngine(lotusEngine_.handle());
                 }

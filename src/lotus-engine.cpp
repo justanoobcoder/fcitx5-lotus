@@ -7,6 +7,7 @@
  *
  */
 #include "lotus-engine.h"
+#include "fcitx-utils/keysym.h"
 #include "lotus-config.h"
 #include "lotus-state.h"
 #include "lotus-candidates.h"
@@ -40,6 +41,7 @@ namespace fcitx {
             case LotusMode::Off: return 0;
             case LotusMode::Smooth: return 1;
             case LotusMode::Uinput: return 2;
+            case LotusMode::SuperSmooth: return 3;
             case LotusMode::SurroundingText: return 4;
             case LotusMode::Preedit: return 5;
             case LotusMode::Emoji: return 6;
@@ -53,6 +55,7 @@ namespace fcitx {
             case 0: return LotusMode::Off;
             case 1: return LotusMode::Smooth;
             case 2: return LotusMode::Uinput;
+            case 3: return LotusMode::SuperSmooth;
             case 4: return LotusMode::SurroundingText;
             case 5: return LotusMode::Preedit;
             case 6: return LotusMode::Emoji;
@@ -414,7 +417,7 @@ namespace fcitx {
 
         state->waitAck_ = false;
         if (*config_.fixUinputWithAck) {
-            if (targetMode == LotusMode::Uinput || targetMode == LotusMode::Smooth || targetMode == LotusMode::Minecraft) {
+            if (targetMode == LotusMode::Uinput || targetMode == LotusMode::Smooth || targetMode == LotusMode::Minecraft || targetMode == LotusMode::SuperSmooth) {
 #if __cplusplus >= 202002L
                 std::ranges::transform(appName, appName.begin(), ::tolower);
 #else
@@ -862,6 +865,7 @@ namespace fcitx {
             {LotusMode::Preedit, _("Preedit"), FcitxKey_q, *config_.showModePreedit},
             {LotusMode::Emoji, _("Emoji Picker"), FcitxKey_w, *config_.showModeEmoji},
             {LotusMode::Off, _("OFF"), FcitxKey_e, *config_.showModeOff},
+            {LotusMode::SuperSmooth, _("Uinput (Super Smooth)"), FcitxKey_a, *config_.showModeSuperSmooth},
         };
 
         const LotusMode defaultMode = config_.mode.value();
