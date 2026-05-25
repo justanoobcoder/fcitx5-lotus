@@ -29,6 +29,7 @@ namespace fcitx {
     enum class LotusMode : std::uint8_t {
         Off,
         Smooth,
+        SuperSmooth,
         Uinput,
         SurroundingText,
         Preedit,
@@ -36,7 +37,8 @@ namespace fcitx {
         Minecraft,
     };
 
-    FCITX_CONFIG_ENUM_NAME_WITH_I18N(LotusMode, N_("OFF"), N_("Uinput (Smooth)"), N_("Uinput (Slow)"), N_("Surrounding Text"), N_("Preedit"), N_("Emoji Picker"), N_("Minecraft"));
+    FCITX_CONFIG_ENUM_NAME_WITH_I18N(LotusMode, N_("OFF"), N_("Uinput (Smooth)"), N_("Uinput (Super smooth)"), N_("Uinput (Slow)"), N_("Surrounding Text"), N_("Preedit"),
+                                     N_("Emoji Picker"), N_("Minecraft"));
 
     /**
      * @brief Converts LotusMode to int and vice versa.
@@ -230,7 +232,8 @@ namespace fcitx {
         Option<bool> enableCustomKeymap{this, "EnableCustomKeymap", _("Custom Keymap"), false};
 
         Option<bool> showModeSmooth{this, "ShowModeSmooth", _("Show Uinput (Smooth)"), true}; Option<bool> showModeUinput{this, "ShowModeUinput", _("Show Uinput (Slow)"), true};
-        Option<bool>                                                                                       showModeMinecraft{this, "ShowModeMinecraft", _("Show Minecraft"), true};
+        Option<bool> showModeSuperSmooth{this, "ShowModeSuperSmooth", _("Show Uinput (Super Smooth)"), true};
+        Option<bool> showModeMinecraft{this, "ShowModeMinecraft", _("Show Minecraft"), true};
         Option<bool> showModeSurroundingText{this, "ShowModeSurroundingText", _("Show Surrounding Text"), true};
         Option<bool> showModePreedit{this, "ShowModePreedit", _("Show Preedit"), true}; Option<bool> showModeEmoji{this, "ShowModeEmoji", _("Show Emoji Picker"), true};
         Option<bool> showModeOff{this, "ShowModeOff", _("Show OFF"), true}; Option<bool> showModeDefault{this, "ShowModeDefault", _("Show Default Typing"), true};

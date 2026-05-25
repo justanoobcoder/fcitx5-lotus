@@ -38,6 +38,7 @@ SETTINGS_MAP = {
         "LOADABLE MODES": [
             "ShowModeSmooth",
             "ShowModeUinput",
+            "ShowModeSuperSmooth",
             "ShowModeMinecraft",
             "ShowModeSurroundingText",
             "ShowModePreedit",
