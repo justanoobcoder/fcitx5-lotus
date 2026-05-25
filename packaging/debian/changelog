@@ -1,5 +1,7 @@
-fcitx5-lotus (3.1.1-1) unstable; urgency=medium
+fcitx5-lotus (3.2.0-1) unstable; urgency=medium
 
-  * Fix bug record wrong hotkey in settings-gui
+  * Add new mode: SuperSmooth
+  * Fix bug reset when press Shift key
+  * use Preedit as default mode
 
- -- Nguyen Hoang Ky <nhktmdzhg@gmail.com>  Fri, 22 May 2026 15:29:00 +0700
+ -- Nguyen Hoang Ky <nhktmdzhg@gmail.com>  Mon, 25 May 2026 21:35:00 +0700
