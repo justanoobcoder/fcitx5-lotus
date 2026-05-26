@@ -477,20 +477,19 @@ namespace fcitx {
         LOTUS_INFO("Perform replacement: " + deletedPart + " -> " + addedPart); //NOLINT
         current_backspace_count_ = 0;
         pending_commit_string_   = addedPart;
-        int autofillOffset       = 0;
-        if (realMode != LotusMode::SuperSmooth) {
-            const auto& surrounding = ic_->surroundingText();
-            // Enable Autofill detection for all frontends (Wayland/IBus).
-            // This fixes the "toôi" duplication bug in Chromium-based search bars.
-            // The isAutofillCertain function has been optimized to differentiate
-            // between browser autofill and AI ghost text.
-            if (isAutofillCertain(surrounding)) {
-                autofillOffset = 1;
+        expected_backspaces_     = static_cast<int>(utf8::length(deletedPart));
+        if (realMode != LotusMode::Minecraft) {
+            ++expected_backspaces_;
+            if (realMode != LotusMode::SuperSmooth) {
+                const auto& surrounding = ic_->surroundingText();
+                // Enable Autofill detection for all frontends (Wayland/IBus).
+                // This fixes the "toôi" duplication bug in Chromium-based search bars.
+                // The isAutofillCertain function has been optimized to differentiate
+                // between browser autofill and AI ghost text.
+                if (isAutofillCertain(surrounding)) {
+                    ++expected_backspaces_;
+                }
             }
-        }
-        expected_backspaces_ = static_cast<int>(utf8::length(deletedPart)) + 1 + autofillOffset;
-        if (realMode == LotusMode::Minecraft) {
-            --expected_backspaces_;
         }
         is_deleting_.store(true, std::memory_order_release);
         send_backspace_uinput(expected_backspaces_);
