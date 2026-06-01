@@ -28,6 +28,7 @@ start_pre() {
         einfo "     sudo rc-service fcitx5-lotus.\$(whoami) restart"
         return 1
    fi
+   /usr/bin/setfacl -m u:uinput_proxy:rw /dev/uinput
 }
 
 stop_post() {
