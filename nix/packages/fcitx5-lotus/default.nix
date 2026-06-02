@@ -1,6 +1,7 @@
 {
   lib,
   stdenv,
+  acl,
   buildGoModule,
   cmake,
   fcitx5,
@@ -39,6 +40,7 @@ stdenv.mkDerivation rec {
   ];
 
   buildInputs = [
+    acl
     fcitx5
     libinput
     libx11
@@ -84,10 +86,12 @@ stdenv.mkDerivation rec {
   '';
 
   postInstall = ''
-    if [ -d "$out/lib/systemd/system" ]; then
-      substituteInPlace $out/lib/systemd/system/fcitx5-lotus-server@.service \
-        --replace-fail "/usr/bin/fcitx5-lotus-server" "$out/bin/fcitx5-lotus-server"
-    fi
+    substituteInPlace $out/lib/udev/rules.d/99-lotus.rules \
+      --replace-fail "/usr/bin/setfacl" "${acl}/bin/setfacl"
+    substituteInPlace $out/lib/systemd/system/fcitx5-lotus-server@.service \
+      --replace-fail "/usr/bin/setfacl" "${acl}/bin/setfacl"
+    substituteInPlace $out/lib/systemd/system/fcitx5-lotus-server@.service \
+      --replace-fail "/usr/bin/fcitx5-lotus-server" "$out/bin/fcitx5-lotus-server"
   '';
 
   postFixup = ''
