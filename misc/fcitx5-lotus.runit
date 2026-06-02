@@ -10,7 +10,7 @@ if [ "$user" = "$svc" ]; then
     exit 1
 fi
 
-/usr/bin/setfacl -m u:uinput_proxy:rw /dev/uinput
+setfacl -m u:uinput_proxy:rw /dev/uinput
 
 exec 2>&1
 exec setpriv \
