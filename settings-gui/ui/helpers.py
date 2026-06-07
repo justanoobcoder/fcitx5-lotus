@@ -5,26 +5,26 @@
 Helper utilities and shared mappings for the Lotus settings GUI.
 """
 
-from i18n import _
+from i18n import _, N_
 from ui.components import HelpIcon
 
 
 # Tooltip text for specific settings keys
 HELPERS = {
-    "FreeMarking": _(
+    "FreeMarking": N_(
         "You can type tone marks at the end of the word or anywhere inside."
     ),
-    "FixUinputWithAck": _(
+    "FixUinputWithAck": N_(
         "Fix typing issues in Uinput mode for Chromium-based browsers like Chrome or Edge."
     ),
-    "CapitalizeMacro": _(
+    "CapitalizeMacro": N_(
         "Automatically match expansion case to trigger key case.\n\n"
         "Example if 'kg' is 'khô gà':\n"
         "- kg -> khô gà\n"
         "- Kg -> Khô gà\n"
         "- KG -> KHÔ GÀ"
     ),
-    "AutoNonVnRestore": _(
+    "AutoNonVnRestore": N_(
         "Automatically revert the typed sequence if the resulting word is not in the dictionary.\n"
         "This helps prevent accidental Vietnamese transformations on English words or mixed text."
     ),
@@ -48,7 +48,7 @@ def add_help_icon(layout, key, clear_existing=False):
     # Only add if we have a mapped helper text
     helper_text = HELPERS.get(key)
     if helper_text:
-        icon = HelpIcon(helper_text)
+        icon = HelpIcon(_(helper_text))
         layout.addWidget(icon)
         return icon
     return None

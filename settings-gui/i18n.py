@@ -25,3 +25,8 @@ def setup_i18n():
 
 
 _ = gettext.gettext
+
+
+def N_(text):
+    """Marker for strings that should be translated lazily."""
+    return text
