@@ -18,6 +18,7 @@ xgettext \
 --language=Python \
 --from-code=UTF-8 \
 --keyword=_ \
+--keyword=N_ \
 -o /tmp/lotus-python.pot \
 $(find . -name "*.py")
 

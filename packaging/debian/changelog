@@ -1,5 +1,5 @@
-fcitx5-lotus (3.2.1-1) unstable; urgency=medium
+fcitx5-lotus (3.2.2-1) unstable; urgency=medium
 
-  * Fix /dev/uinput permission conflict with uaccess
+  * Fix i18n
 
- -- Nguyen Hoang Ky <nhktmdzhg@gmail.com>  Tue, 02 Jun 2026 08:43:00 +0700
+ -- Nguyen Hoang Ky <nhktmdzhg@gmail.com>  Mon, 08 Jun 2026 15:45:00 +0700
