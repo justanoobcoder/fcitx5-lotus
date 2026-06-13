@@ -16,7 +16,7 @@ jobs:
             codename: bookworm
           - distro: debian:13
             codename: trixie
-          - distro: debian:14
+          - distro: debian:testing
             codename: forky
           - distro: debian:unstable
             codename: sid
