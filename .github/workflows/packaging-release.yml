@@ -397,9 +397,62 @@ jobs:
           path: fcitx5-lotus-*-x86_64-archlinux.tar.zst
           retention-days: 1
 
+  build-source:
+    name: Source Tarball
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          submodules: recursive
+
+      - name: Remove unnecessary files
+        run: |
+          rm -rf \
+            .github \
+            packaging \
+            nix \
+            packaging \
+            scripts \
+            flake.lock \
+            flake.nix \
+            .all-contributorsrc \
+            .clang-format \
+            .clang-tidy \
+            .gitignore \
+            .gitmodules \
+            README.md \
+            README.en.md \
+            CODE_OF_CONDUCT.md \
+            CODE_OF_CONDUCT.en.md \
+            CONTRIBUTING.md \
+            CONTRIBUTING.en.md \
+            LICENSE \
+            Message.sh \
+            translate.sh \
+            update_translate.sh
+
+      - name: Create source tarball
+        run: |
+          VERSION="${{ github.ref_name }}"
+          VERSION="${VERSION//\//-}"
+          tar \
+            --exclude='.git' \
+            -c -I 'zstd -19 -T0' \
+            -f "fcitx5-lotus-${VERSION}-source.tar.zst" \
+            -C .. \
+            "$(basename $(pwd))"
+
+      - name: Upload source artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: source-tarball
+          path: fcitx5-lotus-*-source.tar.zst
+          retention-days: 1
+
   release:
     name: Create GitHub Release
-    needs: [build-deb, build-rpm-fedora, build-rpm-opensuse, build-arch]
+    needs: [build-deb, build-rpm-fedora, build-rpm-opensuse, build-arch, build-source]
     runs-on: ubuntu-latest
     permissions:
       contents: write
