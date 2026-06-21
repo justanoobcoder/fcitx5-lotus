@@ -19,14 +19,14 @@
 }:
 stdenv.mkDerivation rec {
   pname = "fcitx5-lotus";
-  version = "3.2.3";
+  version = "3.2.4";
 
   src = fetchFromGitHub {
     owner = "LotusInputMethod";
     repo = "fcitx5-lotus";
     rev = "v${version}";
     fetchSubmodules = true;
-    hash = "sha256-/9D5KeZzJ/EHBzt1d3gqkDVFqR3F0vONxyO+o6EGRuU=";
+    hash = "sha256-k3AYIuo6B1zZ9emaeEwCRqWHxD42+i0cuSNGbyTuulQ=";
   };
 
   nativeBuildInputs = [
