@@ -24,6 +24,7 @@ jobs:
     steps:
       - uses: actions/checkout@v7
         with:
+          ref: ci/update-nix-hash
           fetch-depth: 0
           persist-credentials: false
 
@@ -63,7 +64,7 @@ jobs:
           rm update-shim.nix
 
       - name: Build to verify
-        run: nix build -L .#packages.x86_64-linux.fcitx5-lotus
+        run: nix build -L --no-link .#packages.x86_64-linux.fcitx5-lotus
 
       - name: Check for changes
         id: git-check
@@ -78,10 +79,11 @@ jobs:
         if: steps.git-check.outputs.changed == 'true'
         uses: peter-evans/create-pull-request@v6
         with:
+          base: ci/update-nix-hash
           commit-message: "nix: update fcitx5-lotus to ${{ steps.version.outputs.version }}"
           title: "nix: update to v${{ steps.version.outputs.version }}"
           body: |
-            Tự động cập nhật version và hash sau khi release `v${{ steps.version.outputs.version }}`.
-            Đã build kiểm tra thành công trước khi tạo PR này.
+            Tự động cập nhật version và hash cho Nix sau khi release `v${{ steps.version.outputs.version }}`.
+            Đã build thành công trước khi tạo PR này.
           branch: auto-update-nix-${{ steps.version.outputs.version }}
           delete-branch: true
